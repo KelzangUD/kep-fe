@@ -14,7 +14,9 @@ import {
 } from "@mui/material";
 import Logo from "../../assets/images/logo.ico";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import SettingsIcon from '@mui/icons-material/Settings';
 import DnsIcon from "@mui/icons-material/Dns";
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -45,15 +47,22 @@ export default function SideNav() {
       onClick: () => routeHandle("dashboard"),
     },
     {
-      label: "Master",
-      icon: <DnsIcon />,
+      label: "System Setting",
+      icon: <SettingsIcon />,
       onClick: () => handleNestedItemClick(1),
       nestedItems: [
         {
           label: "User",
           icon: <KeyboardArrowRightIcon />,
-          onClick: () => routeHandle("master/user"),
+          onClick: () => routeHandle("system-setting/user"),
         },
+      ],
+    },
+    {
+      label: "Master",
+      icon: <DnsIcon />,
+      onClick: () => handleNestedItemClick(2),
+      nestedItems: [
         {
           label: "Add Questions",
           icon: <KeyboardArrowRightIcon />,
@@ -67,9 +76,26 @@ export default function SideNav() {
       ],
     },
     {
+      label: "Activity",
+      icon: <AssignmentIcon />,
+      onClick: () => handleNestedItemClick(3),
+      nestedItems: [
+        {
+          label: "Add Questions",
+          icon: <KeyboardArrowRightIcon />,
+          onClick: () => routeHandle("activity/add-questions"),
+        },
+        {
+          label: "Schedule Test",
+          icon: <KeyboardArrowRightIcon />,
+          onClick: () => routeHandle("activity/schedule-test"),
+        },
+      ],
+    },
+    {
       label: "Report",
       icon: <AssessmentIcon />,
-      onClick: () => handleNestedItemClick(2),
+      onClick: () => handleNestedItemClick(4),
       nestedItems: [
         {
           label: "Current Month",

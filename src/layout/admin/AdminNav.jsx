@@ -4,7 +4,6 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 
@@ -52,9 +51,9 @@ const AdminNav = () => {
     >
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <AccountCircle fontSize="small" />
           </ListItemIcon>
-          Settings
+          Profile
         </MenuItem>
         <MenuItem onClick={logoutHandle}>
           <ListItemIcon>

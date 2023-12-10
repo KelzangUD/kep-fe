@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import AddQuestions from "../../component/admin/admin_activity/AddQuestions";
 import ScheduleTest from "../../component/admin/admin_activity/ScheduleTest";
 
-const Master = () => {
+const Activity = () => {
   return (
     <>
       <Routes>
@@ -14,4 +14,4 @@ const Master = () => {
   );
 };
 
-export default Master;
+export default Activity;
