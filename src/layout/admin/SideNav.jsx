@@ -69,6 +69,11 @@ export default function SideNav() {
       onClick: () => handleNestedItemClick(2),
       nestedItems: [
         {
+          label: "Grades",
+          icon: <KeyboardArrowRightIcon />,
+          onClick: () => routeHandle("master/grades"),
+        },
+        {
           label: "Regions",
           icon: <KeyboardArrowRightIcon />,
           onClick: () => routeHandle("master/regions"),
