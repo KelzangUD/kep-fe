@@ -63,8 +63,10 @@ const MainSlide = () => {
         <Box p={2}>
           <Button
             component="label"
-            variant="contained"
+            variant="outlined"
             startIcon={<CloudUploadIcon />}
+            fullWidth
+            size="large"
           >
             Upload Attachment
             <VisuallyHiddenInput type="file" />
@@ -77,7 +79,7 @@ const MainSlide = () => {
                 container
                 spacing={1}
                 alignItems="center"
-                sx={{ px: 2, py: 1 }}
+                sx={{ py: 1 }}
               >
                 <Grid item xs={11}>
                   <TextField
@@ -96,7 +98,7 @@ const MainSlide = () => {
                 container
                 spacing={1}
                 alignItems="center"
-                sx={{ px: 2, py: 1 }}
+                sx={{ py: 1 }}
               >
                 <Grid item xs={11}>
                   <TextField
@@ -115,7 +117,7 @@ const MainSlide = () => {
                 container
                 spacing={1}
                 alignItems="center"
-                sx={{ px: 2, py: 1 }}
+                sx={{ py: 1 }}
               >
                 <Grid item xs={11}>
                   <TextField
@@ -134,7 +136,7 @@ const MainSlide = () => {
                 container
                 spacing={1}
                 alignItems="center"
-                sx={{ px: 2, py: 1 }}
+                sx={{ py: 1 }}
               >
                 <Grid item xs={11}>
                   <TextField

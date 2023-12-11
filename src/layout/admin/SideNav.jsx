@@ -78,6 +78,16 @@ export default function SideNav() {
           icon: <KeyboardArrowRightIcon />,
           onClick: () => routeHandle("master/extensions"),
         },
+        {
+          label: "Videos",
+          icon: <KeyboardArrowRightIcon />,
+          onClick: () => routeHandle("master/videos"),
+        },
+        {
+          label: "Audios",
+          icon: <KeyboardArrowRightIcon />,
+          onClick: () => routeHandle("master/audios"),
+        },
       ],
     },
     {
