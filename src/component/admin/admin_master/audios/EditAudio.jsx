@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import Transition from "../../../common/Transition";
+import Transition from "../../../../common/Transition";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",

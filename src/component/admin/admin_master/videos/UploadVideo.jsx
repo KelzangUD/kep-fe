@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import Transition from "../../../common/Transition";
+import Transition from "../../../../common/Transition";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -29,7 +29,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const UploadAudio = ({ open, setOpen }) => {
+const UploadVideo = ({ open, setOpen }) => {
   const [uploadedFileName, setUploadedFileName] = React.useState(null);
 
   const handleFileChange = (e) => {
@@ -51,7 +51,7 @@ const UploadAudio = ({ open, setOpen }) => {
       onClose={() => setOpen(false)}
       TransitionComponent={Transition}
     >
-      <DialogTitle>Upload Audio</DialogTitle>
+      <DialogTitle>Upload Video</DialogTitle>
       <DialogContent>
         <Box sx={{ display: "grid", gap: 3, mt: 2 }}>
           <Grid container spacing={2}>
@@ -73,10 +73,10 @@ const UploadAudio = ({ open, setOpen }) => {
                 fullWidth
                 size="large"
               >
-                Upload Audio
+                Upload Video
                 <VisuallyHiddenInput
                   type="file"
-                  accept="audio/*"
+                  accept="video/*"
                   onChange={handleFileChange}
                 />
               </Button>
@@ -121,4 +121,4 @@ const UploadAudio = ({ open, setOpen }) => {
   );
 };
 
-export default UploadAudio;
+export default UploadVideo;

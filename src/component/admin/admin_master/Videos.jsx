@@ -17,8 +17,8 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Transition from "../../../common/Transition";
-import UploadVideo from "./UploadVideo";
-import EditVideo from "./EditVideo";
+import UploadVideo from "./videos/UploadVideo";
+import EditVideo from "./videos/EditVideo";
 
 const rows = [
   {

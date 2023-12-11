@@ -1,13 +1,10 @@
 import React from "react";
 import {
   Box,
-  Paper,
   Grid,
   Divider,
   Typography,
   Button,
-  InputBase,
-  IconButton,
   Dialog,
   DialogActions,
   DialogContent,
@@ -16,7 +13,7 @@ import SubHeader from "../../../common/SubHeader";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Transition from "../../../common/Transition";
-import SlideSection from "./SlideSection";
+import SlideSection from "./question_setup_section/SlideSection";
 import MainSlide from "./question_setup_section/MainSlide";
 
 const QuestionsSetup = ({ setQuestionsSetUp }) => {

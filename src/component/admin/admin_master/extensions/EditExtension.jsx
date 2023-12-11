@@ -13,9 +13,9 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import Transition from "../../../common/Transition";
+import Transition from "../../../../common/Transition";
 
-const AddExtension = ({ open, setOpen }) => {
+const EditExtension = ({ details, open, setOpen }) => {
   const addHandle = () => {
     setOpen(false);
   };
@@ -27,7 +27,7 @@ const AddExtension = ({ open, setOpen }) => {
       onClose={() => setOpen(false)}
       TransitionComponent={Transition}
     >
-      <DialogTitle>Add Extension</DialogTitle>
+      <DialogTitle>Edit Extension</DialogTitle>
       <DialogContent>
         <Box sx={{ display: "grid", gap: 3, mt: 2 }}>
           <Grid container>
@@ -36,6 +36,7 @@ const AddExtension = ({ open, setOpen }) => {
               variant="outlined"
               fullWidth
               name="extension"
+              defaultValue={details?.extension}
               required
               size="small"
             />
@@ -48,6 +49,7 @@ const AddExtension = ({ open, setOpen }) => {
                 id="region-simple-select"
                 // value={age}
                 required
+                defaultValue={details?.region}
                 label="Region"
                 // onChange={handleChange}
               >
@@ -62,6 +64,7 @@ const AddExtension = ({ open, setOpen }) => {
               variant="outlined"
               fullWidth
               name="description"
+              defaultValue={details?.description}
               required
               size="small"
               multiline
@@ -82,4 +85,4 @@ const AddExtension = ({ open, setOpen }) => {
   );
 };
 
-export default AddExtension;
+export default EditExtension;

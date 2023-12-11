@@ -17,8 +17,8 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Transition from "../../../common/Transition";
-import UploadAudio from "./UploadAudio";
-import EditAudio from "./EditAudio";
+import UploadAudio from "./audios/UploadAudio";
+import EditAudio from "./audios/EditAudio";
 
 const rows = [
   {

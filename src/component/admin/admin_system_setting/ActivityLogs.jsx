@@ -10,14 +10,13 @@ import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import SearchIcon from "@mui/icons-material/Search";
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditUser from "./EditUser";
 
 const rows = [
   {
     id: 1,
     sl: 1,
     username: "E00911",
-    description: "Created: Took test",
+    description: "Created: Schedule Test",
     date_time: "2023-12-07 12:12:23",
     session: "1 hours",
   },
@@ -106,9 +105,6 @@ const ActivityLogs = () => {
           </Grid>
         </Grid>
       </Box>
-      {/* {editUser ? (
-        <EditUser details={details} open={editUser} setOpen={setEditUser} />
-      ) : null} */}
     </>
   );
 };

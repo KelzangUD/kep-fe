@@ -9,7 +9,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import Transition from "../../../common/Transition";
+import Transition from "../../../../common/Transition";
 
 const EditRegion = ({ details, open, setOpen }) => {
   const editHandle = () => {

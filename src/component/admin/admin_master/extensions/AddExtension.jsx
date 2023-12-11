@@ -8,10 +8,14 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
-import Transition from "../../../common/Transition";
+import Transition from "../../../../common/Transition";
 
-const AddRegion = ({ open, setOpen }) => {
+const AddExtension = ({ open, setOpen }) => {
   const addHandle = () => {
     setOpen(false);
   };
@@ -23,18 +27,34 @@ const AddRegion = ({ open, setOpen }) => {
       onClose={() => setOpen(false)}
       TransitionComponent={Transition}
     >
-      <DialogTitle>Add Region</DialogTitle>
+      <DialogTitle>Add Extension</DialogTitle>
       <DialogContent>
         <Box sx={{ display: "grid", gap: 3, mt: 2 }}>
           <Grid container>
             <TextField
-              label="Region"
+              label="Extension"
               variant="outlined"
               fullWidth
-              name="region"
+              name="extension"
               required
               size="small"
             />
+          </Grid>
+          <Grid container>
+            <FormControl fullWidth size="small">
+              <InputLabel id="region-select-label">Region</InputLabel>
+              <Select
+                labelId="region-select-label"
+                id="region-simple-select"
+                // value={age}
+                required
+                label="Region"
+                // onChange={handleChange}
+              >
+                <MenuItem value={1}>Thimphu</MenuItem>
+                <MenuItem value={2}>Paro</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid container>
             <TextField
@@ -62,4 +82,4 @@ const AddRegion = ({ open, setOpen }) => {
   );
 };
 
-export default AddRegion;
+export default AddExtension;

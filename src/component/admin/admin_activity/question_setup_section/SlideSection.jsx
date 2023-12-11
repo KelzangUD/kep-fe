@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Button } from "@mui/material";
-import Slide from "./question_setup_section/Slide";
+import Slide from "./Slide";
 import AddIcon from '@mui/icons-material/Add';
 
 const SlideSection = () => {
