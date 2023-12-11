@@ -1,19 +1,24 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../assets/images/logo.ico";
 import { Box, Container, Typography, Button } from "@mui/material";
 
 const Header = () => {
   const navigation = useNavigate();
+  const location = useLocation();
+  const [currentLoction, setCurrentLocation] = React.useState();
   const homeHandle = () => {
     navigation("/");
   };
   const signInHandle = () => {
     navigation("/sign-in");
   };
+  React.useEffect(()=> {
+    setCurrentLocation(location?.pathname);
+  },[location]);
   return (
-    <Container maxWidth="xl" sx={{ backgroundColor: "#F5F7F8", paddingY: 1 }}>
-      <Box display="flex" alignItems="center" justifyContent="space-between">
+    <>
+      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ backgroundColor: "#F5F7F8", p: 1 }}>
         <Box display="flex" alignItems="center">
           <Button variant="text" onClick={homeHandle}>
             <img
@@ -35,13 +40,16 @@ const Header = () => {
             Knowledge Enhancement Platform
           </Typography>
         </Box>
-        <Box>
+        {
+          currentLoction === "/sign-in" ? null : <Box>
           <Button variant="outlined" onClick={signInHandle}>
             SIGN IN
           </Button>
         </Box>
+        }
+        
       </Box>
-    </Container>
+    </>
   );
 };
 

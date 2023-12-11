@@ -56,6 +56,11 @@ export default function SideNav() {
           icon: <KeyboardArrowRightIcon />,
           onClick: () => routeHandle("system-setting/user"),
         },
+        {
+          label: "Activity Logs",
+          icon: <KeyboardArrowRightIcon />,
+          onClick: () => routeHandle("system-setting/activity-logs"),
+        },
       ],
     },
     {
