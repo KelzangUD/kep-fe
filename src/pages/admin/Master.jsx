@@ -1,14 +1,14 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import AddQuestions from "../../component/admin/admin_activity/AddQuestions";
-import ScheduleTest from "../../component/admin/admin_activity/ScheduleTest";
+import Regions from "../../component/admin/admin_master/Regions";
+import Extensions from "../../component/admin/admin_master/Extensions";
 
 const Master = () => {
   return (
     <>
       <Routes>
-        <Route path="/add-questions" element={<AddQuestions />} />
-        <Route path="/schedule-test" element={<ScheduleTest />} />
+        <Route path="/regions" element={<Regions />} />
+        <Route path="/extensions" element={<Extensions />} />
       </Routes>
     </>
   );

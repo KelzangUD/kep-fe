@@ -64,14 +64,14 @@ export default function SideNav() {
       onClick: () => handleNestedItemClick(2),
       nestedItems: [
         {
-          label: "Add Questions",
+          label: "Regions",
           icon: <KeyboardArrowRightIcon />,
-          onClick: () => routeHandle("master/add-questions"),
+          onClick: () => routeHandle("master/regions"),
         },
         {
-          label: "Schedule Test",
+          label: "Extensions",
           icon: <KeyboardArrowRightIcon />,
-          onClick: () => routeHandle("master/schedule-test"),
+          onClick: () => routeHandle("master/extensions"),
         },
       ],
     },
