@@ -7,6 +7,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import SystemSetting from "./admin/SystemSetting";
 import Master from "./admin/Master";
 import Activity from "./admin/Activity";
+import Report from "./admin/Report";
 import { styled } from "@mui/material/styles";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -32,7 +33,7 @@ const Admin = () => {
                       <Route path="/system-setting/*" element={<SystemSetting />} />
                       <Route path="/master/*" element={<Master />} />
                       <Route path="/activity/*" element={<Activity />} />
-                      {/* <Route path="/report/*" element={<Report />} /> */}
+                      <Route path="/report/*" element={<Report />} />
                     </Routes>
                   </Item>
                 </Grid>
