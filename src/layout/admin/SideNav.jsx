@@ -106,9 +106,9 @@ export default function SideNav() {
           onClick: () => routeHandle("activity/add-questions"),
         },
         {
-          label: "Schedule Test",
+          label: "Schedule Tests",
           icon: <KeyboardArrowRightIcon />,
-          onClick: () => routeHandle("activity/schedule-test"),
+          onClick: () => routeHandle("activity/schedule-tests"),
         },
       ],
     },
