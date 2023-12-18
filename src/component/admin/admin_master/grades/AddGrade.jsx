@@ -93,7 +93,7 @@ const AddGrade = ({ open, setOpen }) => {
       </DialogContent>
       <DialogActions sx={{ mb: 2, mx: 2 }}>
         <Button variant="contained" onClick={editHandle}>
-          Update
+          Add
         </Button>
         <Button onClick={() => setOpen(false)} variant="outlined" color="error">
           Cancel

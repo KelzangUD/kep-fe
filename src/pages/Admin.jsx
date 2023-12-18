@@ -3,6 +3,7 @@ import AdminNav from '../layout/admin/AdminNav';
 import SideNav from "../layout/admin/SideNav";
 import { Box, Grid, Paper } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
+import Profile from "./admin/Profile";
 import AdminDashboard from "./admin/AdminDashboard";
 import SystemSetting from "./admin/SystemSetting";
 import Master from "./admin/Master";
@@ -30,6 +31,7 @@ const Admin = () => {
                   <Item>
                     <Routes>
                       <Route path="/dashboard" element={<AdminDashboard />} />
+                      <Route path="/profile" element={<Profile />} />
                       <Route path="/system-setting/*" element={<SystemSetting />} />
                       <Route path="/master/*" element={<Master />} />
                       <Route path="/activity/*" element={<Activity />} />

@@ -30,6 +30,9 @@ const AdminNav = () => {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+  const profileHandle = () => {
+    navigation("/admin/profile");
+  };
   const logoutHandle = () => {
     navigation("/sign-in");
   };
@@ -49,7 +52,7 @@ const AdminNav = () => {
         marginTop: 4,
       }}
     >
-        <MenuItem onClick={handleMenuClose}>
+        <MenuItem onClick={profileHandle}>
           <ListItemIcon>
             <AccountCircle fontSize="small" />
           </ListItemIcon>

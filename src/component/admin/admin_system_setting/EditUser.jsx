@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import Transition from "../../../common/Transition";
 
-
 const EditUser = ({ details, open, setOpen }) => {
   const handleSubmit = () => {
     // Handle form submission logic here
@@ -74,15 +73,23 @@ const EditUser = ({ details, open, setOpen }) => {
           </Grid>
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <TextField
-                label="Designation"
-                variant="outlined"
-                fullWidth
-                name="designation"
-                defaultValue={details?.designation}
-                required
-                size="small"
-              />
+              <FormControl fullWidth size="small">
+                <InputLabel id="designation-select-label">
+                  Designation
+                </InputLabel>
+                <Select
+                  labelId="designation-select-label"
+                  id="designation-simple-select"
+                  // value={age}
+                  defaultValue={details?.designationId}
+                  label="Designation"
+                  // onChange={handleChange}
+                >
+                  <MenuItem value={1}>Manager</MenuItem>
+                  <MenuItem value={2}>CCE</MenuItem>
+                  <MenuItem value={3}>Software Developer</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={6}>
               <FormControl fullWidth size="small">

@@ -18,7 +18,6 @@ import {
 } from "@mui/material";
 import Transition from "../../../common/Transition";
 
-
 const CreateUser = ({ open, setOpen }) => {
   const handleSubmit = () => {
     // Handle form submission logic here
@@ -80,15 +79,19 @@ const CreateUser = ({ open, setOpen }) => {
           </Grid>
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <TextField
-                label="Designation"
-                variant="outlined"
-                fullWidth
-                name="designation"
-                required
-                size="small"
-                disabled
-              />
+              <FormControl fullWidth size="small">
+                <InputLabel id="designation-select-label">Designation</InputLabel>
+                <Select
+                  labelId="designation-select-label"
+                  id="designation-simple-select"
+                  // value={age}
+                  label="Designation"
+                  // onChange={handleChange}
+                >
+                  <MenuItem value={1}>Manager</MenuItem>
+                  <MenuItem value={2}>CCE</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={6}>
               <FormControl fullWidth size="small">

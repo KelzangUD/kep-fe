@@ -74,6 +74,16 @@ export default function SideNav() {
           onClick: () => routeHandle("master/grades"),
         },
         {
+          label: "Department/Unit",
+          icon: <KeyboardArrowRightIcon />,
+          onClick: () => routeHandle("master/departments_or_unit"),
+        },
+        {
+          label: "Designations",
+          icon: <KeyboardArrowRightIcon />,
+          onClick: () => routeHandle("master/designations"),
+        },
+        {
           label: "Regions",
           icon: <KeyboardArrowRightIcon />,
           onClick: () => routeHandle("master/regions"),
