@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -9,53 +9,60 @@ import {
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import SearchIcon from "@mui/icons-material/Search";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-
-const rows = [
-  {
-    id: 1,
-    sl: 1,
-    username: "E00911",
-    description: "Created: Schedule Test",
-    date_time: "2023-12-07 12:12:23",
-    session: "1 hours",
-  },
-];
+// import VisibilityIcon from '@mui/icons-material/Visibility';
+import Route from "../../../routes/Route";
 
 const ActivityLogs = () => {
-  const [view, setView] = React.useState(false);
-  const [details, setDetails] = React.useState({});
-  const viewHandle = (param) => {
-    setDetails(param?.row);
-    setView(true);
-  };
+  // const [view, setView] = React.useState(false);
+  // const [details, setDetails] = React.useState({});
+  // const viewHandle = (param) => {
+  //   setDetails(param?.row);
+  //   setView(true);
+  // };
+  const [data, setData] = useState([]);
   const userColumns = [
     { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "username", headerName: "User Name", width: 160 },
+    { field: "username", headerName: "Name", width: 260 },
     {
       field: "description",
       headerName: "Description",
       width: 600,
     },
     { field: "date_time", headerName: "Date and Time", width: 200 },
-    { field: "session", headerName: "Session", width: 200 },
-    {
-      field: "action",
-      headerName: "Action",
-      width: 120,
-      renderCell: (params) => (
-        <div>
-          <IconButton
-            aria-label="edit"
-            size="small"
-            onClick={() => viewHandle(params)}
-          >
-            <VisibilityIcon />
-          </IconButton>
-        </div>
-      ),
-    },
+    // { field: "session", headerName: "Session", width: 200 },
+    // {
+    //   field: "action",
+    //   headerName: "Action",
+    //   width: 120,
+    //   renderCell: (params) => (
+    //     <div>
+    //       <IconButton
+    //         aria-label="edit"
+    //         size="small"
+    //         onClick={() => viewHandle(params)}
+    //       >
+    //         <VisibilityIcon />
+    //       </IconButton>
+    //     </div>
+    //   ),
+    // },
   ];
+  const token = localStorage.getItem("token");
+  const fetchActivityLogs = async () => {
+    const res = await Route("GET","/activity-logs", token, null);
+    if (res?.status === 200) {
+      setData(res?.data?.activityLogs?.map((item, index) => ({
+        id: item?.id,
+        sl: index  + 1,
+        username: `${item?.User?.name} (${item?.User?.empId})`,
+        description: item?.description,
+        date_time: item?.date_time
+      })));
+    }
+  };
+  useEffect(() => {
+    fetchActivityLogs();
+  },[]);
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -92,7 +99,7 @@ const ActivityLogs = () => {
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={rows}
+                rows={data}
                 columns={userColumns}
                 initialState={{
                   pagination: {

@@ -32,6 +32,8 @@ const SignIn = () => {
     e.preventDefault();
     const res = await Route("POST","/login", null, formData);
     if (res?.status === 200) {
+      localStorage.setItem("user", JSON.stringify(res?.data?.user));
+      localStorage.setItem("token", res?.data?.token);
       navigagte("/admin/dashboard");
     } else {
       setMessage(res?.response?.data?.message);
