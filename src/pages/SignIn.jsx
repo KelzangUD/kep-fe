@@ -12,25 +12,35 @@ import OnlineTest from "../assets/svgs/onlineTest.svg";
 import LoginIcon from "@mui/icons-material/Login";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
+import Notification from "../ui/Notification";
+import Route from "../routes/Route";
 
 const SignIn = () => {
   const navigagte = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
+    empId: "",
     password: "",
   });
+  const [message, setMessage] = React.useState("");
+  const [open, setOpen] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Sign-in submitted:", formData);
-    navigagte("/admin/dashboard");
+    const res = await Route("POST","/login", null, formData);
+    if (res?.status === 200) {
+      navigagte("/admin/dashboard");
+    } else {
+      setMessage(res?.response?.data?.message);
+      setOpen(true);
+    }
   };
 
   return (
+    <>
     <Container>
       <Header />
       <Box
@@ -56,8 +66,8 @@ const SignIn = () => {
                     variant="outlined"
                     fullWidth
                     type="text"
-                    name="username"
-                    value={formData.username}
+                    name="empId"
+                    value={formData.empId}
                     onChange={handleChange}
                     required
                   />
@@ -96,6 +106,10 @@ const SignIn = () => {
       </Box>
       <Footer />
     </Container>
+    {
+      open && <Notification open={open} setOpen={setOpen} message={message} /> 
+    }
+    </>
   );
 };
 

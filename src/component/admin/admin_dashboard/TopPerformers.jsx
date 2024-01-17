@@ -2,8 +2,14 @@ import React from "react";
 import {
   Grid,
   Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
 
 const rows = [
   {
@@ -49,17 +55,17 @@ const rows = [
 ];
 
 const TopPerformers = () => {
-  const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "name", headerName: "Name", width: 200 },
-    { field: "employeeID", headerName: "Employee ID", width: 160 },
-    {
-      field: "email",
-      headerName: "Email",
-      width: 300,
-    },
-    { field: "averageScore", headerName: "Average Score (%)", width: 160 },
-  ];
+  // const userColumns = [
+  //   { field: "sl", headerName: "Sl. No", width: 40 },
+  //   { field: "name", headerName: "Name", width: 200 },
+  //   { field: "employeeID", headerName: "Employee ID", width: 160 },
+  //   {
+  //     field: "email",
+  //     headerName: "Email",
+  //     width: 300,
+  //   },
+  //   { field: "averageScore", headerName: "Average Score (%)", width: 160 },
+  // ];
   return (
     <>
       <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
@@ -67,9 +73,37 @@ const TopPerformers = () => {
           <Typography>Top Five Performers</Typography>
         </Grid>
         <Grid item xs={12}>
-          <div style={{ height: "auto", width: "100%" }}>
-            <DataGrid rows={rows} columns={userColumns}  />
-          </div>
+          {/* <TableContainer> */}
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Sl.No</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Employee ID</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell align="right">Average Score</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.sl}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.sl}
+                    </TableCell>
+                    <TableCell>
+                      {row.name}
+                    </TableCell>
+                    <TableCell>{row.employeeID}</TableCell>
+                    <TableCell>{row.email}</TableCell>
+                    <TableCell align="right">{row.averageScore}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          {/* </TableContainer> */}
         </Grid>
       </Grid>
     </>
