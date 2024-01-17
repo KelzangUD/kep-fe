@@ -30,7 +30,7 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await Route("POST","/login", null, formData);
+    const res = await Route("POST", "/login", null, formData);
     if (res?.status === 200) {
       localStorage.setItem("user", JSON.stringify(res?.data?.user));
       localStorage.setItem("token", res?.data?.token);
@@ -43,74 +43,72 @@ const SignIn = () => {
 
   return (
     <>
-    <Container>
-      <Header />
-      <Box
-        sx={{
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "80vh",
-        }}
-      >
-        <Grid container spacing={4} alignItems="center">
-          <Grid item xs={6}>
-            <Container maxWidth="xs" sx={{ py: 2 }}>
-              <Typography variant="h4" align="center" sx={{ mb: 4 }}>
-                Welcome Back
-              </Typography>
-              <form onSubmit={handleSubmit}>
-                <Box sx={{ display: "grid", gap: 2 }}>
-                  <TextField
-                    label="User Name"
-                    variant="outlined"
-                    fullWidth
-                    type="text"
-                    name="empId"
-                    value={formData.empId}
-                    onChange={handleChange}
-                    required
-                  />
-                  <TextField
-                    label="Password"
-                    variant="outlined"
-                    fullWidth
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                  />
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    fullWidth
-                    endIcon={<LoginIcon />}
-                  >
-                    Sign In
-                  </Button>
-                </Box>
-              </form>
-            </Container>
+      <Container>
+        <Header />
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "80vh",
+          }}
+        >
+          <Grid container spacing={4} alignItems="center">
+            <Grid item xs={6}>
+              <Container maxWidth="xs" sx={{ py: 2 }}>
+                <Typography variant="h4" align="center" sx={{ mb: 4 }}>
+                  Welcome Back
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                  <Box sx={{ display: "grid", gap: 2 }}>
+                    <TextField
+                      label="User Name"
+                      variant="outlined"
+                      fullWidth
+                      type="text"
+                      name="empId"
+                      value={formData.empId}
+                      onChange={handleChange}
+                      required
+                    />
+                    <TextField
+                      label="Password"
+                      variant="outlined"
+                      fullWidth
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                    />
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      fullWidth
+                      endIcon={<LoginIcon />}
+                    >
+                      Sign In
+                    </Button>
+                  </Box>
+                </form>
+              </Container>
+            </Grid>
+            <Grid item xs={6}>
+              <img
+                src={OnlineTest}
+                alt="online_test"
+                style={{ width: "90%", height: "auto" }}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <img
-              src={OnlineTest}
-              alt="online_test"
-              style={{ width: "90%", height: "auto" }}
-            />
-          </Grid>
-        </Grid>
-      </Box>
-      <Footer />
-    </Container>
-    {
-      open && <Notification open={open} setOpen={setOpen} message={message} /> 
-    }
+        </Box>
+        <Footer />
+      </Container>
+      {open && <Notification open={open} setOpen={setOpen} message={message} />}
     </>
   );
 };
