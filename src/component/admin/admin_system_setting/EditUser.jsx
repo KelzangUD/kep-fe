@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Button,
@@ -16,16 +16,106 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import Transition from "../../../common/Transition";
+import Route from "../../../routes/Route";
 
-const EditUser = ({ details, open, setOpen }) => {
-  const handleSubmit = () => {
-    // Handle form submission logic here
+const EditUser = ({ details, open, setOpen, setOpenNotification, setMessage }) => {
+  // init states
+  const [designations, setDesignations] = useState([]);
+  const [regions, setRegions] = useState([]);
+  const [extensions, setExtensions] = useState([]);
+  const [userDetails, setUserDetails] = useState({
+    name: details?.name,
+    empId: details?.empId,
+    email: details?.email,
+    password: details?.password,
+    contact: details?.contact,
+    status: details?.true,
+    gender: details?.gender,
+    isAdmin: details?.isAdmin,
+    region: details?.region,
+    extension: details?.extension,
+    designation: details?.designation,
+  });
+
+  const token = localStorage.getItem("token");
+  // fetch Designations
+  const fetchDesignations = async () => {
+    const res = await Route("GET", `/designations`, token, null);
+    if (res?.status === 200) {
+      setDesignations(res?.data?.designations);
+    }
   };
-  React.useEffect(() => {
-    console.log(details);
+  // fetch Regions
+  const fetchRegions = async () => {
+    const res = await Route("GET", `/regions`, token, null);
+    if (res?.status === 200) {
+      setRegions(res?.data?.regions);
+    }
+  };
+  // fetch Extensions based on Region
+  const fetchExtensions = async (id) => {
+    const res = await Route(
+      "GET",
+      `/regions/fetchAllExtensions/${id}`,
+      token,
+      null
+    );
+    if (res?.status === 200) {
+      setExtensions(res?.data?.extensions);
+    }
+  };
+  // call functions
+  useEffect(() => {
+    fetchDesignations();
+    fetchRegions();
   }, []);
-
+  // handlers
+  const designationHandle = (e) => {
+    setUserDetails((prev) => ({
+      ...prev,
+      designation: e.target.value,
+    }));
+  };
+  const genderHandle = (e) => {
+    setUserDetails((prev) => ({
+      ...prev,
+      gender: e.target.value,
+    }));
+  };
+  const regionHandle = (e) => {
+    setExtensions([]);
+    fetchExtensions(e.target.value);
+    setUserDetails((prev) => ({
+      ...prev,
+      region: e.target.value,
+    }));
+  };
+  const extensionHandle = (e) => {
+    setUserDetails((prev) => ({
+      ...prev,
+      extension: e.target.value,
+    }));
+  };
+  const isAdminHandle = (e) => {
+    setUserDetails((prev) => ({
+      ...prev,
+      isAdmin: e.target.checked,
+    }));
+  };
+  // update function
+  const handleSubmit = async() => {
+    const response = await Route("PUT", `/users/${details?.id}`, token, userDetails);
+    if (response?.status === 201) {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+      setOpen(false);
+    } else {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+    }
+  };
   return (
+    <>
     <Dialog
       open={open}
       onClose={() => setOpen(false)}
@@ -40,10 +130,11 @@ const EditUser = ({ details, open, setOpen }) => {
                 label="Employee ID"
                 variant="outlined"
                 fullWidth
-                defaultValue={details?.employeeID}
+                defaultValue={details?.empId}
                 name="employeeID"
                 required
                 size="small"
+                disabled
               />
             </Grid>
             <Grid item xs={9}>
@@ -55,6 +146,7 @@ const EditUser = ({ details, open, setOpen }) => {
                 name="fullName"
                 required
                 size="small"
+                disabled
               />
             </Grid>
           </Grid>
@@ -68,6 +160,7 @@ const EditUser = ({ details, open, setOpen }) => {
                 defaultValue={details?.email}
                 required
                 size="small"
+                disabled
               />
             </Grid>
           </Grid>
@@ -80,14 +173,15 @@ const EditUser = ({ details, open, setOpen }) => {
                 <Select
                   labelId="designation-select-label"
                   id="designation-simple-select"
-                  // value={age}
-                  defaultValue={details?.designationId}
+                  defaultValue={details?.designation}
                   label="Designation"
-                  // onChange={handleChange}
+                  onChange={designationHandle}
                 >
-                  <MenuItem value={1}>Manager</MenuItem>
-                  <MenuItem value={2}>CCE</MenuItem>
-                  <MenuItem value={3}>Software Developer</MenuItem>
+                  {designations?.map((item) => (
+                      <MenuItem key={item?.id} value={item?.id}>
+                        {item?.title}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -98,9 +192,8 @@ const EditUser = ({ details, open, setOpen }) => {
                   defaultValue={details?.gender}
                   labelId="gender-select-label"
                   id="gender-simple-select"
-                  // value={age}
                   label="Gender"
-                  // onChange={handleChange}
+                  onChange={genderHandle}
                 >
                   <MenuItem value="Male">Male</MenuItem>
                   <MenuItem value="Female">Female</MenuItem>
@@ -115,7 +208,7 @@ const EditUser = ({ details, open, setOpen }) => {
                 variant="outlined"
                 fullWidth
                 name="contact"
-                defaultValue={details?.contactNo}
+                defaultValue={details?.contact}
                 required
                 size="small"
               />
@@ -127,12 +220,14 @@ const EditUser = ({ details, open, setOpen }) => {
                   defaultValue={details?.region}
                   labelId="region-select-label"
                   id="region-simple-select"
-                  // value={age}
                   label="Region"
-                  // onChange={handleChange}
+                  onChange={regionHandle}
                 >
-                  <MenuItem value={1}>Thimphu</MenuItem>
-                  <MenuItem value={2}>Paro</MenuItem>
+                  {regions?.map((item) => (
+                      <MenuItem key={item?.id} value={item?.id}>
+                        {item?.region}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -143,12 +238,14 @@ const EditUser = ({ details, open, setOpen }) => {
                   defaultValue={details?.extension}
                   labelId="extension-select-label"
                   id="extension-simple-select"
-                  // value={age}
                   label="Extension"
-                  // onChange={handleChange}
+                  onChange={extensionHandle}
                 >
-                  <MenuItem value={1}>Head</MenuItem>
-                  <MenuItem value={2}>Taba</MenuItem>
+                  {extensions?.map((item) => (
+                      <MenuItem key={item?.id} value={item?.id}>
+                        {item?.extension}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -157,10 +254,10 @@ const EditUser = ({ details, open, setOpen }) => {
             <Grid item xs={6}>
               <FormControl component="fieldset">
                 <FormControlLabel
-                  checked={details?.isAdmin}
-                  control={<Checkbox />}
+                  control={<Checkbox  defaultChecked={details?.isAdmin} />}
                   label="Assign as Admin"
                   labelPlacement="start"
+                  onClick={isAdminHandle}
                 />
               </FormControl>
             </Grid>
@@ -168,7 +265,7 @@ const EditUser = ({ details, open, setOpen }) => {
         </Box>
       </DialogContent>
       <DialogActions sx={{ mb: 2, mx: 2 }}>
-        <Button variant="contained" onClick={() => setOpen(false)}>
+        <Button variant="contained" onClick={handleSubmit}>
           Update
         </Button>
         <Button onClick={() => setOpen(false)} variant="outlined" color="error">
@@ -176,6 +273,7 @@ const EditUser = ({ details, open, setOpen }) => {
         </Button>
       </DialogActions>
     </Dialog>
+    </>
   );
 };
 

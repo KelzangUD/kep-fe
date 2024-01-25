@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -23,70 +23,41 @@ import SearchIcon from "@mui/icons-material/Search";
 import CreateUser from "./CreateUser";
 import EditUser from "./EditUser";
 import Transition from "../../../common/Transition";
-
-const rows = [
-  {
-    id: 1,
-    sl: 1,
-    name: "Kelzang Ugyen Dorji",
-    employeeID: "E00911",
-    email: "sw_engineer3.sdu@tashicell.com",
-    designation: "Software Developer",
-    designationId: 3,
-    contactNo: "77714212",
-    gender: "Male",
-    region: 1,
-    regionName: "Thimphu",
-    extension: null,
-    isAdmin: true,
-    status: "Active",
-  },
-  {
-    id: 2,
-    sl: 2,
-    name: "Pema Dorji",
-    employeeID: "E00505",
-    email: "sw_engineer1.sdu@tashicell.com",
-    designation: "Project Manager",
-    designationId: 4,
-    contactNo: "77721212",
-    gender: "Male",
-    region: 1,
-    regionName: "Thimphu",
-    extension: null,
-    isAdmin: false,
-    status: "In Active",
-  },
-];
+import Notification from "../../../ui/Notification";
+import Route from "../../../routes/Route";
 
 const User = () => {
-  const [createUser, setCreateUser] = React.useState(false);
-  const [editUser, setEditUser] = React.useState(false);
-  const [userDetails, setUserDetails] = React.useState({});
-  const [deleteUser, setDeleteUser] = React.useState(false);
-  const [userId, setUserId] = React.useState("");
+  const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [createUser, setCreateUser] = useState(false);
+  const [editUser, setEditUser] = useState(false);
+  const [userDetails, setUserDetails] = useState({});
+  const [deleteUser, setDeleteUser] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [message, setMessage] = React.useState("");
+  const [openNotification, setOpenNotification] = useState(false);
+  const searchHandle = (e) => {
+    setSearchQuery(e.target.value);
+  };
   const editHandle = (param) => {
     setUserDetails(param?.row);
     setEditUser(true);
   };
   const deleteHandle = (param) => {
-    console.log(param);
     setUserId(param?.id);
     setDeleteUser(true);
   };
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
+    { field: "sl", headerName: "Sl. No", width: 40, valueGetter: (params) => params.row.sl, },
     { field: "name", headerName: "Name", width: 160 },
-    { field: "employeeID", headerName: "Employee ID", width: 130 },
+    { field: "empId", headerName: "Employee ID", width: 130 },
     {
       field: "email",
       headerName: "Email",
-      width: 240,
+      width: 260,
     },
-    { field: "designation", headerName: "Designation", width: 170 },
-    { field: "contactNo", headerName: "Contact No.", width: 100 },
-    // { field: "regionName", headerName: "Region", width: 130 },
-    { field: "status", headerName: "Status", width: 100 },
+    { field: "designation ", headerName: "Designation", width: 200, valueGetter: (params) => params.row.Designation?.title || 'N/A', },
+    { field: "contact", headerName: "Contact No.", width: 100 },
     { field: "isAdmin", headerName: "Admin", width: 70 },
     {
       field: "action",
@@ -115,6 +86,33 @@ const User = () => {
   const createUserHandle = () => {
     setCreateUser(true);
   };
+  const token = localStorage.getItem("token");
+  const fetchUsers = async () => {
+    const res = await Route("GET", "/users", token, null);
+    if (res?.status === 200) {
+      setUsers(res?.data?.users)
+    }
+  };
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  const filteredData = users.filter(
+    (item) =>
+      item?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item?.employeeID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item?.designation.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  const confirmDeleteHandler = async() => {
+    const res = await Route("PUT", `/users/delete-users/${userId}`, token, null);
+    if (res?.status === 201) {
+      setDeleteUser(false);
+      setMessage(res?.data?.message);
+      setOpenNotification(true);
+    } else {
+      setMessage(res?.data?.message);
+      setOpenNotification(true);
+    };
+  };
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -138,6 +136,7 @@ const User = () => {
                   sx={{ ml: 1, flex: 1 }}
                   placeholder="Search"
                   inputProps={{ "aria-label": "search" }}
+                  onChange={searchHandle}
                 />
                 <IconButton
                   type="button"
@@ -169,7 +168,7 @@ const User = () => {
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={rows}
+                rows={filteredData?.map((row, index) => ({ ...row, sl: index + 1 }))}
                 columns={userColumns}
                 initialState={{
                   pagination: {
@@ -183,10 +182,10 @@ const User = () => {
         </Grid>
       </Box>
       {createUser ? (
-        <CreateUser open={createUser} setOpen={setCreateUser} />
+        <CreateUser open={createUser} setOpen={setCreateUser} setOpenNotification={setOpenNotification} setMessage={setMessage} />
       ) : null}
       {editUser ? (
-        <EditUser details={userDetails} open={editUser} setOpen={setEditUser} />
+        <EditUser details={userDetails} open={editUser} setOpen={setEditUser} setOpenNotification={setOpenNotification} setMessage={setMessage}  />
       ) : null}
       {deleteUser ? (
         <Dialog
@@ -203,7 +202,7 @@ const User = () => {
           </DialogContent>
           <DialogActions sx={{ mb: 2, mx: 2 }}>
             <Button
-              onClick={() => setDeleteUser(false)}
+              onClick={confirmDeleteHandler}
               variant="contained"
               autoFocus
               size="small"
@@ -221,6 +220,13 @@ const User = () => {
           </DialogActions>
         </Dialog>
       ) : null}
+      {openNotification && (
+        <Notification
+          open={openNotification}
+          setOpen={setOpenNotification}
+          message={message}
+        />
+      )}
     </>
   );
 };
