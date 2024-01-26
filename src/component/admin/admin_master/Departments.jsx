@@ -30,7 +30,7 @@ const Departments = () => {
   const [add, setAdd] = useState(false);
   const [edit, setEdit] = useState(false);
   const [details, setDetails] = useState({});
-  const [deleteGrade, setDeleteGrade] = useState(false);
+  const [deleteDepartment, setDeleteDepartment] = useState(false);
   const [id, setId] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [departments, setDepartments] = useState([]);
@@ -47,14 +47,14 @@ const Departments = () => {
   };
   const deleteHandle = (param) => {
     setId(param?.id);
-    setDeleteGrade(true);
+    setDeleteDepartment(true);
   };
   const token = localStorage.getItem("token");
   const fetchDepartments = async () => {
     const res = await Route("GET", "/departments", token, null);
     if (res?.status === 200) {
       setDepartments(res?.data?.departments);
-    };
+    }
   };
   useEffect(() => {
     fetchDepartments();
@@ -63,7 +63,12 @@ const Departments = () => {
     item?.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40, valueGetter: (params) => params.row.sl, },
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      width: 40,
+      valueGetter: (params) => params.row.sl,
+    },
     { field: "title", headerName: "Title", width: 200 },
     {
       field: "action",
@@ -89,17 +94,17 @@ const Departments = () => {
       ),
     },
   ];
-  const confirmDeleteHandler = async() => {
+  const confirmDeleteHandler = async () => {
     const res = await Route("DELETE", `/departments/${id}`, token, null);
     if (res?.status === 201) {
-      setDeleteGrade(false);
+      setDeleteDepartment(false);
       setMessage(res?.data?.message);
       fetchDepartments();
       setOpenNotification(true);
     } else {
       setMessage(res?.data?.message);
       setOpenNotification(true);
-    };
+    }
   };
   return (
     <>
@@ -156,7 +161,10 @@ const Departments = () => {
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={filteredData?.map((row, index) => ({ ...row, sl: index + 1 }))}
+                rows={filteredData?.map((row, index) => ({
+                  ...row,
+                  sl: index + 1,
+                }))}
                 columns={userColumns}
                 initialState={{
                   pagination: {
@@ -169,14 +177,29 @@ const Departments = () => {
           </Grid>
         </Grid>
       </Box>
-      {add ? <AddDepartment open={add} setOpen={setAdd} setMessage={setMessage} setOpenNotification={setOpenNotification} fetchDepartments={fetchDepartments} /> : null}
-      {edit ? (
-        <EditDepartment details={details} open={edit} setOpen={setEdit} setMessage={setMessage} setOpenNotification={setOpenNotification} fetchDepartments={fetchDepartments} />
+      {add ? (
+        <AddDepartment
+          open={add}
+          setOpen={setAdd}
+          setMessage={setMessage}
+          setOpenNotification={setOpenNotification}
+          fetchDepartments={fetchDepartments}
+        />
       ) : null}
-      {deleteGrade ? (
+      {edit ? (
+        <EditDepartment
+          details={details}
+          open={edit}
+          setOpen={setEdit}
+          setMessage={setMessage}
+          setOpenNotification={setOpenNotification}
+          fetchDepartments={fetchDepartments}
+        />
+      ) : null}
+      {deleteDepartment ? (
         <Dialog
-          open={deleteGrade}
-          onClose={() => setDeleteGrade(false)}
+          open={deleteDepartment}
+          onClose={() => setDeleteDepartment(false)}
           TransitionComponent={Transition}
         >
           <DialogContent>
@@ -197,7 +220,7 @@ const Departments = () => {
               Confirm
             </Button>
             <Button
-              onClick={() => setDeleteGrade(false)}
+              onClick={() => setDeleteDepartment(false)}
               variant="outlined"
               color="error"
               size="small"

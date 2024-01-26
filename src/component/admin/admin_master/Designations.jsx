@@ -32,7 +32,7 @@ const Designations = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [designations, setDesignations] = useState([]);
   const [details, setDetails] = React.useState({});
-  const [deleteGrade, setDeleteGrade] = React.useState(false);
+  const [deleteDesignation, setDeleteDesignation] = React.useState(false);
   const [id, setId] = React.useState("");
   const [message, setMessage] = React.useState("");
   const [openNotification, setOpenNotification] = useState(false);
@@ -47,7 +47,7 @@ const Designations = () => {
   };
   const deleteHandle = (param) => {
     setId(param?.id);
-    setDeleteGrade(true);
+    setDeleteDesignation(true);
   };
   const token = localStorage.getItem("token");
   const fetchDesignations = async () => {
@@ -102,8 +102,17 @@ const Designations = () => {
       ),
     },
   ];
-  const addHandle = () => {
-    setAdd(true);
+  const confirmDeleteHandler = async () => {
+    const res = await Route("DELETE", `/designations/${id}`, token, null);
+    if (res?.status === 201) {
+      setDeleteDesignation(false);
+      setMessage(res?.data?.message);
+      fetchDesignations();
+      setOpenNotification(true);
+    } else {
+      setMessage(res?.data?.message);
+      setOpenNotification(true);
+    }
   };
   return (
     <>
@@ -144,7 +153,7 @@ const Designations = () => {
                 variant="outlined"
                 endIcon={<AddIcon />}
                 sx={{ mr: 2 }}
-                onClick={addHandle}
+                onClick={() => setAdd(true)}
               >
                 Add Designation
               </Button>
@@ -195,10 +204,10 @@ const Designations = () => {
           fetchDesignations={fetchDesignations}
         />
       ) : null}
-      {deleteGrade ? (
+      {deleteDesignation ? (
         <Dialog
-          open={deleteGrade}
-          onClose={() => setDeleteGrade(false)}
+          open={deleteDesignation}
+          onClose={() => setDeleteDesignation(false)}
           TransitionComponent={Transition}
         >
           <DialogContent>
@@ -211,7 +220,7 @@ const Designations = () => {
           </DialogContent>
           <DialogActions sx={{ mb: 2, mx: 2 }}>
             <Button
-              onClick={() => setDeleteGrade(false)}
+              onClick={confirmDeleteHandler}
               variant="contained"
               autoFocus
               size="small"
@@ -219,7 +228,7 @@ const Designations = () => {
               Confirm
             </Button>
             <Button
-              onClick={() => setDeleteGrade(false)}
+              onClick={() => setDeleteDesignation(false)}
               variant="outlined"
               color="error"
               size="small"
