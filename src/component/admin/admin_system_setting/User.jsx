@@ -24,7 +24,7 @@ import EditUser from "./EditUser";
 import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
 import Route from "../../../routes/Route";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 
 // const socket = io.connect("http://localhost:8080");
 
@@ -43,7 +43,7 @@ const User = () => {
   //   socket.emit('chat message', message);
   //   console.log(socket.emit('chat message', message));
   // },[message]);
-  
+  // handlers
   const searchHandle = (e) => {
     setSearchQuery(e.target.value);
   };

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Button,
@@ -10,10 +10,29 @@ import {
   DialogTitle,
 } from "@mui/material";
 import Transition from "../../../../common/Transition";
+import Route from "../../../../routes/Route";
 
-const AddDepartment = ({ open, setOpen }) => {
-  const addHandle = () => {
-    setOpen(false);
+const AddDepartment = ({ open, setOpen, setOpenNotification, setMessage, fetchDepartments }) => {
+  const [data, setData] = useState({
+    title: "",
+  }); 
+  const titleHandle = (e) => {
+    setData({
+      title: e.target.value
+    })
+  };
+  const token = localStorage.getItem("token");
+  const addHandle = async() => {
+    const response = await Route("POST", `/departments`, token, data);
+    if (response?.status === 201) {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+      fetchDepartments();
+      setOpen(false);
+    } else {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+    }
   };
   return (
     <Dialog
@@ -34,6 +53,7 @@ const AddDepartment = ({ open, setOpen }) => {
               name="title"
               required
               size="small"
+              onChange={titleHandle}
             />
           </Grid>
         </Box>

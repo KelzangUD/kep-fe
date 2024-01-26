@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -9,72 +9,38 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  Paper,
+  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Transition from "../../../common/Transition";
 import AddDepartment from "./departments/AddDepartment";
 import EditDepartment from "./departments/EditDepartment";
-import EditDesignation from "./designations/EditDesignation";
-
-const rows = [
-  {
-    id: 1,
-    sl: 1,
-    title: "AND",
-  },
-  {
-    id: 2,
-    sl: 2,
-    title: "CNCS",
-  },
-  {
-    id: 3,
-    sl: 3,
-    title: "FINANCE",
-  },
-  {
-    id: 4,
-    sl: 4,
-    title: "HRAD",
-  },
-  {
-    id: 5,
-    sl: 5,
-    title: "INTERNAL AUDIT UNIT",
-  },
-  {
-    id: 6,
-    sl: 6,
-    title: "MARKETING",
-  },
-  {
-    id: 7,
-    sl: 7,
-    title: "MIS",
-  },
-  {
-    id: 8,
-    sl: 8,
-    title: "SDU",
-  },
-  {
-    id: 9,
-    sl: 9,
-    title: "SPPD",
-  },
-];
+import Notification from "../../../ui/Notification";
+import Route from "../../../routes/Route";
 
 const Departments = () => {
-  const [add, setAdd] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
-  const [details, setDetails] = React.useState({});
-  const [deleteGrade, setDeleteGrade] = React.useState(false);
-  const [id, setId] = React.useState("");
+  // init states
+  const [add, setAdd] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [details, setDetails] = useState({});
+  const [deleteGrade, setDeleteGrade] = useState(false);
+  const [id, setId] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [departments, setDepartments] = useState([]);
+  const [message, setMessage] = React.useState("");
+  const [openNotification, setOpenNotification] = useState(false);
+
+  // handlers
+  const searchHandle = (e) => {
+    setSearchQuery(e.target.value);
+  };
   const editHandle = (param) => {
     setDetails(param?.row);
     setEdit(true);
@@ -83,8 +49,21 @@ const Departments = () => {
     setId(param?.id);
     setDeleteGrade(true);
   };
+  const token = localStorage.getItem("token");
+  const fetchDepartments = async () => {
+    const res = await Route("GET", "/departments", token, null);
+    if (res?.status === 200) {
+      setDepartments(res?.data?.departments);
+    };
+  };
+  useEffect(() => {
+    fetchDepartments();
+  }, []);
+  const filteredData = departments.filter((item) =>
+    item?.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
+    { field: "sl", headerName: "Sl. No", width: 40, valueGetter: (params) => params.row.sl, },
     { field: "title", headerName: "Title", width: 200 },
     {
       field: "action",
@@ -110,8 +89,17 @@ const Departments = () => {
       ),
     },
   ];
-  const addHandle = () => {
-    setAdd(true);
+  const confirmDeleteHandler = async() => {
+    const res = await Route("DELETE", `/departments/${id}`, token, null);
+    if (res?.status === 201) {
+      setDeleteGrade(false);
+      setMessage(res?.data?.message);
+      fetchDepartments();
+      setOpenNotification(true);
+    } else {
+      setMessage(res?.data?.message);
+      setOpenNotification(true);
+    };
   };
   return (
     <>
@@ -121,14 +109,38 @@ const Departments = () => {
           <Grid
             item
             xs={12}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
+            sx={{ display: "flex", justifyContent: "space-between" }}
           >
+            <Grid item>
+              <Paper
+                sx={{
+                  p: "2px 4px",
+                  display: "flex",
+                  alignItems: "center",
+                  width: 400,
+                }}
+              >
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Search"
+                  inputProps={{ "aria-label": "search" }}
+                  onChange={searchHandle}
+                />
+                <IconButton
+                  type="button"
+                  sx={{ p: "10px" }}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
+            </Grid>
             <Grid item>
               <Button
                 variant="outlined"
                 endIcon={<AddIcon />}
                 sx={{ mr: 2 }}
-                onClick={addHandle}
+                onClick={() => setAdd(true)}
               >
                 Add Department
               </Button>
@@ -144,7 +156,7 @@ const Departments = () => {
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={rows}
+                rows={filteredData?.map((row, index) => ({ ...row, sl: index + 1 }))}
                 columns={userColumns}
                 initialState={{
                   pagination: {
@@ -157,9 +169,9 @@ const Departments = () => {
           </Grid>
         </Grid>
       </Box>
-      {add ? <AddDepartment open={add} setOpen={setAdd} /> : null}
+      {add ? <AddDepartment open={add} setOpen={setAdd} setMessage={setMessage} setOpenNotification={setOpenNotification} fetchDepartments={fetchDepartments} /> : null}
       {edit ? (
-        <EditDepartment details={details} open={edit} setOpen={setEdit} />
+        <EditDepartment details={details} open={edit} setOpen={setEdit} setMessage={setMessage} setOpenNotification={setOpenNotification} fetchDepartments={fetchDepartments} />
       ) : null}
       {deleteGrade ? (
         <Dialog
@@ -171,13 +183,13 @@ const Departments = () => {
             <Typography variant="h6">Confirmation</Typography>
             <Divider sx={{ my: 2 }} />
             <Typography variant="subtitle1">
-              Are you sure you want to delete this Department? After deletion, the
-              impact will be reflected on users' designation.
+              Are you sure you want to delete this Department? After deletion,
+              the impact will be reflected on users' Department and Designation.
             </Typography>
           </DialogContent>
           <DialogActions sx={{ mb: 2, mx: 2 }}>
             <Button
-              onClick={() => setDeleteGrade(false)}
+              onClick={confirmDeleteHandler}
               variant="contained"
               autoFocus
               size="small"
@@ -195,6 +207,13 @@ const Departments = () => {
           </DialogActions>
         </Dialog>
       ) : null}
+      {openNotification && (
+        <Notification
+          open={openNotification}
+          setOpen={setOpenNotification}
+          message={message}
+        />
+      )}
     </>
   );
 };
