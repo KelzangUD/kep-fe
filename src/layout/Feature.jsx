@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Typography, Grid, Paper } from "@mui/material";
+import { Box, Container, Typography, Grid } from "@mui/material";
 import mcq from '../assets/svgs/mcq.svg';
 import matching from '../assets/svgs/matching.svg';
 import fill from '../assets/svgs/fill.svg';

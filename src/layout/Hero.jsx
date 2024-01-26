@@ -1,6 +1,6 @@
 import * as React from "react";
 import OnlineTest from "../assets/svgs/onlineTest.svg";
-import { Box, Container, Typography, Button, Grid } from "@mui/material";
+import { Box, Container, Typography, Grid } from "@mui/material";
 
 const Hero = () => {
   return (
@@ -14,9 +14,6 @@ const Hero = () => {
             <Typography variant="body1" sx={{ mb: 4, color: "text.secondary" }}>
               Empower Your Mind: Elevate Your Potential with our Knowledge Enhancement Platform.
             </Typography>
-            {/* <Button variant="contained" color="primary" size="large">
-              Sign Up
-            </Button> */}
           </Grid>
           <Grid item xs={6}>
             <img src={OnlineTest} alt="online_test" style={{ width: "100%", height: "auto" }} />

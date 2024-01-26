@@ -19,7 +19,7 @@ import {
 import Transition from "../../../common/Transition";
 import Route from "../../../routes/Route";
 
-const CreateUser = ({ open, setOpen, setOpenNotification, setMessage }) => {
+const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers }) => {
   // set states
   const [designations, setDesignations] = useState([]);
   const [regions, setRegions] = useState([]);
@@ -131,6 +131,7 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage }) => {
     if (response?.status === 201) {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      fetchUsers();
       setOpen(false);
     } else {
       setMessage(response?.data?.message);

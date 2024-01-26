@@ -11,7 +11,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
@@ -25,8 +24,12 @@ import EditUser from "./EditUser";
 import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
 import Route from "../../../routes/Route";
+import io from "socket.io-client";
+
+// const socket = io.connect("http://localhost:8080");
 
 const User = () => {
+  // init states
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [createUser, setCreateUser] = useState(false);
@@ -36,6 +39,11 @@ const User = () => {
   const [userId, setUserId] = useState("");
   const [message, setMessage] = React.useState("");
   const [openNotification, setOpenNotification] = useState(false);
+  // useEffect(() => {
+  //   socket.emit('chat message', message);
+  //   console.log(socket.emit('chat message', message));
+  // },[message]);
+  
   const searchHandle = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -107,6 +115,7 @@ const User = () => {
     if (res?.status === 201) {
       setDeleteUser(false);
       setMessage(res?.data?.message);
+      fetchUsers();
       setOpenNotification(true);
     } else {
       setMessage(res?.data?.message);
@@ -182,10 +191,10 @@ const User = () => {
         </Grid>
       </Box>
       {createUser ? (
-        <CreateUser open={createUser} setOpen={setCreateUser} setOpenNotification={setOpenNotification} setMessage={setMessage} />
+        <CreateUser open={createUser} setOpen={setCreateUser} setOpenNotification={setOpenNotification} setMessage={setMessage} fetchUsers={fetchUsers} />
       ) : null}
       {editUser ? (
-        <EditUser details={userDetails} open={editUser} setOpen={setEditUser} setOpenNotification={setOpenNotification} setMessage={setMessage}  />
+        <EditUser details={userDetails} open={editUser} setOpen={setEditUser} setOpenNotification={setOpenNotification} setMessage={setMessage} fetchUsers={fetchUsers}  />
       ) : null}
       {deleteUser ? (
         <Dialog
