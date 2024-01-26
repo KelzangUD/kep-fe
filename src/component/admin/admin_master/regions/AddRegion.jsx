@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Button,
@@ -10,10 +10,44 @@ import {
   DialogTitle,
 } from "@mui/material";
 import Transition from "../../../../common/Transition";
+import Route from "../../../../routes/Route";
 
-const AddRegion = ({ open, setOpen }) => {
-  const addHandle = () => {
-    setOpen(false);
+const AddRegion = ({
+  open,
+  setOpen,
+  setOpenNotification,
+  setMessage,
+  fetchRegions,
+}) => {
+  // init states
+  const [data, setData] = useState({
+    region: "",
+    description: "",
+  });
+  const nameHandle = (e) => {
+    setData((prev) => ({
+      ...prev,
+      region: e.target.value,
+    }));
+  };
+  const descriptionHandle = (e) => {
+    setData((prev) => ({
+      ...prev,
+      description: e.target.value,
+    }));
+  };
+  const token = localStorage.getItem("token");
+  const addHandle = async() => {
+    const response = await Route("POST", `/regions`, token, data);
+    if (response?.status === 201) {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+      fetchRegions();
+      setOpen(false);
+    } else {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+    };
   };
   return (
     <Dialog
@@ -34,6 +68,7 @@ const AddRegion = ({ open, setOpen }) => {
               name="region"
               required
               size="small"
+              onChange={nameHandle}
             />
           </Grid>
           <Grid container>
@@ -46,6 +81,7 @@ const AddRegion = ({ open, setOpen }) => {
               size="small"
               multiline
               rows={3}
+              onChange={descriptionHandle}
             />
           </Grid>
         </Box>
