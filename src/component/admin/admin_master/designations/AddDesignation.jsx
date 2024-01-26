@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Button,
@@ -14,10 +14,50 @@ import {
   Select,
 } from "@mui/material";
 import Transition from "../../../../common/Transition";
+import Route from "../../../../routes/Route";
 
-const AddDesignation = ({ open, setOpen }) => {
-  const editHandle = () => {
-    setOpen(false);
+const AddDesignation = ({ open, setOpen, setOpenNotification, setMessage, fetchDesignations }) => {
+  // init states
+  const [departments, setDepartments] = useState([]);
+  const [data, setData] = useState({
+    title: "",
+    department: null,
+  });
+  const token = localStorage.getItem("token");
+  const fetchDepartments = async () => {
+    const res = await Route("GET", "/departments", token, null);
+    if (res?.status === 200) {
+      setDepartments(res?.data?.departments);
+    };
+  };
+  useEffect(() => {
+    fetchDepartments();
+  }, []);
+
+  // handlers
+  const titleHandle = (e) => {
+    setData(prev => ({
+      ...prev,
+      title: e.target.value
+    }))
+  };
+  const departmentHandle = (e) => {
+    setData(prev => ({
+      ...prev,
+      department: e.target.value
+    }))
+  };
+  const addHandle = async() => {
+    const response = await Route("POST", `/designations`, token, data);
+    if (response?.status === 201) {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+      fetchDesignations();
+      setOpen(false);
+    } else {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+    };
   };
   return (
     <Dialog
@@ -36,6 +76,7 @@ const AddDesignation = ({ open, setOpen }) => {
               variant="outlined"
               fullWidth
               name="title"
+              onChange={titleHandle}
               required
               size="small"
             />
@@ -46,26 +87,20 @@ const AddDesignation = ({ open, setOpen }) => {
               <Select
                 labelId="select-label"
                 id="select-small"
-                // value={age}
                 label="Department/Unit"
-                // onChange={handleChange}
+                required
+                onChange={departmentHandle}
               >
-                <MenuItem value={1}>AND</MenuItem>
-                <MenuItem value={2}>CNCS</MenuItem>
-                <MenuItem value={3}>FINANCE</MenuItem>
-                <MenuItem value={4}>HRAD</MenuItem>
-                <MenuItem value={5}>INTERNAT AUDIT UNIT</MenuItem>
-                <MenuItem value={6}>MARKETING</MenuItem>
-                <MenuItem value={7}>MIS</MenuItem>
-                <MenuItem value={8}>SDU</MenuItem>
-                <MenuItem value={9}>SPPD</MenuItem>
+                {
+                  departments?.map((item) => (<MenuItem key={item?.id} value={item?.id}>{item?.title}</MenuItem>))
+                }
               </Select>
             </FormControl>
           </Grid>
         </Box>
       </DialogContent>
       <DialogActions sx={{ mb: 2, mx: 2 }}>
-        <Button variant="contained" onClick={editHandle}>
+        <Button variant="contained" onClick={addHandle}>
           Add
         </Button>
         <Button onClick={() => setOpen(false)} variant="outlined" color="error">
