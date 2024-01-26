@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -9,54 +9,90 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  Paper,
+  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Transition from "../../../common/Transition";
 import AddExtension from "./extensions/AddExtension";
 import EditExtension from "./extensions/EditExtension";
-
-const rows = [
-  {
-    id: 1,
-    sl: 1,
-    extension: "Main",
-    region: 1,
-    regionName: "Thimphu",
-    description: "Main extension under Thimphu Region",
-  },
-  {
-    id: 2,
-    sl: 2,
-    extension: "Bonday",
-    region: 2,
-    regionName: "Paro",
-    description: "Bonday extension uder Paro Region",
-  },
-];
+import Notification from "../../../ui/Notification";
+import Route from "../../../routes/Route";
 
 const Extensions = () => {
-  const [add, setAdd] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
-  const [details, setDetails] = React.useState({});
-  const [deleteQuestion, setDeleteQuestion] = React.useState(false);
-  const [id, setId] = React.useState("");
+  // init states
+  const [extensions, setExtensions] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [add, setAdd] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [details, setDetails] = useState({});
+  const [deleteExtension, setDeleteExtension] = useState(false);
+  const [id, setId] = useState("");
+  const [message, setMessage] = React.useState("");
+  const [openNotification, setOpenNotification] = useState(false);
+
+  const token = localStorage.getItem("token");
+  const fetchExtensions = async () => {
+    const res = await Route("GET", "/extensions", token, null);
+    if (res?.status === 200) {
+      setExtensions(res?.data?.extensions);
+    }
+  };
+  useEffect(() => {
+    fetchExtensions();
+  }, []);
+  const filteredData = extensions?.filter(
+    (item) =>
+      item?.extension?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item?.Region?.region.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // handlers
+  const searchHandle = (e) => {
+    setSearchQuery(e.target.value);
+  };
   const editHandle = (param) => {
     setDetails(param?.row);
     setEdit(true);
   };
   const deleteHandle = (param) => {
     setId(param?.id);
-    setDeleteQuestion(true);
+    setDeleteExtension(true);
   };
+
+  const confirmDeleteHandler = async () => {
+    const res = await Route("DELETE", `/extensions/${id}`, token, null);
+    if (res?.status === 201) {
+      setDeleteExtension(false);
+      setMessage(res?.data?.message);
+      fetchExtensions();
+      setOpenNotification(true);
+    } else {
+      setMessage(res?.data?.message);
+      setOpenNotification(true);
+    }
+  };
+
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      width: 40,
+      valueGetter: (params) => params.row.sl,
+    },
     { field: "extension", headerName: "Extension", width: 200 },
-    { field: "regionName", headerName: "Region", width: 200 },
+    {
+      field: "regionName",
+      headerName: "Region",
+      width: 200,
+      valueGetter: (params) => params.row.Region?.region || "N/A",
+    },
     { field: "description", headerName: "Description", width: 600 },
     {
       field: "action",
@@ -82,9 +118,6 @@ const Extensions = () => {
       ),
     },
   ];
-  const addHandle = () => {
-    setAdd(true);
-  };
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -93,14 +126,38 @@ const Extensions = () => {
           <Grid
             item
             xs={12}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
+            sx={{ display: "flex", justifyContent: "space-between" }}
           >
+            <Grid item>
+              <Paper
+                sx={{
+                  p: "2px 4px",
+                  display: "flex",
+                  alignItems: "center",
+                  width: 400,
+                }}
+              >
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Search"
+                  inputProps={{ "aria-label": "search" }}
+                  onChange={searchHandle}
+                />
+                <IconButton
+                  type="button"
+                  sx={{ p: "10px" }}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
+            </Grid>
             <Grid item>
               <Button
                 variant="outlined"
                 endIcon={<AddIcon />}
                 sx={{ mr: 2 }}
-                onClick={addHandle}
+                onClick={() => setAdd(true)}
               >
                 Add Extension
               </Button>
@@ -116,7 +173,10 @@ const Extensions = () => {
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={rows}
+                rows={filteredData?.map((row, index) => ({
+                  ...row,
+                  sl: index + 1,
+                }))}
                 columns={userColumns}
                 initialState={{
                   pagination: {
@@ -129,14 +189,29 @@ const Extensions = () => {
           </Grid>
         </Grid>
       </Box>
-      {add ? <AddExtension open={add} setOpen={setAdd} /> : null}
-      {edit ? (
-        <EditExtension details={details} open={edit} setOpen={setEdit} />
+      {add ? (
+        <AddExtension
+          open={add}
+          setOpen={setAdd}
+          setOpenNotification={setOpenNotification}
+          setMessage={setMessage}
+          fetchExtensions={fetchExtensions}
+        />
       ) : null}
-      {deleteQuestion ? (
+      {edit ? (
+        <EditExtension
+          details={details}
+          open={edit}
+          setOpen={setEdit}
+          setOpenNotification={setOpenNotification}
+          setMessage={setMessage}
+          fetchExtensions={fetchExtensions}
+        />
+      ) : null}
+      {deleteExtension ? (
         <Dialog
-          open={deleteQuestion}
-          onClose={() => setDeleteQuestion(false)}
+          open={deleteExtension}
+          onClose={() => setDeleteExtension(false)}
           TransitionComponent={Transition}
         >
           <DialogContent>
@@ -148,7 +223,7 @@ const Extensions = () => {
           </DialogContent>
           <DialogActions sx={{ mb: 2, mx: 2 }}>
             <Button
-              onClick={() => setDeleteQuestion(false)}
+              onClick={confirmDeleteHandler}
               variant="contained"
               autoFocus
               size="small"
@@ -156,7 +231,7 @@ const Extensions = () => {
               Confirm
             </Button>
             <Button
-              onClick={() => setDeleteQuestion(false)}
+              onClick={() => setDeleteExtension(false)}
               variant="outlined"
               color="error"
               size="small"
@@ -166,6 +241,13 @@ const Extensions = () => {
           </DialogActions>
         </Dialog>
       ) : null}
+      {openNotification && (
+        <Notification
+          open={openNotification}
+          setOpen={setOpenNotification}
+          message={message}
+        />
+      )}
     </>
   );
 };

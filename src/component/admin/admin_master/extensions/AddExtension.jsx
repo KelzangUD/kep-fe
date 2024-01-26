@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Button,
@@ -14,10 +14,64 @@ import {
   MenuItem,
 } from "@mui/material";
 import Transition from "../../../../common/Transition";
+import Route from "../../../../routes/Route";
 
-const AddExtension = ({ open, setOpen }) => {
-  const addHandle = () => {
-    setOpen(false);
+const AddExtension = ({
+  open,
+  setOpen,
+  setOpenNotification,
+  setMessage,
+  fetchExtensions,
+}) => {
+  // init states
+  const [regions, setRegions] = useState([]);
+  const [data, setData] = useState({
+    extension: "",
+    description: "",
+    region: null,
+  });
+
+  const token = localStorage.getItem("token");
+  const fetchRegions = async () => {
+    const res = await Route("GET", "/regions", token, null);
+    if (res?.status === 200) {
+      setRegions(res?.data?.regions);
+    }
+  };
+  useEffect(() => {
+    fetchRegions();
+  }, []);
+
+  // handlers
+  const extensionHandler = (e) => {
+    setData((prev) => ({
+      ...prev,
+      extension: e.target.value,
+    }));
+  };
+  const regionHandler = (e) => {
+    setData((prev) => ({
+      ...prev,
+      region: e.target.value,
+    }));
+  };
+  const descriptionHandler = (e) => {
+    setData((prev) => ({
+      ...prev,
+      description: e.target.value,
+    }));
+  };
+  const addHandle = async () => {
+    const response = await Route("POST", `/extensions`, token, data);
+    if (response?.status === 201) {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+      fetchExtensions();
+      setOpen(false);
+    } else {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+    }
   };
   return (
     <Dialog
@@ -38,6 +92,7 @@ const AddExtension = ({ open, setOpen }) => {
               name="extension"
               required
               size="small"
+              onChange={extensionHandler}
             />
           </Grid>
           <Grid container>
@@ -46,13 +101,15 @@ const AddExtension = ({ open, setOpen }) => {
               <Select
                 labelId="region-select-label"
                 id="region-simple-select"
-                // value={age}
                 required
                 label="Region"
-                // onChange={handleChange}
+                onChange={regionHandler}
               >
-                <MenuItem value={1}>Thimphu</MenuItem>
-                <MenuItem value={2}>Paro</MenuItem>
+                {regions?.map((item) => (
+                  <MenuItem key={item?.id} value={item?.id}>
+                    {item?.region}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
@@ -66,6 +123,7 @@ const AddExtension = ({ open, setOpen }) => {
               size="small"
               multiline
               rows={3}
+              onChange={descriptionHandler}
             />
           </Grid>
         </Box>
