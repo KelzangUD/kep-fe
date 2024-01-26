@@ -1,24 +1,25 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   Box,
   Grid,
-  Divider,
-  Typography,
-  Button,
-  IconButton,
-  Dialog,
-  DialogActions,
-  DialogContent,
+  // Divider,
+  // Typography,
+  // Button,
+  // IconButton,
+  // Dialog,
+  // DialogActions,
+  // DialogContent,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
-import AddIcon from "@mui/icons-material/Add";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import Transition from "../../../common/Transition";
-import AddGrade from "./grades/AddGrade";
-import EditGrade from "./grades/EditGrade";
+// import AddIcon from "@mui/icons-material/Add";
+// import FileDownloadIcon from "@mui/icons-material/FileDownload";
+// import DeleteIcon from "@mui/icons-material/Delete";
+// import EditIcon from "@mui/icons-material/Edit";
+// import Transition from "../../../common/Transition";
+// import AddGrade from "./grades/AddGrade";
+// import EditGrade from "./grades/EditGrade";
+import Route from "../../../routes/Route";
 
 const rows = [
   {
@@ -56,56 +57,78 @@ const rows = [
 ];
 
 const Grades = () => {
-  const [add, setAdd] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
-  const [details, setDetails] = React.useState({});
-  const [deleteGrade, setDeleteGrade] = React.useState(false);
-  const [id, setId] = React.useState("");
-  const editHandle = (param) => {
-    setDetails(param?.row);
-    setEdit(true);
+  // init states
+  const [grades, setGrades] = useState([]);
+  // const [add, setAdd] = useState(false);
+  // const [edit, setEdit] = useState(false);
+  // const [details, setDetails] = useState({});
+  // const [deleteGrade, setDeleteGrade] = useState(false);
+  // const [id, setId] = useState("");
+
+  const token = localStorage.getItem("token");
+  const fetchGrades = async () => {
+    const res = await Route("GET", "/grades", token, null);
+    if (res?.status === 200) {
+      setGrades(res?.data?.grades?.map(((item,index) => ({
+        sl: index+1,
+        title: item?.title,
+        range: `${item?.min}-${item?.max}`
+      }))));
+    }
   };
-  const deleteHandle = (param) => {
-    setId(param?.id);
-    setDeleteGrade(true);
-  };
+  useEffect(() => {
+    fetchGrades();
+  }, []);
+  // handlers
+  // const editHandle = (param) => {
+  //   setDetails(param?.row);
+  //   setEdit(true);
+  // };
+  // const deleteHandle = (param) => {
+  //   setId(param?.id);
+  //   setDeleteGrade(true);
+  // };
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      width: 40,
+    },
     { field: "title", headerName: "Title", width: 200 },
     { field: "range", headerName: "Range", width: 200 },
-    {
-      field: "action",
-      headerName: "Action",
-      width: 120,
-      renderCell: (params) => (
-        <div>
-          <IconButton
-            aria-label="edit"
-            size="small"
-            onClick={() => editHandle(params)}
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            aria-label="delete"
-            size="small"
-            onClick={() => deleteHandle(params)}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </div>
-      ),
-    },
+    // {
+    //   field: "action",
+    //   headerName: "Action",
+    //   width: 120,
+    //   renderCell: (params) => (
+    //     <div>
+    //       <IconButton
+    //         aria-label="edit"
+    //         size="small"
+    //         onClick={() => editHandle(params)}
+    //       >
+    //         <EditIcon />
+    //       </IconButton>
+    //       <IconButton
+    //         aria-label="delete"
+    //         size="small"
+    //         onClick={() => deleteHandle(params)}
+    //       >
+    //         <DeleteIcon />
+    //       </IconButton>
+    //     </div>
+    //   ),
+    // },
   ];
-  const addHandle = () => {
-    setAdd(true);
-  };
+  // const addHandle = () => {
+  //   setAdd(true);
+  // };
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
           <SubHeader text="Grades" />
-          <Grid
+          {/* <Grid
             item
             xs={12}
             sx={{ display: "flex", justifyContent: "flex-end" }}
@@ -127,7 +150,7 @@ const Grades = () => {
                 Export
               </Button>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
@@ -144,7 +167,7 @@ const Grades = () => {
           </Grid>
         </Grid>
       </Box>
-      {add ? <AddGrade open={add} setOpen={setAdd} /> : null}
+      {/* {add ? <AddGrade open={add} setOpen={setAdd} /> : null}
       {edit ? (
         <EditGrade details={details} open={edit} setOpen={setEdit} />
       ) : null}
@@ -181,7 +204,7 @@ const Grades = () => {
             </Button>
           </DialogActions>
         </Dialog>
-      ) : null}
+      ) : null} */}
     </>
   );
 };
