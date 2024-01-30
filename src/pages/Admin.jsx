@@ -8,6 +8,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import SystemSetting from "./admin/SystemSetting";
 import Master from "./admin/Master";
 import Activity from "./admin/Activity";
+import Feedbacks from "./admin/Feedbacks";
 import Report from "./admin/Report";
 import { styled } from "@mui/material/styles";
 
@@ -35,6 +36,7 @@ const Admin = () => {
                       <Route path="/system-setting/*" element={<SystemSetting />} />
                       <Route path="/master/*" element={<Master />} />
                       <Route path="/activity/*" element={<Activity />} />
+                      <Route path="/Feedbacks" element={<Feedbacks />} />
                       <Route path="/report/*" element={<Report />} />
                     </Routes>
                   </Item>

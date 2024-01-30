@@ -1,4 +1,4 @@
-import React from "react";
+import React,  { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -15,9 +15,29 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import Transition from "../../../common/Transition";
 import SlideSection from "./question_setup_section/SlideSection";
 import MainSlide from "./question_setup_section/MainSlide";
+import Route from "../../../routes/Route";
 
 const QuestionsSetup = ({ setQuestionsSetUp }) => {
-  const [cancel, setCancel] = React.useState(false);
+  // init states
+  const [questionTypes, setQuestionTypes] = useState([]);
+  const [cancel, setCancel] = useState(false);
+
+  const token = localStorage.getItem("token");
+  const fetchQuestionTypes = async () => {
+    const res = await Route("GET", "/question-types", token, null);
+    if (res?.status === 200) {
+      setQuestionTypes(res?.data?.questionTypes);
+    }
+  };
+  useEffect(() => {
+    fetchQuestionTypes();
+  }, []);
+
+  // handlers
+  const addSlideHandler = (e) => {
+    alert("Clicked")
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -44,11 +64,11 @@ const QuestionsSetup = ({ setQuestionsSetUp }) => {
           </Grid>
           <Grid item container xs={12}>
             <Grid item xs={3}>
-              <SlideSection />
+              <SlideSection addSlideHandler={addSlideHandler}  />
             </Grid>
             <Divider orientation="vertical" flexItem />
             <Grid item xs={8} sx={{ px: 2, height: "100%" }}>
-              <MainSlide />
+              <MainSlide questionTypes={questionTypes} />
             </Grid>
           </Grid>
         </Grid>

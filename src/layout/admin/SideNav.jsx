@@ -17,6 +17,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsIcon from '@mui/icons-material/Settings';
 import DnsIcon from "@mui/icons-material/Dns";
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -121,6 +122,11 @@ export default function SideNav() {
           onClick: () => routeHandle("activity/schedule-tests"),
         },
       ],
+    },
+    {
+      label: "Feedbacks",
+      icon: <FeedbackIcon />,
+      onClick: () => routeHandle("feedbacks"),
     },
     {
       label: "Report",

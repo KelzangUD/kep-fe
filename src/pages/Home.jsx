@@ -3,7 +3,7 @@ import {Container} from '@mui/material';
 import Header from '../layout/Header';
 import Hero from '../layout/Hero';
 import Feature from '../layout/Feature';
-import Contact from '../layout/Contact';
+import FeedbackPortal from '../layout/FeedBackPortal';
 import Footer from '../layout/Footer';
 
 const Home = () => {
@@ -12,7 +12,7 @@ const Home = () => {
       <Header />
       <Hero />
       <Feature />
-      <Contact />
+      <FeedbackPortal />
       <Footer />
     </Container>
   )
