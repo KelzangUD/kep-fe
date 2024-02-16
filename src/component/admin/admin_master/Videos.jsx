@@ -17,7 +17,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import SearchIcon from "@mui/icons-material/Search";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Transition from "../../../common/Transition";
@@ -108,6 +108,18 @@ const Videos = () => {
   const addHandle = () => {
     setAdd(true);
   };
+  const confirmDeleteHandler = async () => {
+    const res = await Route("DELETE", `/videos/${id}`, token, null);
+    if (res?.status === 201) {
+      setDeleteVideo(false);
+      setMessage(res?.data?.message);
+      fetchVideos();
+      setOpenNotification(true);
+    } else {
+      setMessage(res?.data?.message);
+      setOpenNotification(true);
+    }
+  };
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -189,7 +201,14 @@ const Videos = () => {
         />
       ) : null}
       {edit ? (
-        <EditVideo details={details} open={edit} setOpen={setEdit} />
+        <EditVideo
+          details={details}
+          open={edit}
+          setOpen={setEdit}
+          setOpenNotification={setOpenNotification}
+          setMessage={setMessage}
+          fetchVideos={fetchVideos}
+        />
       ) : null}
       {view ? (
         <VideoPlayer details={details} open={view} setOpen={setView} />
@@ -210,7 +229,7 @@ const Videos = () => {
           </DialogContent>
           <DialogActions sx={{ mb: 2, mx: 2 }}>
             <Button
-              onClick={() => setDeleteVideo(false)}
+              onClick={confirmDeleteHandler}
               variant="contained"
               autoFocus
               size="small"
