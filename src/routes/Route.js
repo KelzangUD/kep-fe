@@ -1,10 +1,17 @@
 import axios from "axios";
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const Route = async (method, endpoint, token, data) => {
+const Route = async (
+  method,
+  endpoint,
+  token,
+  data,
+  contentType = "application/json"
+) => {
   const headers = {
-    "Content-Type": "application/json",
+    "Content-Type": contentType,
   };
+
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
@@ -12,9 +19,14 @@ const Route = async (method, endpoint, token, data) => {
     method,
     headers,
   };
-  if (data) {
-    requestOptions.data = JSON.stringify(data);
+  if (contentType === "application/json") {
+    if (data) {
+      requestOptions.data = JSON.stringify(data);
+    }
+  } else {
+    requestOptions.data = data;
   }
+
   try {
     const response = await axios(`${apiUrl}${endpoint}`, requestOptions);
     return response;

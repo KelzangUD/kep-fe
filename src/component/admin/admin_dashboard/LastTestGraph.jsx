@@ -28,7 +28,7 @@ const LastTestGraph = () => {
         <Box sx={{ display: "flex", alignItems: "left" }}>
           <Box>
             <BarChart
-              width={700}
+              width={600}
               height={300}
               data={data}
               margin={{

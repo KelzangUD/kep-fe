@@ -45,7 +45,7 @@ const AddRegion = ({
       fetchRegions();
       setOpen(false);
     } else {
-      setMessage(response?.data?.message);
+      setMessage(response?.response?.data?.message);
       setOpenNotification(true);
     };
   };

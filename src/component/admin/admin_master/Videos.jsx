@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -9,36 +9,61 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  Paper,
+  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import SearchIcon from "@mui/icons-material/Search";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Transition from "../../../common/Transition";
 import UploadVideo from "./videos/UploadVideo";
 import EditVideo from "./videos/EditVideo";
-
-const rows = [
-  {
-    id: 1,
-    sl: 1,
-    title: "ISP Role",
-    description: "Role of ISP company for development of country",
-    visible: true,
-  },
-];
+import VideoPlayer from "./videos/VideoPlayer";
+import Notification from "../../../ui/Notification";
+import Route from "../../../routes/Route";
 
 const Videos = () => {
-  const [add, setAdd] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
-  const [details, setDetails] = React.useState({});
-  const [deleteVideo, setDeleteVideo] = React.useState(false);
-  const [id, setId] = React.useState("");
+  // init states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [message, setMessage] = useState("");
+  const [openNotification, setOpenNotification] = useState(false);
+  const [videos, setVideos] = useState([]);
+  const [add, setAdd] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [view, setView] = useState(false);
+  const [details, setDetails] = useState({});
+  const [deleteVideo, setDeleteVideo] = useState(false);
+  const [id, setId] = useState("");
+
+  const token = localStorage.getItem("token");
+  const fetchVideos = async () => {
+    const res = await Route("GET", "/videos", token, null);
+    if (res?.status === 200) {
+      setVideos(res?.data?.videos);
+    }
+  };
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+  const filteredData = videos?.filter((item) =>
+    item?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  // handlers
+  const searchHandle = (e) => {
+    setSearchQuery(e.target.value);
+  };
   const editHandle = (param) => {
     setDetails(param?.row);
     setEdit(true);
+  };
+  const viewHandle = (param) => {
+    setDetails(param?.row);
+    setView(true);
   };
   const deleteHandle = (param) => {
     setId(param?.id);
@@ -63,6 +88,13 @@ const Videos = () => {
             <EditIcon />
           </IconButton>
           <IconButton
+            aria-label="edit"
+            size="small"
+            onClick={() => viewHandle(params)}
+          >
+            <VisibilityIcon />
+          </IconButton>
+          <IconButton
             aria-label="delete"
             size="small"
             onClick={() => deleteHandle(params)}
@@ -84,8 +116,32 @@ const Videos = () => {
           <Grid
             item
             xs={12}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
+            sx={{ display: "flex", justifyContent: "space-between" }}
           >
+            <Grid item>
+              <Paper
+                sx={{
+                  p: "2px 4px",
+                  display: "flex",
+                  alignItems: "center",
+                  width: 400,
+                }}
+              >
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Search"
+                  inputProps={{ "aria-label": "search" }}
+                  onChange={searchHandle}
+                />
+                <IconButton
+                  type="button"
+                  sx={{ p: "10px" }}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
+            </Grid>
             <Grid item>
               <Button
                 variant="outlined"
@@ -93,7 +149,7 @@ const Videos = () => {
                 sx={{ mr: 2 }}
                 onClick={addHandle}
               >
-                Upload Video
+                Upload
               </Button>
               <Button
                 variant="contained"
@@ -107,7 +163,10 @@ const Videos = () => {
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={rows}
+                rows={filteredData?.map((row, index) => ({
+                  ...row,
+                  sl: index + 1,
+                }))}
                 columns={userColumns}
                 initialState={{
                   pagination: {
@@ -120,9 +179,20 @@ const Videos = () => {
           </Grid>
         </Grid>
       </Box>
-      {add ? <UploadVideo open={add} setOpen={setAdd} /> : null}
+      {add ? (
+        <UploadVideo
+          open={add}
+          setOpen={setAdd}
+          setOpenNotification={setOpenNotification}
+          setMessage={setMessage}
+          fetchVideos={fetchVideos}
+        />
+      ) : null}
       {edit ? (
         <EditVideo details={details} open={edit} setOpen={setEdit} />
+      ) : null}
+      {view ? (
+        <VideoPlayer details={details} open={view} setOpen={setView} />
       ) : null}
       {deleteVideo ? (
         <Dialog
@@ -158,6 +228,13 @@ const Videos = () => {
           </DialogActions>
         </Dialog>
       ) : null}
+      {openNotification && (
+        <Notification
+          open={openNotification}
+          setOpen={setOpenNotification}
+          message={message}
+        />
+      )}
     </>
   );
 };

@@ -63,7 +63,7 @@ const SixMonthGraph = () => {
         <Box sx={{ display: "flex", alignItems: "left" }}>
           <Box>
             <BarChart
-              width={1280}
+              width={1140}
               height={300}
               data={data}
               margin={{

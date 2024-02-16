@@ -25,21 +25,6 @@ import EditRegion from "./regions/EditRegion";
 import Notification from "../../../ui/Notification";
 import Route from "../../../routes/Route";
 
-const rows = [
-  {
-    id: 1,
-    sl: 1,
-    region: "Thimphu",
-    description: "Thimphu Dzongkhag",
-  },
-  {
-    id: 2,
-    sl: 2,
-    region: "Paro",
-    description: "Paro Dzongkhag & Haa Dzongkhag",
-  },
-];
-
 const Regions = () => {
   // init states
   const [searchQuery, setSearchQuery] = useState("");

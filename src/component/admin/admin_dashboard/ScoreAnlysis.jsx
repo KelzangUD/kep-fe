@@ -53,7 +53,7 @@ export default function ScoreAnalysis() {
     <>
       <Typography>Score Analysis</Typography>
       <Grid>
-        <PieChart width={450} height={300}>
+        <PieChart width={400} height={300}>
           <Pie
             data={data}
             cx={200}
