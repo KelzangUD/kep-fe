@@ -26,6 +26,7 @@ const VideoPlayer = ({ details, open, setOpen }) => {
         null
       );
       if (response?.status === 200) {
+        console.log(response)
         setVideo(response?.data?.videoPath);
       }
     } catch (error) {
