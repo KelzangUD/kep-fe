@@ -127,7 +127,7 @@ const UploadVideo = ({
                 onChange={titlehandle}
               />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <FormControl fullWidth size="small">
                 <InputLabel id="select-label">Select</InputLabel>
                 <Select
@@ -177,8 +177,18 @@ const UploadVideo = ({
                   onChange={urlhandle}
                 />
               </Grid>
-            )}
-
+            )} */}
+            <Grid item xs={12}>
+              <TextField
+                label="Url"
+                variant="outlined"
+                fullWidth
+                name="Url"
+                required
+                size="small"
+                onChange={urlhandle}
+              />
+            </Grid>
             <Grid item xs={12}>
               <FormGroup>
                 <FormControlLabel

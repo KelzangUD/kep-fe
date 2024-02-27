@@ -123,7 +123,7 @@ const EditVideo = ({ details, open, setOpen, setOpenNotification, setMessage, fe
                 onChange={titlehandle}
               />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <FormControl fullWidth size="small">
                 <InputLabel id="select-label">Select</InputLabel>
                 <Select
@@ -174,8 +174,19 @@ const EditVideo = ({ details, open, setOpen, setOpenNotification, setMessage, fe
                   onChange={urlhandle}
                 />
               </Grid>
-            )}
-
+            )} */}
+            <Grid item xs={12}>
+                <TextField
+                  label="Url"
+                  variant="outlined"
+                  fullWidth
+                  name="Url"
+                  required
+                  size="small"
+                  defaultValue={details?.path}
+                  onChange={urlhandle}
+                />
+              </Grid>
             <Grid item xs={12}>
               <FormGroup>
                 <FormControlLabel

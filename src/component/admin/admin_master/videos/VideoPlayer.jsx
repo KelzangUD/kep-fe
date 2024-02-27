@@ -15,6 +15,7 @@ import ReactPlayer from "react-player";
 const VideoPlayer = ({ details, open, setOpen }) => {
   // init states
   const [video, setVideo] = useState(null);
+  const [videoBlob, setVideoBlob] = useState(null);
   const token = localStorage.getItem("token");
 
   const fetchVideo = async () => {
@@ -26,8 +27,12 @@ const VideoPlayer = ({ details, open, setOpen }) => {
         null
       );
       if (response?.status === 200) {
-        console.log(response)
-        setVideo(response?.data?.videoPath);
+        console.log(response);
+        if (response?.data?.videoPath) {
+          setVideo(response?.data?.videoPath);
+        } else {
+          setVideoBlob(response);
+        }
       }
     } catch (error) {
       console.error("Error fetching video:", error.message);
@@ -63,13 +68,26 @@ const VideoPlayer = ({ details, open, setOpen }) => {
         <Box sx={{ display: "grid", gap: 3, mt: 2 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <ReactPlayer
-                className="react-player"
-                url={video}
-                width="100%"
-                height="320px"
-                controls
-              />
+              {videoBlob ? (
+                <ReactPlayer
+                  className="react-player"
+                  url={videoBlob && URL.createObjectURL(
+                    new Blob([videoBlob], { type: "video/mp4" })
+                  )}
+                  // url={videoBlob}
+                  width="100%"
+                  height="320px"
+                  controls
+                />
+              ) : (
+                <ReactPlayer
+                  className="react-player"
+                  url={video}
+                  width="100%"
+                  height="320px"
+                  controls
+                />
+              )}
             </Grid>
           </Grid>
         </Box>
