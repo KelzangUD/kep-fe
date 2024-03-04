@@ -11,27 +11,24 @@ import CloseIcon from "@mui/icons-material/Close";
 import Transition from "../../../../common/Transition";
 import Route from "../../../../routes/Route";
 import ReactPlayer from "react-player";
+// import AudioPlayer from "react-h5-audio-player";
+// import "react-h5-audio-player/lib/styles.css";
 
-const VideoPlayer = ({ details, open, setOpen }) => {
+const AudioPlay = ({ details, open, setOpen }) => {
   // init states
-  const [video, setVideo] = useState(null);
-  const [videoBlob, setVideoBlob] = useState(null);
+  const [audio, setAudio] = useState(null);
   const token = localStorage.getItem("token");
 
   const fetchVideo = async () => {
     try {
       const response = await Route(
         "GET",
-        `/videos/${details?.id}`,
+        `/audios/${details?.id}`,
         token,
         null
       );
       if (response?.status === 200) {
-        if (response?.data?.videoPath) {
-          setVideo(response?.data?.videoPath);
-        } else {
-          setVideoBlob(response);
-        }
+        setAudio(response?.data?.audioPath);
       }
     } catch (error) {
       console.error("Error fetching video:", error.message);
@@ -67,26 +64,13 @@ const VideoPlayer = ({ details, open, setOpen }) => {
         <Box sx={{ display: "grid", gap: 3, mt: 2 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              {videoBlob ? (
-                <ReactPlayer
-                  className="react-player"
-                  url={videoBlob && URL.createObjectURL(
-                    new Blob([videoBlob], { type: "video/mp4" })
-                  )}
-                  // url={videoBlob}
-                  width="100%"
-                  height="320px"
-                  controls
-                />
-              ) : (
-                <ReactPlayer
-                  className="react-player"
-                  url={video}
-                  width="100%"
-                  height="320px"
-                  controls
-                />
-              )}
+              <ReactPlayer
+                url={audio}
+                width="100%"
+                height="100%"
+                playing
+                controls
+              />
             </Grid>
           </Grid>
         </Box>
@@ -95,4 +79,4 @@ const VideoPlayer = ({ details, open, setOpen }) => {
   );
 };
 
-export default VideoPlayer;
+export default AudioPlay;

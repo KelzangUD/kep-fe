@@ -107,7 +107,7 @@ const EditVideo = ({ details, open, setOpen, setOpenNotification, setMessage, fe
       onClose={() => setOpen(false)}
       TransitionComponent={Transition}
     >
-      <DialogTitle>Upload Video</DialogTitle>
+      <DialogTitle>Edit Video</DialogTitle>
       <DialogContent>
         <Box sx={{ display: "grid", gap: 3, mt: 2 }}>
           <Grid container spacing={2}>

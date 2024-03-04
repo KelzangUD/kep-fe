@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Button,
@@ -8,39 +8,65 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  styled,
   FormGroup,
   FormControlLabel,
   Switch,
-  Typography,
 } from "@mui/material";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Transition from "../../../../common/Transition";
+import Route from "../../../../routes/Route";
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+const UploadAudio = ({
+  open,
+  setOpen,
+  setOpenNotification,
+  setMessage,
+  fetchAudios
+}) => {
+  // init states
+  const [title, setTitle] = useState("");
+  const [url, setUrl] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [description, setDescription] = useState("");
 
-const UploadAudio = ({ open, setOpen }) => {
-  const [uploadedFileName, setUploadedFileName] = React.useState(null);
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setUploadedFileName(file.name);
-    }
+  // handlers
+  const titlehandle = (e) => {
+    setTitle(e.target.value);
   };
+  const urlhandle = (e) => {
+    setUrl(e.target.value);
+  };
+  const visibleHandle = (e) => {
+    setVisible(e.target.checked);
+  };
+  const descriptionHandle = (e) => {
+    setDescription(e.target.value);
+  };
+  const token = localStorage.getItem("token");
+  const formData = new FormData();
+  const addHandle = async () => {
+    formData.append("title", title);
+    formData.append("url", url);
+    formData.append("visible", visible);
+    formData.append("description", description);
+    const response = await Route(
+      "POST",
+      `/audios`,
+      token,
+      formData,
+      "multipart/form-data"
+    );
 
-  const addHandle = () => {
-    setOpen(false);
+    if (response?.status === 201) {
+      fetchAudios();
+      setOpen(false);
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+    } else {
+      fetchAudios();
+      setOpen(false);
+      setMessage(response?.response?.data?.message);
+      setOpenNotification(true);
+    }
   };
 
   return (
@@ -63,33 +89,24 @@ const UploadAudio = ({ open, setOpen }) => {
                 name="title"
                 required
                 size="small"
+                onChange={titlehandle}
               />
             </Grid>
             <Grid item xs={12}>
-              <Button
-                component="label"
+              <TextField
+                label="Url"
                 variant="outlined"
-                startIcon={<CloudUploadIcon />}
                 fullWidth
-                size="large"
-              >
-                Upload Audio
-                <VisuallyHiddenInput
-                  type="file"
-                  accept="audio/*"
-                  onChange={handleFileChange}
-                />
-              </Button>
-              {uploadedFileName && (
-                <Typography variant="body2" sx={{ marginTop: 1 }}>
-                  File Name: {uploadedFileName}
-                </Typography>
-              )}
+                name="Url"
+                required
+                size="small"
+                onChange={urlhandle}
+              />
             </Grid>
             <Grid item xs={12}>
               <FormGroup>
                 <FormControlLabel
-                  control={<Switch />}
+                  control={<Switch onChange={visibleHandle} />}
                   label="Make it Visible"
                 />
               </FormGroup>
@@ -104,6 +121,7 @@ const UploadAudio = ({ open, setOpen }) => {
                 size="small"
                 multiline
                 rows={3}
+                onChange={descriptionHandle}
               />
             </Grid>
           </Grid>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -9,36 +9,61 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  Paper,
+  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import SearchIcon from "@mui/icons-material/Search";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Transition from "../../../common/Transition";
 import UploadAudio from "./audios/UploadAudio";
 import EditAudio from "./audios/EditAudio";
-
-const rows = [
-  {
-    id: 1,
-    sl: 1,
-    title: "ISP Role",
-    description: "Role of ISP company for development of country",
-    visible: true,
-  },
-];
+import AudioPlay from "./audios/AudioPlay";
+import Notification from "../../../ui/Notification";
+import Route from "../../../routes/Route";
 
 const Audios = () => {
-  const [add, setAdd] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
-  const [details, setDetails] = React.useState({});
-  const [deleteAudio, setDeleteAudio] = React.useState(false);
-  const [id, setId] = React.useState("");
+  // init states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [message, setMessage] = useState("");
+  const [openNotification, setOpenNotification] = useState(false);
+  const [audios, setAudios] = useState([]);
+  const [add, setAdd] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [view, setView] = useState(false);
+  const [details, setDetails] = useState({});
+  const [deleteAudio, setDeleteAudio] = useState(false);
+  const [id, setId] = useState("");
+
+  const token = localStorage.getItem("token");
+  const fetchAudios = async () => {
+    const res = await Route("GET", "/audios", token, null);
+    if (res?.status === 200) {
+      setAudios(res?.data?.audios);
+    }
+  };
+  useEffect(() => {
+    fetchAudios();
+  }, []);
+  const filteredData = audios?.filter((item) =>
+    item?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  // handlers
+  const searchHandle = (e) => {
+    setSearchQuery(e.target.value);
+  };
   const editHandle = (param) => {
     setDetails(param?.row);
     setEdit(true);
+  };
+  const viewHandle = (param) => {
+    setDetails(param?.row);
+    setView(true);
   };
   const deleteHandle = (param) => {
     setId(param?.id);
@@ -63,6 +88,13 @@ const Audios = () => {
             <EditIcon />
           </IconButton>
           <IconButton
+            aria-label="edit"
+            size="small"
+            onClick={() => viewHandle(params)}
+          >
+            <VisibilityIcon />
+          </IconButton>
+          <IconButton
             aria-label="delete"
             size="small"
             onClick={() => deleteHandle(params)}
@@ -76,6 +108,18 @@ const Audios = () => {
   const addHandle = () => {
     setAdd(true);
   };
+  const confirmDeleteHandler = async () => {
+    const res = await Route("DELETE", `/audios/${id}`, token, null);
+    if (res?.status === 201) {
+      setDeleteAudio(false);
+      setMessage(res?.data?.message);
+      fetchAudios();
+      setOpenNotification(true);
+    } else {
+      setMessage(res?.data?.message);
+      setOpenNotification(true);
+    }
+  };
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -84,8 +128,32 @@ const Audios = () => {
           <Grid
             item
             xs={12}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
+            sx={{ display: "flex", justifyContent: "space-between" }}
           >
+            <Grid item>
+              <Paper
+                sx={{
+                  p: "2px 4px",
+                  display: "flex",
+                  alignItems: "center",
+                  width: 400,
+                }}
+              >
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Search"
+                  inputProps={{ "aria-label": "search" }}
+                  onChange={searchHandle}
+                />
+                <IconButton
+                  type="button"
+                  sx={{ p: "10px" }}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
+            </Grid>
             <Grid item>
               <Button
                 variant="outlined"
@@ -93,7 +161,7 @@ const Audios = () => {
                 sx={{ mr: 2 }}
                 onClick={addHandle}
               >
-                Upload Audio
+                Upload
               </Button>
               <Button
                 variant="contained"
@@ -107,7 +175,10 @@ const Audios = () => {
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={rows}
+                rows={filteredData?.map((row, index) => ({
+                  ...row,
+                  sl: index + 1,
+                }))}
                 columns={userColumns}
                 initialState={{
                   pagination: {
@@ -120,9 +191,27 @@ const Audios = () => {
           </Grid>
         </Grid>
       </Box>
-      {add ? <UploadAudio open={add} setOpen={setAdd} /> : null}
+      {add ? (
+        <UploadAudio
+          open={add}
+          setOpen={setAdd}
+          setOpenNotification={setOpenNotification}
+          setMessage={setMessage}
+          fetchAudios={fetchAudios}
+        />
+      ) : null}
       {edit ? (
-        <EditAudio details={details} open={edit} setOpen={setEdit} />
+        <EditAudio
+          details={details}
+          open={edit}
+          setOpen={setEdit}
+          setOpenNotification={setOpenNotification}
+          setMessage={setMessage}
+          fetchAudios={fetchAudios}
+        />
+      ) : null}
+      {view ? (
+        <AudioPlay details={details} open={view} setOpen={setView} />
       ) : null}
       {deleteAudio ? (
         <Dialog
@@ -140,7 +229,7 @@ const Audios = () => {
           </DialogContent>
           <DialogActions sx={{ mb: 2, mx: 2 }}>
             <Button
-              onClick={() => setDeleteAudio(false)}
+              onClick={confirmDeleteHandler}
               variant="contained"
               autoFocus
               size="small"
@@ -158,6 +247,13 @@ const Audios = () => {
           </DialogActions>
         </Dialog>
       ) : null}
+      {openNotification && (
+        <Notification
+          open={openNotification}
+          setOpen={setOpenNotification}
+          message={message}
+        />
+      )}
     </>
   );
 };
