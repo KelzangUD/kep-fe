@@ -49,7 +49,7 @@ const FeedbackPortal = () => {
           <form onSubmit={handleSubmit}>
             <Box sx={{ display: "grid", gap: 2 }}>
               <TextField
-                label="User Name"
+                label="Employee Id"
                 variant="outlined"
                 fullWidth
                 name="empId"

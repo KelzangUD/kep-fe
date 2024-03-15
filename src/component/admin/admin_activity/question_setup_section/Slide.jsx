@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Card,
@@ -13,11 +13,19 @@ import {
   DialogContent,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FileCopyIcon from '@mui/icons-material/FileCopy';
+// import FileCopyIcon from '@mui/icons-material/FileCopy';
 import Transition from "../../../../common/Transition";
 
-const Slide = () => {
-  const [deleteSilde, setDeleteSlide] = React.useState(false);
+const Slide = ({index, setQuestions }) => {
+  const [deleteSilde, setDeleteSlide] = useState(false);
+  const removeQuestion = () => {
+    setQuestions((prevQuestions) => {
+      const updatedQuestions = [...prevQuestions];
+      updatedQuestions.splice(index, 1);
+      return updatedQuestions;
+    });
+    setDeleteSlide(false)
+  };
 
   return (
     <>
@@ -30,7 +38,7 @@ const Slide = () => {
         </Box>
         <Divider />
         <Box p={2} sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button
+          {/* <Button
             aria-label="duplicate"
             size="small"
             variant="outlined"
@@ -39,7 +47,7 @@ const Slide = () => {
             sx={{ mr: 1 }}
           >
             Duplicate
-          </Button>
+          </Button> */}
           <Button
             aria-label="delete"
             size="small"
@@ -68,7 +76,7 @@ const Slide = () => {
           </DialogContent>
           <DialogActions sx={{ mb: 2, mx: 2 }}>
             <Button
-              onClick={() => setDeleteSlide(false)}
+              onClick={() => removeQuestion()}
               variant="contained"
               autoFocus
               size="small"

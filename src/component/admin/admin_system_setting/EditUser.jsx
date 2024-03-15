@@ -70,6 +70,12 @@ const EditUser = ({ details, open, setOpen, setOpenNotification, setMessage, fet
     fetchRegions();
   }, []);
   // handlers
+  const emailHandle = (e) => {
+    setUserDetails((prev) => ({
+      ...prev,
+      email: e.target.value,
+    }));
+  };
   const designationHandle = (e) => {
     setUserDetails((prev) => ({
       ...prev,
@@ -161,7 +167,7 @@ const EditUser = ({ details, open, setOpen, setOpenNotification, setMessage, fet
                 defaultValue={details?.email}
                 required
                 size="small"
-                disabled
+                onChange={emailHandle}
               />
             </Grid>
           </Grid>

@@ -53,12 +53,54 @@ const data = [
     average: 24,
     failed: 10,
   },
+  {
+    name: "July Test",
+    excel: 40,
+    good: 14,
+    average: 24,
+    failed: 10,
+  },
+  {
+    name: "Aug Test",
+    excel: 40,
+    good: 14,
+    average: 24,
+    failed: 10,
+  },
+  {
+    name: "Sept Test",
+    excel: 40,
+    good: 14,
+    average: 24,
+    failed: 10,
+  },
+  {
+    name: "Oct Test",
+    excel: 40,
+    good: 14,
+    average: 24,
+    failed: 10,
+  },
+  {
+    name: "Nov Test",
+    excel: 40,
+    good: 14,
+    average: 24,
+    failed: 10,
+  },
+  {
+    name: "Dec Test",
+    excel: 40,
+    good: 14,
+    average: 24,
+    failed: 10,
+  },
 ];
 
-const SixMonthGraph = () => {
+const YearGraph = () => {
   return (
     <Box>
-      <Typography variant="subtitle1">Six Months</Typography>
+      <Typography variant="subtitle1">One Year Report</Typography>
       <Grid item xs={12}>
         <Box sx={{ display: "flex", alignItems: "left" }}>
           <Box>
@@ -90,4 +132,4 @@ const SixMonthGraph = () => {
   );
 };
 
-export default SixMonthGraph;
+export default YearGraph;

@@ -4,7 +4,7 @@ import SubHeader from "../../common/SubHeader";
 import LastTestGraph from "../../component/admin/admin_dashboard/LastTestGraph";
 import ScoreAnalysis from "../../component/admin/admin_dashboard/ScoreAnlysis";
 import TopPerformers from "../../component/admin/admin_dashboard/TopPerformers";
-import SixMonthGraph from "../../component/admin/admin_dashboard/SixMonthGraph";
+import YearGraph from "../../component/admin/admin_dashboard/YearGraph";
 
 const AdminDashboard = () => {
   return (
@@ -23,7 +23,7 @@ const AdminDashboard = () => {
           <TopPerformers />
         </Grid>
         <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
-          <SixMonthGraph />
+          <YearGraph />
         </Grid>
       </Grid>
     </Box>

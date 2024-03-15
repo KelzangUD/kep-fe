@@ -1,4 +1,4 @@
-import React,  { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -12,8 +12,9 @@ import {
 import SubHeader from "../../../common/SubHeader";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
+import AddIcon from "@mui/icons-material/Add";
 import Transition from "../../../common/Transition";
-import SlideSection from "./question_setup_section/SlideSection";
+// import SlideSection from "./question_setup_section/SlideSection";
 import MainSlide from "./question_setup_section/MainSlide";
 import Route from "../../../routes/Route";
 
@@ -21,6 +22,11 @@ const QuestionsSetup = ({ setQuestionsSetUp }) => {
   // init states
   const [questionTypes, setQuestionTypes] = useState([]);
   const [cancel, setCancel] = useState(false);
+  const [questions, setQuestions] = useState([]);
+
+  const addQuestion = (newQuestion) => {
+    setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
+  };
 
   const token = localStorage.getItem("token");
   const fetchQuestionTypes = async () => {
@@ -32,11 +38,6 @@ const QuestionsSetup = ({ setQuestionsSetUp }) => {
   useEffect(() => {
     fetchQuestionTypes();
   }, []);
-
-  // handlers
-  const addSlideHandler = (e) => {
-    alert("Clicked")
-  };
 
   return (
     <>
@@ -63,15 +64,36 @@ const QuestionsSetup = ({ setQuestionsSetUp }) => {
             </Grid>
           </Grid>
           <Grid item container xs={12}>
-            <Grid item xs={3}>
-              <SlideSection addSlideHandler={addSlideHandler}  />
-            </Grid>
-            <Divider orientation="vertical" flexItem />
-            <Grid item xs={8} sx={{ px: 2, height: "100%" }}>
-              <MainSlide questionTypes={questionTypes} />
+            {/* <Grid item xs={3}>
+              <SlideSection setQuestions={setQuestions} addQuestion={addQuestion} questions={questions} />
+            </Grid> */}
+            {/* <Divider orientation="vertical" flexItem /> */}
+            <Grid item xs={12} sx={{ px: 2, height: "100%" }}>
+              {questions?.map((item, index) => (
+                <MainSlide
+                  key={index}
+                  index={index}
+                  setQuestions={setQuestions}
+                  questionTypes={questionTypes}
+                  addQuestion={addQuestion}
+                  questions={questions}
+                />
+              ))}
             </Grid>
           </Grid>
         </Grid>
+      </Box>
+      <Box sx={{ px: 2, minWidth: "100%" }}>
+        <Button
+          aria-label="add slide"
+          size="small"
+          variant="contained"
+          color="primary"
+          endIcon={<AddIcon />}
+          onClick={addQuestion}
+        >
+          Add Slide
+        </Button>
       </Box>
       {cancel ? (
         <Dialog

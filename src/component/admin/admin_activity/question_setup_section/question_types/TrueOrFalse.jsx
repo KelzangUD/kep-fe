@@ -16,7 +16,7 @@ const TrueOrFalse = () => {
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={11}>
+              <Grid item xs={5}>
                 <TextField
                   fullWidth
                   label="True"
@@ -29,9 +29,7 @@ const TrueOrFalse = () => {
               <Grid item xs={1}>
                 <FormControlLabel value={1} control={<Radio />} />
               </Grid>
-            </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={11}>
+              <Grid item xs={5}>
                 <TextField
                   fullWidth
                   label="False"
