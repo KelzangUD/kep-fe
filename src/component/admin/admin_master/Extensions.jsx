@@ -34,7 +34,7 @@ const Extensions = () => {
   const [details, setDetails] = useState({});
   const [deleteExtension, setDeleteExtension] = useState(false);
   const [id, setId] = useState("");
-  const [message, setMessage] = React.useState("");
+  const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
 
   const token = localStorage.getItem("token");

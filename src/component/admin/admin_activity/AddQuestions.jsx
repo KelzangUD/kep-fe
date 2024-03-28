@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Grid,
@@ -19,6 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import EditUser from "../admin_system_setting/EditUser";
 import Transition from "../../../common/Transition";
 import QuestionsSetup from "./QuestionsSetup";
+import Notification from "../../../ui/Notification";
 // import Route from "../../../routes/Route";
 
 const rows = [
@@ -63,7 +64,8 @@ const rows = [
   {
     id: 3,
     sl: 3,
-    question: "Tashi InfoComm Private Limited is the first private cellular company in Bhutan, a separate entity under Tashi Group of Companies. ",
+    question:
+      "Tashi InfoComm Private Limited is the first private cellular company in Bhutan, a separate entity under Tashi Group of Companies. ",
     point: 5,
     type: "Yes/No",
     option: [
@@ -79,11 +81,13 @@ const rows = [
 ];
 
 const AddQuestions = () => {
-  const [questionsSetUp, setQuestionsSetUp] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
-  const [userDetails, setUserDetails] = React.useState({});
-  const [deleteQuestion, setDeleteQuestion] = React.useState(false);
+  const [questionsSetUp, setQuestionsSetUp] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [userDetails, setUserDetails] = useState({});
+  const [deleteQuestion, setDeleteQuestion] = useState(false);
   const [id, setId] = React.useState("");
+  const [message, setMessage] = useState("");
+  const [openNotification, setOpenNotification] = useState(false);
   const editHandle = (param) => {
     setUserDetails(param?.row);
     setEdit(true);
@@ -126,50 +130,56 @@ const AddQuestions = () => {
   };
   return (
     <>
-    {
-      questionsSetUp ? <QuestionsSetup setQuestionsSetUp={setQuestionsSetUp} /> : <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
-        <SubHeader text="Add Questions" />
-        <Grid
-          item
-          xs={12}
-          sx={{ display: "flex", justifyContent: "flex-end" }}
-        >
-          <Grid item>
-            <Button
-              variant="outlined"
-              endIcon={<PersonAddIcon />}
-              sx={{ mr: 2 }}
-              onClick={questionSetUpHandle}
+      {questionsSetUp ? (
+        <QuestionsSetup
+          setQuestionsSetUp={setQuestionsSetUp}
+          setOpenNotification={setOpenNotification}
+          setMessage={setMessage}
+        />
+      ) : (
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
+            <SubHeader text="Add Questions" />
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", justifyContent: "flex-end" }}
             >
-              Add Questions
-            </Button>
-            <Button
-              variant="contained"
-              color="success"
-              endIcon={<FileDownloadIcon />}
-            >
-              Export
-            </Button>
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  endIcon={<PersonAddIcon />}
+                  sx={{ mr: 2 }}
+                  onClick={questionSetUpHandle}
+                >
+                  Add Questions
+                </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  endIcon={<FileDownloadIcon />}
+                >
+                  Export
+                </Button>
+              </Grid>
+            </Grid>
+            <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+              <div style={{ height: "auto", width: "100%" }}>
+                <DataGrid
+                  rows={rows}
+                  columns={userColumns}
+                  initialState={{
+                    pagination: {
+                      paginationModel: { page: 0, pageSize: 5 },
+                    },
+                  }}
+                  pageSizeOptions={[5, 10]}
+                />
+              </div>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
-          <div style={{ height: "auto", width: "100%" }}>
-            <DataGrid
-              rows={rows}
-              columns={userColumns}
-              initialState={{
-                pagination: {
-                  paginationModel: { page: 0, pageSize: 5 },
-                },
-              }}
-              pageSizeOptions={[5, 10]}
-            />
-          </div>
-        </Grid>
-      </Grid>
-    </Box>
-    }
+        </Box>
+      )}
       {edit ? (
         <EditUser details={userDetails} open={edit} setOpen={setEdit} />
       ) : null}
@@ -206,6 +216,13 @@ const AddQuestions = () => {
           </DialogActions>
         </Dialog>
       ) : null}
+      {openNotification && (
+        <Notification
+          open={openNotification}
+          setOpen={setOpenNotification}
+          message={message}
+        />
+      )}
     </>
   );
 };

@@ -19,7 +19,7 @@ import MainSlide from "./question_setup_section/MainSlide";
 import Route from "../../../routes/Route";
 import { dynamicHandle } from "../../../util/CommonUtil";
 
-const QuestionsSetup = ({ setQuestionsSetUp }) => {
+const QuestionsSetup = ({ setQuestionsSetUp, setOpenNotification, setMessage }) => {
   // init states
   const [questionTypes, setQuestionTypes] = useState([]);
   const [cancel, setCancel] = useState(false);
@@ -47,9 +47,9 @@ const QuestionsSetup = ({ setQuestionsSetUp }) => {
   useEffect(() => {
     fetchQuestionTypes();
   }, []);
-  useEffect(() => {
-    console.log(questions)
-  }, [questions]);
+  // useEffect(() => {
+  //   console.log(questions)
+  // }, [questions]);
   const row = (id) => (
     <MainSlide
       key={id}
@@ -65,7 +65,19 @@ const QuestionsSetup = ({ setQuestionsSetUp }) => {
     setRows(newId);
     setAddedRow((prev) => [...prev, row(newId)]);
   };
-
+  
+  const saveHandle = async() => {
+    const response = await Route("POST", `/questions`, token, questions);
+    if (response?.status === 201) {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+      // fetchDesignations();
+      setQuestionsSetUp(false);
+    } else {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+    };
+  };
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -77,7 +89,7 @@ const QuestionsSetup = ({ setQuestionsSetUp }) => {
               xs={12}
               sx={{ display: "flex", justifyContent: "flex-end" }}
             >
-              <Button variant="contained" sx={{ mr: 2 }} endIcon={<SaveIcon />}>
+              <Button variant="contained" sx={{ mr: 2 }} endIcon={<SaveIcon />} onClick={saveHandle}>
                 Save
               </Button>
               <Button
