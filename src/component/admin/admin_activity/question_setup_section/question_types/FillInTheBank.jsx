@@ -9,7 +9,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 
-const FillInTheBank = () => {
+const FillInTheBank = ({choiceHandle, answerHandle}) => {
   return (
     <>
       <Box p={2}>
@@ -23,10 +23,11 @@ const FillInTheBank = () => {
                   id="your-text"
                   variant="outlined"
                   size="small"
+                  onChange={(e) => choiceHandle("option1", e.target.value)}
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={1} control={<Radio />} />
+                <FormControlLabel value={1} control={<Radio onChange={(e) => answerHandle("option1")} />} />
               </Grid>
             </Grid>
           </RadioGroup>

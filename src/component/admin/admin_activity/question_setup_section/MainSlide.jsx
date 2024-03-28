@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   InputLabel,
@@ -24,112 +24,119 @@ import Matching from "./question_types/Matching";
 import { attachment } from "../../../../data/Static";
 import Route from "../../../../routes/Route";
 
-const MainSlide = ({
-  index,
-  questionTypes,
-  setQuestions,
-  addQuestion,
-  questions,
-}) => {
+const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
   // init states
   const [data, setData] = useState({
-    questionType: 1,
+    questionType: null,
     question: "",
     point: 1,
-    options: {
-      1: "",
-      2: "",
-      3: "",
-      4: "",
-    },
+    video: null,
+    audio: null,
+    choice: [],
+    choiceTwo: [],
     answer: null,
   });
   const [attachFile, setAttachFile] = useState(1);
-  const [attachmentType, setAttachmentType] = useState("None");
-  const [media, setMedia] = useState([]);
-  React.useEffect(() => {
-    console.log(questions);
-  }, []);
-
+  const [videos, setVideos] = useState([]);
+  const [audios, setAudios] = useState([]);
   const [deleteSilde, setDeleteSlide] = useState(false);
-  const removeQuestion = () => {
-    setQuestions((prevQuestions) => {
-      const updatedQuestions = [...prevQuestions];
-      updatedQuestions.splice(index, 1);
-      return updatedQuestions;
-    });
+  const removeQuestion = (index) => {
+    deleteRowHandle(index);
     setDeleteSlide(false);
-  };
-  const renderQuestionType = () => {
-    switch (data?.questionType) {
-      case 1:
-        return <Mcq />;
-      case 2:
-        return <FillInTheBank />;
-      case 3:
-        return <TrueOrFalse />;
-      case 4:
-        return <YesOrNo />;
-      default:
-        return <Matching />;
-    }
   };
   const token = localStorage.getItem("token");
   const fetchVideos = async () => {
     const res = await Route("GET", "/videos", token, null);
     if (res?.status === 200) {
-      setMedia(res?.data?.videos);
+      setVideos(res?.data?.videos);
     }
   };
   const fetchAudios = async () => {
     const res = await Route("GET", "/audios", token, null);
     if (res?.status === 200) {
-      setMedia(res?.data?.audios);
+      setAudios(res?.data?.audios);
     }
   };
   // handlers
   const questionTypeHandle = (e) => {
     setData((prev) => ({
       ...prev,
-      questionType: e.target.value,
-    }));
+      questionType: e.target.value
+    }))
+    addQuestion(index, "questionType", e.target.value);
+    addQuestion(index, "choice", []);
+    addQuestion(index, "choice2", []);
+    addQuestion(index, "answer", null);;
   };
 
   const pointHandle = (e) => {
-    setData((prev) => ({
-      ...prev,
-      point: parseInt(e.target.value),
-    }));
+    addQuestion(index, "point", e.target.value);
   };
   const questionHandle = (e) => {
-    setData((prev) => ({
-      ...prev,
-      question: e.target.value,
-    }));
+    addQuestion(index, "question", e.target.value);
   };
-  const attachmentHandle = (value) => {
-    const [id, name] = value.split(",");
-    if (!isNaN(parseInt(id))) {
-      if (parseInt(id) === 2) {
+  const attachmentHandle = (e) => {
+    addQuestion(index, "video", null);
+    addQuestion(index, "audio", null);
+    if (!isNaN(e.target.value)) {
+      if (e.target.value === 2) {
         fetchVideos();
-      } else if (parseInt(id) === 3) {
+      } else if (e.target.value === 3) {
         fetchAudios();
       }
     }
-    setAttachmentType(name);
-    setAttachFile(parseInt(id));
+    setAttachFile(e.target.value);
+  };
+  const videoHandle = (e) => {
+    addQuestion(index, "video", e.target.value);
+  };
+  const audioHandle = (e) => {
+    addQuestion(index, "audio", e.target.value);
+  };
+  const choiceHandle = (option, text) => {
+    addQuestion(index, "choice", {
+      [option]: text,
+    });
+  };
+  const choiceTwoHandle = (option, text) => {
+    addQuestion(index, "choice2", {
+      [option]: text,
+    });
+  };
+  const answerHandle = (option) => {
+    addQuestion(index, "answer", option)
+  };
+  const matchingAnswerHandle = (option, text) => {
+    addQuestion(index, "matching", {
+      [option]: text,
+    });
+  };
+  const renderQuestionType = () => {
+    switch (data?.questionType) {
+      case 1:
+        return <Mcq choiceHandle={choiceHandle} answerHandle={answerHandle} />;
+      case 2:
+        return <FillInTheBank choiceHandle={choiceHandle} answerHandle={answerHandle} />;
+      case 3:
+        return <TrueOrFalse answerHandle={answerHandle} />;
+      case 4:
+        return <YesOrNo answerHandle={answerHandle} />;
+      case 5:
+        return <Matching choiceHandle={choiceHandle} choiceTwoHandle={choiceTwoHandle} answerHandle={matchingAnswerHandle} />;
+      default:
+        return null;
+    }
   };
   return (
     <>
       <Card variant="outlined" sx={{ mb: 2 }}>
         <Box p={2} sx={{ display: "flex", justifyContent: "space-between" }}>
-          <FormControl sx={{ minWidth: 300 }}>
+          <FormControl required sx={{ minWidth: 300 }}>
             <InputLabel id="question-type-label">Question Type</InputLabel>
             <Select
               labelId="question-type-label"
               id="question-type-select"
               label="Question Type"
-              defaultValue={1}
               onChange={questionTypeHandle}
             >
               {questionTypes?.map((item) => (
@@ -144,7 +151,7 @@ const MainSlide = ({
               fullWidth
               label="Point"
               id="point"
-              multiline
+              required
               onChange={pointHandle}
             />
           </FormControl>
@@ -156,6 +163,7 @@ const MainSlide = ({
             id="question"
             multiline
             rows={9}
+            required
             onChange={questionHandle}
           />
         </Box>
@@ -166,27 +174,42 @@ const MainSlide = ({
               labelId="attachment-label"
               id="attachment-select"
               label="Attachment"
-              onChange={(e) => attachmentHandle(e.target.value)}
+              onChange={attachmentHandle}
             >
               {attachment?.map((item) => (
-                <MenuItem key={item?.id} value={`${item.id},${item.name}`}>
+                <MenuItem key={item?.id} value={item?.id}>
                   {item?.title}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-          {attachFile === 2 || attachFile === 3 ? (
+          {attachFile === 2 ? (
             <FormControl sx={{ minWidth: 300 }}>
-              <InputLabel id={`${attachmentType}-label`}>
-                {attachmentType}
-              </InputLabel>
+              <InputLabel id="video-label">Video</InputLabel>
               <Select
-                labelId={`${attachmentType}-label`}
-                id={`${attachmentType}-select`}
-                label={attachmentType}
-                // onChange={questionTypeHandle}
+                labelId="video-label"
+                id="video-select"
+                label="Video"
+                onChange={videoHandle}
               >
-                {media?.map((item) => (
+                {videos?.map((item) => (
+                  <MenuItem key={item?.id} value={item?.id}>
+                    {item?.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ) : null}
+          {attachFile === 3 ? (
+            <FormControl sx={{ minWidth: 300 }}>
+              <InputLabel id="audio-label">Audio</InputLabel>
+              <Select
+                labelId="audio-label"
+                id="audio-select"
+                label="Audio"
+                onChange={audioHandle}
+              >
+                {audios?.map((item) => (
                   <MenuItem key={item?.id} value={item?.id}>
                     {item?.title}
                   </MenuItem>
@@ -224,7 +247,7 @@ const MainSlide = ({
           </DialogContent>
           <DialogActions sx={{ mb: 2, mx: 2 }}>
             <Button
-              onClick={() => removeQuestion()}
+              onClick={() => removeQuestion(index)}
               variant="contained"
               autoFocus
               size="small"

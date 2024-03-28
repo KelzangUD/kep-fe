@@ -9,7 +9,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 
-const YesOrNo = () => {
+const YesOrNo = ({answerHandle}) => {
   return (
     <>
       <Box p={2}>
@@ -27,7 +27,7 @@ const YesOrNo = () => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={1} control={<Radio />} />
+                <FormControlLabel value={1} control={<Radio onChange={() => answerHandle("Yes")} />} />
               </Grid>
               <Grid item xs={5}>
                 <TextField
@@ -40,7 +40,7 @@ const YesOrNo = () => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={2} control={<Radio />} />
+                <FormControlLabel value={2} control={<Radio onChange={() => answerHandle("No")} />} />
               </Grid>
             </Grid>
           </RadioGroup>

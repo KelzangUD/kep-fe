@@ -17,15 +17,24 @@ import Transition from "../../../common/Transition";
 // import SlideSection from "./question_setup_section/SlideSection";
 import MainSlide from "./question_setup_section/MainSlide";
 import Route from "../../../routes/Route";
+import { dynamicHandle } from "../../../util/CommonUtil";
 
 const QuestionsSetup = ({ setQuestionsSetUp }) => {
   // init states
   const [questionTypes, setQuestionTypes] = useState([]);
   const [cancel, setCancel] = useState(false);
+  const [addedRow, setAddedRow] = React.useState([]);
+  const [rows, setRows] = React.useState(0);
   const [questions, setQuestions] = useState([]);
-
-  const addQuestion = (newQuestion) => {
-    setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
+  const addQuestion = (id, prop, value) => {
+    dynamicHandle(id, prop, value, setQuestions);
+  };
+  const deleteRowHandle = (id) => {
+    // console.log(id);
+    setQuestions((prevProductDetails) => {
+      return prevProductDetails.filter((item) => item?.id !== id);
+    });
+    setAddedRow((prev) => prev.filter((row) => row.props?.id !== id));
   };
 
   const token = localStorage.getItem("token");
@@ -38,6 +47,24 @@ const QuestionsSetup = ({ setQuestionsSetUp }) => {
   useEffect(() => {
     fetchQuestionTypes();
   }, []);
+  useEffect(() => {
+    console.log(questions)
+  }, [questions]);
+  const row = (id) => (
+    <MainSlide
+      key={id}
+      id={id}
+      index={id}
+      questionTypes={questionTypes}
+      deleteRowHandle={deleteRowHandle}
+      addQuestion={addQuestion}
+    />
+  );
+  const addNewRowHandle = () => {
+    const newId = rows + 1;
+    setRows(newId);
+    setAddedRow((prev) => [...prev, row(newId)]);
+  };
 
   return (
     <>
@@ -69,30 +96,21 @@ const QuestionsSetup = ({ setQuestionsSetUp }) => {
             </Grid> */}
             {/* <Divider orientation="vertical" flexItem /> */}
             <Grid item xs={12} sx={{ px: 2, height: "100%" }}>
-              {questions?.map((item, index) => (
-                <MainSlide
-                  key={index}
-                  index={index}
-                  setQuestions={setQuestions}
-                  questionTypes={questionTypes}
-                  addQuestion={addQuestion}
-                  questions={questions}
-                />
-              ))}
+              {addedRow.length > 0 && addedRow?.map((item) => item)}
             </Grid>
           </Grid>
         </Grid>
       </Box>
-      <Box sx={{ px: 2, minWidth: "100%" }}>
+      <Box sx={{ px: 4, minWidth: "100%" }}>
         <Button
           aria-label="add slide"
           size="small"
           variant="contained"
           color="primary"
           endIcon={<AddIcon />}
-          onClick={addQuestion}
+          onClick={addNewRowHandle}
         >
-          Add Slide
+          Add Question
         </Button>
       </Box>
       {cancel ? (

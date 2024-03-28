@@ -15,3 +15,22 @@ export const attachment = [
     title: "Audio",
   },
 ];
+
+export const option = [
+  {
+    id: 1,
+    title: "I",
+  },
+  {
+    id: 2,
+    title: "II",
+  },
+  {
+    id: 3,
+    title: "III",
+  },
+  {
+    id: 4,
+    title: "IV",
+  },
+];
