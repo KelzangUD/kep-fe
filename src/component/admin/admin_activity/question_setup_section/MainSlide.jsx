@@ -70,7 +70,7 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
   };
 
   const pointHandle = (e) => {
-    addQuestion(index, "point", e.target.value);
+    addQuestion(index, "point", parseInt(e.target.value));
   };
   const questionHandle = (e) => {
     addQuestion(index, "question", e.target.value);

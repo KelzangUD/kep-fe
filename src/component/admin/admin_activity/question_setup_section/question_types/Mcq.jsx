@@ -19,56 +19,56 @@ const Mcq = ({choiceHandle, answerHandle}) => {
               <Grid item xs={5}>
                 <TextField
                   fullWidth
-                  label="Add Answer 1"
+                  label="Option 1"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("option1", e.target.value)}
+                  onChange={(e) => choiceHandle("1", e.target.value)}
                   size="small"
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={1} control={<Radio onChange={(e) => answerHandle("option1")} />} />
+                <FormControlLabel value={1} control={<Radio onChange={(e) => answerHandle(parseInt(e.target.value))} />} />
               </Grid>
               <Grid item xs={5}>
                 <TextField
                   fullWidth
-                  label="Add Answer 2"
+                  label="Option 2"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("option2", e.target.value)}
+                  onChange={(e) => choiceHandle("2", e.target.value)}
                   size="small"
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={2} control={<Radio onChange={(e) => answerHandle("option2")} />} />
+                <FormControlLabel value={2} control={<Radio onChange={(e) => answerHandle(parseInt(e.target.value))} />} />
               </Grid>
             </Grid>
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
               <Grid item xs={5}>
                 <TextField
                   fullWidth
-                  label="Add Answer 3"
+                  label="Option 3"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("option3", e.target.value)}
+                  onChange={(e) => choiceHandle("3", e.target.value)}
                   size="small"
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={3} control={<Radio onChange={(e) => answerHandle("option3")} />} />
+                <FormControlLabel value={3} control={<Radio onChange={(e) => answerHandle(parseInt(e.target.value))} />} />
               </Grid>
               <Grid item xs={5}>
                 <TextField
                   fullWidth
-                  label="Add Answer 4"
+                  label="Option 4"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("option4", e.target.value)}
+                  onChange={(e) => choiceHandle("4", e.target.value)}
                   size="small"
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={4} control={<Radio onChange={(e) => answerHandle("option4")} />} />
+                <FormControlLabel value={4} control={<Radio onChange={(e) => answerHandle(parseInt(e.target.value))} />} />
               </Grid>
             </Grid>
           </RadioGroup>

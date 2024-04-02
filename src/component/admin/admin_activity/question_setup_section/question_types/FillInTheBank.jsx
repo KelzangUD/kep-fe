@@ -23,11 +23,11 @@ const FillInTheBank = ({choiceHandle, answerHandle}) => {
                   id="your-text"
                   variant="outlined"
                   size="small"
-                  onChange={(e) => choiceHandle("option1", e.target.value)}
+                  onChange={(e) => choiceHandle("1", e.target.value)}
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={1} control={<Radio onChange={(e) => answerHandle("option1")} />} />
+                <FormControlLabel value={1} control={<Radio onChange={(e) => answerHandle(parseInt(e.target.value))} />} />
               </Grid>
             </Grid>
           </RadioGroup>

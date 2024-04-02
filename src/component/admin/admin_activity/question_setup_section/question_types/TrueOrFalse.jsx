@@ -27,7 +27,7 @@ const TrueOrFalse = ({answerHandle}) => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={1} control={<Radio onChange={() => answerHandle(true)} />} />
+                <FormControlLabel value={true} control={<Radio onChange={() => answerHandle(true)} />} />
               </Grid>
               <Grid item xs={5}>
                 <TextField
@@ -40,7 +40,7 @@ const TrueOrFalse = ({answerHandle}) => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={2} control={<Radio onChange={() => answerHandle(false)} />} />
+                <FormControlLabel value={false} control={<Radio onChange={() => answerHandle(false)} />} />
               </Grid>
             </Grid>
           </RadioGroup>

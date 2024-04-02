@@ -19,7 +19,11 @@ import MainSlide from "./question_setup_section/MainSlide";
 import Route from "../../../routes/Route";
 import { dynamicHandle } from "../../../util/CommonUtil";
 
-const QuestionsSetup = ({ setQuestionsSetUp, setOpenNotification, setMessage }) => {
+const QuestionsSetup = ({
+  setQuestionsSetUp,
+  setOpenNotification,
+  setMessage,
+}) => {
   // init states
   const [questionTypes, setQuestionTypes] = useState([]);
   const [cancel, setCancel] = useState(false);
@@ -47,9 +51,6 @@ const QuestionsSetup = ({ setQuestionsSetUp, setOpenNotification, setMessage }) 
   useEffect(() => {
     fetchQuestionTypes();
   }, []);
-  // useEffect(() => {
-  //   console.log(questions)
-  // }, [questions]);
   const row = (id) => (
     <MainSlide
       key={id}
@@ -65,18 +66,24 @@ const QuestionsSetup = ({ setQuestionsSetUp, setOpenNotification, setMessage }) 
     setRows(newId);
     setAddedRow((prev) => [...prev, row(newId)]);
   };
-  
-  const saveHandle = async() => {
-    const response = await Route("POST", `/questions`, token, questions);
-    if (response?.status === 201) {
-      setMessage(response?.data?.message);
-      setOpenNotification(true);
-      // fetchDesignations();
-      setQuestionsSetUp(false);
+
+  const saveHandle = async () => {
+    if (questions.length > 0) {
+      console.log(questions);
+      const response = await Route("POST", `/questions`, token, questions);
+      if (response?.status === 201) {
+        setMessage(response?.data?.message);
+        setOpenNotification(true);
+        // fetchDesignations();
+        setQuestionsSetUp(false);
+      } else {
+        setMessage(response?.data?.message);
+        setOpenNotification(true);
+      }
     } else {
-      setMessage(response?.data?.message);
+      setMessage("Please set up question/questions before saving them.");
       setOpenNotification(true);
-    };
+    }
   };
   return (
     <>
@@ -89,7 +96,12 @@ const QuestionsSetup = ({ setQuestionsSetUp, setOpenNotification, setMessage }) 
               xs={12}
               sx={{ display: "flex", justifyContent: "flex-end" }}
             >
-              <Button variant="contained" sx={{ mr: 2 }} endIcon={<SaveIcon />} onClick={saveHandle}>
+              <Button
+                variant="contained"
+                sx={{ mr: 2 }}
+                endIcon={<SaveIcon />}
+                onClick={saveHandle}
+              >
                 Save
               </Button>
               <Button
