@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import {
   Box,
   Grid,
@@ -9,7 +9,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 
-const FillInTheBank = ({choiceHandle, answerHandle}) => {
+const FillInTheBank = ({ choiceHandle, answerHandle }) => {
   return (
     <>
       <Box p={2}>
@@ -27,7 +27,12 @@ const FillInTheBank = ({choiceHandle, answerHandle}) => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={1} control={<Radio onChange={(e) => answerHandle(parseInt(e.target.value))} />} />
+                <FormControlLabel
+                  value={1}
+                  control={
+                    <Radio onChange={() => answerHandle("first")} />
+                  }
+                />
               </Grid>
             </Grid>
           </RadioGroup>
