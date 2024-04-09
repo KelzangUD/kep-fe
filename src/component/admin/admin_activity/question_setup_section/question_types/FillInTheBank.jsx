@@ -23,7 +23,7 @@ const FillInTheBank = ({choiceHandle, answerHandle}) => {
                   id="your-text"
                   variant="outlined"
                   size="small"
-                  onChange={(e) => choiceHandle("1", e.target.value)}
+                  onChange={(e) => choiceHandle("first", e.target.value)}
                 />
               </Grid>
               <Grid item xs={1}>

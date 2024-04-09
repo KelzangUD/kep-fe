@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Grid,
@@ -22,12 +22,12 @@ const Mcq = ({choiceHandle, answerHandle}) => {
                   label="Option 1"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("1", e.target.value)}
+                  onChange={(e) => choiceHandle("first", e.target.value)}
                   size="small"
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={1} control={<Radio onChange={(e) => answerHandle(parseInt(e.target.value))} />} />
+                <FormControlLabel value="first" control={<Radio onChange={(e) => answerHandle(e.target.value)} />} />
               </Grid>
               <Grid item xs={5}>
                 <TextField
@@ -35,12 +35,12 @@ const Mcq = ({choiceHandle, answerHandle}) => {
                   label="Option 2"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("2", e.target.value)}
+                  onChange={(e) => choiceHandle("second", e.target.value)}
                   size="small"
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={2} control={<Radio onChange={(e) => answerHandle(parseInt(e.target.value))} />} />
+                <FormControlLabel value="second" control={<Radio onChange={(e) => answerHandle(e.target.value)} />} />
               </Grid>
             </Grid>
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
@@ -50,12 +50,12 @@ const Mcq = ({choiceHandle, answerHandle}) => {
                   label="Option 3"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("3", e.target.value)}
+                  onChange={(e) => choiceHandle("third", e.target.value)}
                   size="small"
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={3} control={<Radio onChange={(e) => answerHandle(parseInt(e.target.value))} />} />
+                <FormControlLabel value="third" control={<Radio onChange={(e) => answerHandle(e.target.value)} />} />
               </Grid>
               <Grid item xs={5}>
                 <TextField
@@ -63,12 +63,12 @@ const Mcq = ({choiceHandle, answerHandle}) => {
                   label="Option 4"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("4", e.target.value)}
+                  onChange={(e) => choiceHandle("fourth", e.target.value)}
                   size="small"
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={4} control={<Radio onChange={(e) => answerHandle(parseInt(e.target.value))} />} />
+                <FormControlLabel value="fourth" control={<Radio onChange={(e) => answerHandle(e.target.value)} />} />
               </Grid>
             </Grid>
           </RadioGroup>
