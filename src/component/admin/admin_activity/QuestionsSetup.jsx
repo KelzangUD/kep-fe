@@ -69,17 +69,16 @@ const QuestionsSetup = ({
 
   const saveHandle = async () => {
     if (questions.length > 0) {
-      console.log(questions);
-      // const response = await Route("POST", `/questions`, token, questions);
-      // if (response?.status === 201) {
-      //   setMessage(response?.data?.message);
-      //   setOpenNotification(true);
-      //   // fetchDesignations();
-      //   setQuestionsSetUp(false);
-      // } else {
-      //   setMessage(response?.data?.message);
-      //   setOpenNotification(true);
-      // }
+      const response = await Route("POST", `/questions`, token, questions);
+      if (response?.status === 201) {
+        setMessage(response?.data?.message);
+        setOpenNotification(true);
+        // fetchDesignations();
+        setQuestionsSetUp(false);
+      } else {
+        setMessage(response?.response?.data?.message);
+        setOpenNotification(true);
+      }
     } else {
       setMessage("Please set up question/questions before saving them.");
       setOpenNotification(true);
