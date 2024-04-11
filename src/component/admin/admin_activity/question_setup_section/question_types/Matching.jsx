@@ -24,7 +24,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                   label="A"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("option1", e.target.value)}
+                  onChange={(e) => choiceHandle("first", e.target.value)}
                   size="small"
                 />
               </Grid>
@@ -34,7 +34,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                   label="I"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceTwoHandle("option1", e.target.value)}
+                  onChange={(e) => choiceTwoHandle("first", e.target.value)}
                   size="small"
                 />
               </Grid>
@@ -46,7 +46,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                   label="B"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("option2", e.target.value)}
+                  onChange={(e) => choiceHandle("second", e.target.value)}
                   size="small"
                 />
               </Grid>
@@ -56,7 +56,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                   label="II"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceTwoHandle("option2", e.target.value)}
+                  onChange={(e) => choiceTwoHandle("second", e.target.value)}
                   size="small"
                 />
               </Grid>
@@ -68,7 +68,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                   label="C"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("option3", e.target.value)}
+                  onChange={(e) => choiceHandle("third", e.target.value)}
                   size="small"
                 />
               </Grid>
@@ -78,7 +78,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                   label="III"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceTwoHandle("option3", e.target.value)}
+                  onChange={(e) => choiceTwoHandle("third", e.target.value)}
                   size="small"
                 />
               </Grid>
@@ -90,7 +90,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                   label="D"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceHandle("option4", e.target.value)}
+                  onChange={(e) => choiceHandle("fourth", e.target.value)}
                   size="small"
                 />
               </Grid>
@@ -100,7 +100,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                   label="IV"
                   id="your-text"
                   variant="outlined"
-                  onChange={(e) => choiceTwoHandle("option4", e.target.value)}
+                  onChange={(e) => choiceTwoHandle("fourth", e.target.value)}
                   size="small"
                 />
               </Grid>
@@ -119,10 +119,10 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                     labelId="question-type-label"
                     id="question-type-select"
                     label="Question Type"
-                    onChange={(e) => answerHandle("A", e.target.value)}
+                    onChange={(e) => answerHandle("first", e.target.value)}
                   >
                     {option?.map((item) => (
-                      <MenuItem key={item?.id} value={item?.id}>
+                      <MenuItem key={item?.id} value={item?.value}>
                         {item?.title}
                       </MenuItem>
                     ))}
@@ -136,10 +136,10 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                     labelId="question-type-label"
                     id="question-type-select"
                     label="Question Type"
-                    onChange={(e) => answerHandle("B", e.target.value)}
+                    onChange={(e) => answerHandle("second", e.target.value)}
                   >
                     {option?.map((item) => (
-                      <MenuItem key={item?.id} value={item?.id}>
+                      <MenuItem key={item?.id} value={item?.value}>
                         {item?.title}
                       </MenuItem>
                     ))}
@@ -155,10 +155,10 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                     labelId="question-type-label"
                     id="question-type-select"
                     label="Question Type"
-                    onChange={(e) => answerHandle("C", e.target.value)}
+                    onChange={(e) => answerHandle("third", e.target.value)}
                   >
                     {option?.map((item) => (
-                      <MenuItem key={item?.id} value={item?.id}>
+                      <MenuItem key={item?.id} value={item?.value}>
                         {item?.title}
                       </MenuItem>
                     ))}
@@ -172,10 +172,10 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                     labelId="question-type-label"
                     id="question-type-select"
                     label="Question Type"
-                    onChange={(e) => answerHandle("D", e.target.value)}
+                    onChange={(e) => answerHandle("fourth", e.target.value)}
                   >
                     {option?.map((item) => (
-                      <MenuItem key={item?.id} value={item?.id}>
+                      <MenuItem key={item?.id} value={item?.value}>
                         {item?.title}
                       </MenuItem>
                     ))}
