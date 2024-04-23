@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Grid,
@@ -19,6 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import EditScheduleTest from "./schedule_test/EditScheduleTest";
 import Transition from "../../../common/Transition";
+import Notification from "../../../ui/Notification";
 
 const rows = [
   {
@@ -35,12 +36,13 @@ const rows = [
     message: "This test is based on Video Title: ISP.",
     questions: [
       {
-        question: "JAVA programming language was developed by:"
+        question: "JAVA programming language was developed by:",
       },
       {
-        question: "A mistake in an algorithm that generates incorrect results or output is called:"
-      }
-    ]
+        question:
+          "A mistake in an algorithm that generates incorrect results or output is called:",
+      },
+    ],
   },
 ];
 
@@ -50,6 +52,9 @@ const ScheduleTests = () => {
   const [details, setDetails] = React.useState({});
   const [deleteQuestion, setDeleteQuestion] = React.useState(false);
   const [id, setId] = React.useState("");
+  const [message, setMessage] = useState("");
+  const [openNotification, setOpenNotification] = useState(false);
+
   const editHandle = (param) => {
     setDetails(param?.row);
     setEdit(true);
@@ -91,13 +96,14 @@ const ScheduleTests = () => {
       ),
     },
   ];
-  const scheduleTestHandle = () => {
-    setScheduleTest(true);
-  };
   return (
     <>
       {scheduleTest ? (
-        <ScheduleTest setScheduleTest={setScheduleTest} />
+        <ScheduleTest
+          setScheduleTest={setScheduleTest}
+          setMessage={setMessage}
+          setOpenNotification={setOpenNotification}
+        />
       ) : edit ? (
         <EditScheduleTest details={details} open={edit} setOpen={setEdit} />
       ) : (
@@ -114,7 +120,7 @@ const ScheduleTests = () => {
                   variant="outlined"
                   endIcon={<QuizIcon />}
                   sx={{ mr: 2 }}
-                  onClick={scheduleTestHandle}
+                  onClick={() => setScheduleTest(true)}
                 >
                   Schedule Test
                 </Button>
@@ -177,6 +183,13 @@ const ScheduleTests = () => {
           </DialogActions>
         </Dialog>
       ) : null}
+      {openNotification && (
+        <Notification
+          open={openNotification}
+          setOpen={setOpenNotification}
+          message={message}
+        />
+      )}
     </>
   );
 };
