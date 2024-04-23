@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -9,9 +9,12 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  Paper,
+  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
+import SearchIcon from "@mui/icons-material/Search";
 import QuizIcon from "@mui/icons-material/Quiz";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ScheduleTest from "./schedule_test/ScheduleTest";
@@ -20,41 +23,23 @@ import EditIcon from "@mui/icons-material/Edit";
 import EditScheduleTest from "./schedule_test/EditScheduleTest";
 import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
-
-const rows = [
-  {
-    id: 1,
-    sl: 1,
-    name: "Dec Test-I",
-    start_date: "11/12/2023",
-    start_time: "10 AM",
-    end_date: "20/12/2023",
-    end_time: "4:30 PM",
-    duration: 2,
-    durationType: "1 Hour",
-    status: "Active",
-    message: "This test is based on Video Title: ISP.",
-    questions: [
-      {
-        question: "JAVA programming language was developed by:",
-      },
-      {
-        question:
-          "A mistake in an algorithm that generates incorrect results or output is called:",
-      },
-    ],
-  },
-];
+import Route from "../../../routes/Route";
 
 const ScheduleTests = () => {
-  const [scheduleTest, setScheduleTest] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
-  const [details, setDetails] = React.useState({});
-  const [deleteQuestion, setDeleteQuestion] = React.useState(false);
-  const [id, setId] = React.useState("");
+  const [tests, setTests] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [scheduleTest, setScheduleTest] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [details, setDetails] = useState({});
+  const [deleteQuestion, setDeleteQuestion] = useState(false);
+  const [id, setId] = useState("");
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
 
+  // handlers
+  const searchHandle = (e) => {
+    setSearchQuery(e.target.value);
+  };
   const editHandle = (param) => {
     setDetails(param?.row);
     setEdit(true);
@@ -63,14 +48,34 @@ const ScheduleTests = () => {
     setId(param?.id);
     setDeleteQuestion(true);
   };
+  const token = localStorage.getItem("token");
+  const fetchExtensions = async () => {
+    const res = await Route("GET", "/tests", token, null, null);
+    if (res?.status === 200) {
+      setTests(res?.data?.tests);
+    }
+  };
+  useEffect(() => {
+    fetchExtensions();
+  }, []);
   const userColumns = [
     { field: "sl", headerName: "Sl. No", width: 40 },
     { field: "name", headerName: "Test Name", width: 250 },
-    { field: "start_date", headerName: "Start Date", width: 100 },
+    {
+      field: "start_date",
+      headerName: "Start Date",
+      width: 150,
+      valueGetter: (params) => params.row.start_date.split("T")[0],
+    },
     { field: "start_time", headerName: "Start Time", width: 100 },
-    { field: "end_date", headerName: "End Date", width: 100 },
+    {
+      field: "end_date",
+      headerName: "End Date",
+      width: 150,
+      valueGetter: (params) => params.row.end_date.split("T")[0],
+    },
     { field: "end_time", headerName: "End Time", width: 100 },
-    { field: "durationType", headerName: "Duration", width: 100 },
+    { field: "duration", headerName: "Duration", width: 100 },
     { field: "status", headerName: "Status", width: 150 },
     {
       field: "action",
@@ -96,6 +101,9 @@ const ScheduleTests = () => {
       ),
     },
   ];
+  const filteredData = tests?.filter((item) =>
+    item?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <>
       {scheduleTest ? (
@@ -113,8 +121,32 @@ const ScheduleTests = () => {
             <Grid
               item
               xs={12}
-              sx={{ display: "flex", justifyContent: "flex-end" }}
+              sx={{ display: "flex", justifyContent: "space-between" }}
             >
+              <Grid item>
+                <Paper
+                  sx={{
+                    p: "2px 4px",
+                    display: "flex",
+                    alignItems: "center",
+                    width: 400,
+                  }}
+                >
+                  <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder="Search"
+                    inputProps={{ "aria-label": "search" }}
+                    onChange={searchHandle}
+                  />
+                  <IconButton
+                    type="button"
+                    sx={{ p: "10px" }}
+                    aria-label="search"
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </Paper>
+              </Grid>
               <Grid item>
                 <Button
                   variant="outlined"
@@ -136,7 +168,10 @@ const ScheduleTests = () => {
             <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
               <div style={{ height: "auto", width: "100%" }}>
                 <DataGrid
-                  rows={rows}
+                  rows={filteredData?.map((row, index) => ({
+                    ...row,
+                    sl: index + 1,
+                  }))}
                   columns={userColumns}
                   initialState={{
                     pagination: {
