@@ -30,7 +30,7 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await Route("POST", "/login", null, formData);
+    const res = await Route("POST", "/login", null, formData, null);
     if (res?.status === 200) {
       localStorage.setItem("user", JSON.stringify(res?.data?.user));
       localStorage.setItem("token", res?.data?.token);

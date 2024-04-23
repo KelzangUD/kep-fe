@@ -96,7 +96,7 @@ const User = () => {
   };
   const token = localStorage.getItem("token");
   const fetchUsers = async () => {
-    const res = await Route("GET", "/users", token, null);
+    const res = await Route("GET", "/users", token, null, null);
     if (res?.status === 200) {
       setUsers(res?.data?.users)
     }
@@ -111,7 +111,7 @@ const User = () => {
       item?.designation.toLowerCase().includes(searchQuery.toLowerCase())
   );
   const confirmDeleteHandler = async() => {
-    const res = await Route("PUT", `/users/delete-users/${userId}`, token, null);
+    const res = await Route("PUT", `/users/delete-users`, token, null, userId);
     if (res?.status === 201) {
       setDeleteUser(false);
       setMessage(res?.data?.message);

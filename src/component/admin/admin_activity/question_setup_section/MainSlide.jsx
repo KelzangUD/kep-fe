@@ -46,13 +46,13 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
   };
   const token = localStorage.getItem("token");
   const fetchVideos = async () => {
-    const res = await Route("GET", "/videos", token, null);
+    const res = await Route("GET", "/videos", token, null, null);
     if (res?.status === 200) {
       setVideos(res?.data?.videos);
     }
   };
   const fetchAudios = async () => {
-    const res = await Route("GET", "/audios", token, null);
+    const res = await Route("GET", "/audios", token, null, null);
     if (res?.status === 200) {
       setAudios(res?.data?.audios);
     }

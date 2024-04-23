@@ -44,7 +44,7 @@ const ActivityLogs = () => {
   ];
   const token = localStorage.getItem("token");
   const fetchActivityLogs = async () => {
-    const res = await Route("GET", "/activity-logs", token, null);
+    const res = await Route("GET", "/activity-logs", token, null, null);
     if (res?.status === 200) {
       setData(
         res?.data?.activityLogs?.map((item, index) => ({

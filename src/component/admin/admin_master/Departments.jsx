@@ -51,7 +51,7 @@ const Departments = () => {
   };
   const token = localStorage.getItem("token");
   const fetchDepartments = async () => {
-    const res = await Route("GET", "/departments", token, null);
+    const res = await Route("GET", "/departments", token, null, null);
     if (res?.status === 200) {
       setDepartments(res?.data?.departments);
     }
@@ -95,7 +95,7 @@ const Departments = () => {
     },
   ];
   const confirmDeleteHandler = async () => {
-    const res = await Route("DELETE", `/departments/${id}`, token, null);
+    const res = await Route("DELETE", `/departments`, token, null, id);
     if (res?.status === 201) {
       setDeleteDepartment(false);
       setMessage(res?.data?.message);

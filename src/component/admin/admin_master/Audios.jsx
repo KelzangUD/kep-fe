@@ -42,7 +42,7 @@ const Audios = () => {
 
   const token = localStorage.getItem("token");
   const fetchAudios = async () => {
-    const res = await Route("GET", "/audios", token, null);
+    const res = await Route("GET", "/audios", token, null, null);
     if (res?.status === 200) {
       setAudios(res?.data?.audios);
     }
@@ -109,7 +109,7 @@ const Audios = () => {
     setAdd(true);
   };
   const confirmDeleteHandler = async () => {
-    const res = await Route("DELETE", `/audios/${id}`, token, null);
+    const res = await Route("DELETE", `/audios`, token, null, null);
     if (res?.status === 201) {
       setDeleteAudio(false);
       setMessage(res?.data?.message);

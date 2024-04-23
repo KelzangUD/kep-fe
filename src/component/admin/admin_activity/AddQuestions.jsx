@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -9,88 +9,51 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  Paper,
+  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
-import EditUser from "../admin_system_setting/EditUser";
+import EditQuestion from "./question_setup_section/EditQuestion";
 import Transition from "../../../common/Transition";
 import QuestionsSetup from "./QuestionsSetup";
 import Notification from "../../../ui/Notification";
-// import Route from "../../../routes/Route";
-
-const rows = [
-  {
-    id: 1,
-    sl: 1,
-    question: "Computer program consists of:",
-    point: 5,
-    type: "MCQ",
-    option: [
-      {
-        option: "Instructions and Data",
-      },
-      {
-        option: "Low level language",
-      },
-      {
-        option: "Instruction data & low level language",
-      },
-      {
-        option: "Data",
-      },
-    ],
-    answer: "Instruction data & low level language",
-  },
-  {
-    id: 2,
-    sl: 2,
-    question: "TICPL is ISP Company.",
-    point: 5,
-    type: "True/False",
-    option: [
-      {
-        option: true,
-      },
-      {
-        option: false,
-      },
-    ],
-    answer: true,
-  },
-  {
-    id: 3,
-    sl: 3,
-    question:
-      "Tashi InfoComm Private Limited is the first private cellular company in Bhutan, a separate entity under Tashi Group of Companies. ",
-    point: 5,
-    type: "Yes/No",
-    option: [
-      {
-        option: "Yes",
-      },
-      {
-        option: "No",
-      },
-    ],
-    answer: true,
-  },
-];
+import Route from "../../../routes/Route";
 
 const AddQuestions = () => {
   const [questionsSetUp, setQuestionsSetUp] = useState(false);
+  const [questions, setQuestions] = useState([]);
   const [edit, setEdit] = useState(false);
-  const [userDetails, setUserDetails] = useState({});
+  const [details, setDetails] = useState({});
+  const [options, setOptions] = useState([]);
+  const [optionsTwo, setOptionsTwo] = useState([]);
   const [deleteQuestion, setDeleteQuestion] = useState(false);
   const [id, setId] = React.useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
+
+  // handlers
+  const searchHandle = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  const fetchQuestion = async (id) => {
+    const res = await Route("GET", "/questions", token, null, id);
+    if (res?.status === 200) {
+      setId(id);
+      setDetails(res?.data?.question);
+      setOptions(res?.data?.options);
+      setOptionsTwo(res?.data?.optionsTwo);
+      setEdit(true);
+    }
+  };
   const editHandle = (param) => {
-    setUserDetails(param?.row);
-    setEdit(true);
+    fetchQuestion(param?.row?.id);
   };
   const deleteHandle = (param) => {
     setId(param?.id);
@@ -98,9 +61,14 @@ const AddQuestions = () => {
   };
   const userColumns = [
     { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "question", headerName: "Question", width: 530 },
+    { field: "question", headerName: "Question", width: 550 },
     { field: "point", headerName: "Point", width: 60 },
-    { field: "type", headerName: "Question Type", width: 250 },
+    {
+      field: "type",
+      headerName: "Question Type",
+      width: 250,
+      valueGetter: (params) => params.row.QuestionType?.title || "N/A",
+    },
     {
       field: "action",
       headerName: "Action",
@@ -128,6 +96,31 @@ const AddQuestions = () => {
   const questionSetUpHandle = () => {
     setQuestionsSetUp(true);
   };
+  const token = localStorage.getItem("token");
+  const fetchQuestions = async () => {
+    const res = await Route("GET", "/questions", token, null, null);
+    if (res?.status === 200) {
+      setQuestions(res?.data?.questions);
+    }
+  };
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
+  const filteredData = questions.filter((item) =>
+    item?.question.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  const confirmDeleteHandler = async () => {
+    const res = await Route("DELETE", `/questions`, token, null, id);
+    if (res?.status === 201) {
+      setDeleteQuestion(false);
+      setMessage(res?.data?.message);
+      fetchQuestions();
+      setOpenNotification(true);
+    } else {
+      setMessage(res?.data?.message);
+      setOpenNotification(true);
+    }
+  };
   return (
     <>
       {questionsSetUp ? (
@@ -135,6 +128,7 @@ const AddQuestions = () => {
           setQuestionsSetUp={setQuestionsSetUp}
           setOpenNotification={setOpenNotification}
           setMessage={setMessage}
+          fetchQuestions={fetchQuestions}
         />
       ) : (
         <Box sx={{ flexGrow: 1 }}>
@@ -143,8 +137,32 @@ const AddQuestions = () => {
             <Grid
               item
               xs={12}
-              sx={{ display: "flex", justifyContent: "flex-end" }}
+              sx={{ display: "flex", justifyContent: "space-between" }}
             >
+              <Grid item>
+                <Paper
+                  sx={{
+                    p: "2px 4px",
+                    display: "flex",
+                    alignItems: "center",
+                    width: 400,
+                  }}
+                >
+                  <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder="Search"
+                    inputProps={{ "aria-label": "search" }}
+                    onChange={searchHandle}
+                  />
+                  <IconButton
+                    type="button"
+                    sx={{ p: "10px" }}
+                    aria-label="search"
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </Paper>
+              </Grid>
               <Grid item>
                 <Button
                   variant="outlined"
@@ -166,7 +184,10 @@ const AddQuestions = () => {
             <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
               <div style={{ height: "auto", width: "100%" }}>
                 <DataGrid
-                  rows={rows}
+                  rows={filteredData?.map((row, index) => ({
+                    ...row,
+                    sl: index + 1,
+                  }))}
                   columns={userColumns}
                   initialState={{
                     pagination: {
@@ -181,7 +202,17 @@ const AddQuestions = () => {
         </Box>
       )}
       {edit ? (
-        <EditUser details={userDetails} open={edit} setOpen={setEdit} />
+        <EditQuestion
+          id={id}
+          details={details}
+          options={options}
+          optionsTwo={optionsTwo}
+          open={edit}
+          setOpen={setEdit}
+          fetchQuestions={fetchQuestions}
+          setOpenNotification={setOpenNotification}
+          setMessage={setMessage}
+        />
       ) : null}
       {deleteQuestion ? (
         <Dialog
@@ -198,7 +229,7 @@ const AddQuestions = () => {
           </DialogContent>
           <DialogActions sx={{ mb: 2, mx: 2 }}>
             <Button
-              onClick={() => setDeleteQuestion(false)}
+              onClick={confirmDeleteHandler}
               variant="contained"
               autoFocus
               size="small"

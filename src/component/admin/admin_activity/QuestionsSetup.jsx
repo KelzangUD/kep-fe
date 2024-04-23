@@ -23,6 +23,7 @@ const QuestionsSetup = ({
   setQuestionsSetUp,
   setOpenNotification,
   setMessage,
+  fetchQuestions
 }) => {
   // init states
   const [questionTypes, setQuestionTypes] = useState([]);
@@ -34,7 +35,6 @@ const QuestionsSetup = ({
     dynamicHandle(id, prop, value, setQuestions);
   };
   const deleteRowHandle = (id) => {
-    // console.log(id);
     setQuestions((prevProductDetails) => {
       return prevProductDetails.filter((item) => item?.id !== id);
     });
@@ -43,7 +43,7 @@ const QuestionsSetup = ({
 
   const token = localStorage.getItem("token");
   const fetchQuestionTypes = async () => {
-    const res = await Route("GET", "/question-types", token, null);
+    const res = await Route("GET", "/question-types", token, null, null);
     if (res?.status === 200) {
       setQuestionTypes(res?.data?.questionTypes);
     }
@@ -69,11 +69,11 @@ const QuestionsSetup = ({
 
   const saveHandle = async () => {
     if (questions.length > 0) {
-      const response = await Route("POST", `/questions`, token, questions);
+      const response = await Route("POST", `/questions`, token, questions, null);
       if (response?.status === 201) {
         setMessage(response?.data?.message);
         setOpenNotification(true);
-        // fetchDesignations();
+        fetchQuestions();
         setQuestionsSetUp(false);
       } else {
         setMessage(response?.response?.data?.message);

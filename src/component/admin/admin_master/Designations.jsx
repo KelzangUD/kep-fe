@@ -27,14 +27,14 @@ import Route from "../../../routes/Route";
 
 const Designations = () => {
   // init states
-  const [add, setAdd] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
+  const [add, setAdd] = useState(false);
+  const [edit, setEdit] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [designations, setDesignations] = useState([]);
-  const [details, setDetails] = React.useState({});
-  const [deleteDesignation, setDeleteDesignation] = React.useState(false);
-  const [id, setId] = React.useState("");
-  const [message, setMessage] = React.useState("");
+  const [details, setDetails] = useState({});
+  const [deleteDesignation, setDeleteDesignation] = useState(false);
+  const [id, setId] = useState("");
+  const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
 
   // handlers
@@ -51,7 +51,7 @@ const Designations = () => {
   };
   const token = localStorage.getItem("token");
   const fetchDesignations = async () => {
-    const res = await Route("GET", "/designations", token, null);
+    const res = await Route("GET", "/designations", token, null, null);
     if (res?.status === 200) {
       setDesignations(res?.data?.designations);
     }
@@ -103,7 +103,7 @@ const Designations = () => {
     },
   ];
   const confirmDeleteHandler = async () => {
-    const res = await Route("DELETE", `/designations/${id}`, token, null);
+    const res = await Route("DELETE", `/designations`, token, null, id);
     if (res?.status === 201) {
       setDeleteDesignation(false);
       setMessage(res?.data?.message);

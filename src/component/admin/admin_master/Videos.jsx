@@ -42,7 +42,7 @@ const Videos = () => {
 
   const token = localStorage.getItem("token");
   const fetchVideos = async () => {
-    const res = await Route("GET", "/videos", token, null);
+    const res = await Route("GET", "/videos", token, null, null);
     if (res?.status === 200) {
       setVideos(res?.data?.videos);
     }
@@ -109,7 +109,7 @@ const Videos = () => {
     setAdd(true);
   };
   const confirmDeleteHandler = async () => {
-    const res = await Route("DELETE", `/videos/${id}`, token, null);
+    const res = await Route("DELETE", `/videos`, token, null, id);
     if (res?.status === 201) {
       setDeleteVideo(false);
       setMessage(res?.data?.message);

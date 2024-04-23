@@ -6,6 +6,7 @@ const Route = async (
   endpoint,
   token,
   data,
+  id,
   contentType = "application/json"
 ) => {
   const headers = {
@@ -28,8 +29,16 @@ const Route = async (
   }
 
   try {
-    const response = await axios(`${apiUrl}${endpoint}`, requestOptions);
-    return response;
+    if (id !== null) {
+      const response = await axios(
+        `${apiUrl}${endpoint}/${id}`,
+        requestOptions
+      );
+      return response;
+    } else {
+      const response = await axios(`${apiUrl}${endpoint}`, requestOptions);
+      return response;
+    }
   } catch (error) {
     return error;
   }

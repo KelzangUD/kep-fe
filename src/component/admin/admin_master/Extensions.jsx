@@ -39,7 +39,7 @@ const Extensions = () => {
 
   const token = localStorage.getItem("token");
   const fetchExtensions = async () => {
-    const res = await Route("GET", "/extensions", token, null);
+    const res = await Route("GET", "/extensions", token, null, null);
     if (res?.status === 200) {
       setExtensions(res?.data?.extensions);
     }
@@ -67,7 +67,7 @@ const Extensions = () => {
   };
 
   const confirmDeleteHandler = async () => {
-    const res = await Route("DELETE", `/extensions/${id}`, token, null);
+    const res = await Route("DELETE", `/extensions`, token, null, id);
     if (res?.status === 201) {
       setDeleteExtension(false);
       setMessage(res?.data?.message);

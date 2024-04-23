@@ -10,7 +10,7 @@ const Feedbacks = () => {
 
     const token = localStorage.getItem("token");
     const fetchFeedbacks = async () => {
-      const res = await Route("GET", "/feedbacks/get", token, null);
+      const res = await Route("GET", "/feedbacks/get", token, null, null);
       if (res?.status === 200) {
         setFeedbacks(res?.data?.feedbacks);
       }

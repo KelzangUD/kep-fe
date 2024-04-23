@@ -39,7 +39,7 @@ const Regions = () => {
 
   const token = localStorage.getItem("token");
   const fetchRegions = async () => {
-    const res = await Route("GET", "/regions", token, null);
+    const res = await Route("GET", "/regions", token, null, null);
     if (res?.status === 200) {
       setRegions(res?.data?.regions);
     }
@@ -64,7 +64,7 @@ const Regions = () => {
     setDeleteRegion(true);
   };
   const confirmDeleteHandler = async () => {
-    const res = await Route("DELETE", `/regions/${id}`, token, null);
+    const res = await Route("DELETE", `/regions`, token, null, id);
     if (res?.status === 201) {
       setDeleteRegion(false);
       setMessage(res?.data?.message);
