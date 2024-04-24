@@ -56,7 +56,12 @@ const User = () => {
     setDeleteUser(true);
   };
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40, valueGetter: (params) => params.row.sl, },
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      width: 40,
+      valueGetter: (params) => params.row.sl,
+    },
     { field: "name", headerName: "Name", width: 160 },
     { field: "empId", headerName: "Employee ID", width: 130 },
     {
@@ -64,9 +69,20 @@ const User = () => {
       headerName: "Email",
       width: 260,
     },
-    { field: "designation ", headerName: "Designation", width: 200, valueGetter: (params) => params.row.Designation?.title || 'N/A', },
+    {
+      field: "designation ",
+      headerName: "Designation",
+      width: 200,
+      valueGetter: (params) => params.row.Designation?.title || "N/A",
+    },
     { field: "contact", headerName: "Contact No.", width: 100 },
-    { field: "isAdmin", headerName: "Admin", width: 70 },
+    {
+      field: "isAdmin",
+      headerName: "Admin",
+      width: 70,
+      valueGetter: (params) =>
+        params.row.isAdmin === true ? "Yes" : "No",
+    },
     {
       field: "action",
       headerName: "Action",
@@ -98,7 +114,7 @@ const User = () => {
   const fetchUsers = async () => {
     const res = await Route("GET", "/users", token, null, null);
     if (res?.status === 200) {
-      setUsers(res?.data?.users)
+      setUsers(res?.data?.users);
     }
   };
   useEffect(() => {
@@ -110,7 +126,7 @@ const User = () => {
       item?.employeeID.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item?.designation.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  const confirmDeleteHandler = async() => {
+  const confirmDeleteHandler = async () => {
     const res = await Route("PUT", `/users/delete-users`, token, null, userId);
     if (res?.status === 201) {
       setDeleteUser(false);
@@ -120,7 +136,7 @@ const User = () => {
     } else {
       setMessage(res?.data?.message);
       setOpenNotification(true);
-    };
+    }
   };
   return (
     <>
@@ -177,7 +193,10 @@ const User = () => {
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={filteredData?.map((row, index) => ({ ...row, sl: index + 1 }))}
+                rows={filteredData?.map((row, index) => ({
+                  ...row,
+                  sl: index + 1,
+                }))}
                 columns={userColumns}
                 initialState={{
                   pagination: {
@@ -191,10 +210,23 @@ const User = () => {
         </Grid>
       </Box>
       {createUser ? (
-        <CreateUser open={createUser} setOpen={setCreateUser} setOpenNotification={setOpenNotification} setMessage={setMessage} fetchUsers={fetchUsers} />
+        <CreateUser
+          open={createUser}
+          setOpen={setCreateUser}
+          setOpenNotification={setOpenNotification}
+          setMessage={setMessage}
+          fetchUsers={fetchUsers}
+        />
       ) : null}
       {editUser ? (
-        <EditUser details={userDetails} open={editUser} setOpen={setEditUser} setOpenNotification={setOpenNotification} setMessage={setMessage} fetchUsers={fetchUsers}  />
+        <EditUser
+          details={userDetails}
+          open={editUser}
+          setOpen={setEditUser}
+          setOpenNotification={setOpenNotification}
+          setMessage={setMessage}
+          fetchUsers={fetchUsers}
+        />
       ) : null}
       {deleteUser ? (
         <Dialog

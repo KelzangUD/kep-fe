@@ -61,7 +61,7 @@ const AdminNav = () => {
     const data = {
       empId: user?.empId
     }
-    const res = await Route("POST", "/logout", token, data);
+    const res = await Route("POST", "/logout", token, data, null);
     if (res?.status === 200) {
       localStorage.removeItem("user");
       localStorage.removeItem("token");

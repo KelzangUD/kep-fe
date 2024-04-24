@@ -42,14 +42,14 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
   const token = localStorage.getItem("token");
   // fetch Designations
   const fetchDesignations = async () => {
-    const res = await Route("GET", `/designations`, token, null);
+    const res = await Route("GET", `/designations`, token, null, null);
     if (res?.status === 200) {
       setDesignations(res?.data?.designations);
     }
   };
   // fetch Regions
   const fetchRegions = async () => {
-    const res = await Route("GET", `/regions`, token, null);
+    const res = await Route("GET", `/regions`, token, null, null);
     if (res?.status === 200) {
       setRegions(res?.data?.regions);
     }
@@ -58,9 +58,10 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
   const fetchExtensions = async (id) => {
     const res = await Route(
       "GET",
-      `/regions/fetchAllExtensions/${id}`,
+      `/regions/fetchAllExtensions`,
       token,
-      null
+      null,
+      id
     );
     if (res?.status === 200) {
       setExtensions(res?.data?.extensions);
@@ -78,7 +79,7 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
   };
 
   const fetchHandle = async () => {
-    const res = await Route("GET", `/users/sso/${searchQuery}`, token, null);
+    const res = await Route("GET", `/users/sso/${searchQuery}`, token, null, null);
     if (res?.status === 200) {
       setUserDetails((prev) => ({
         ...prev,
@@ -127,14 +128,14 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
   };
   // submit handle to add new user
   const handleSubmit = async () => {
-    const response = await Route("POST", `/users`, token, userDetails);
+    const response = await Route("POST", `/users`, token, userDetails, null);
     if (response?.status === 201) {
       setMessage(response?.data?.message);
       setOpenNotification(true);
       fetchUsers();
       setOpen(false);
     } else {
-      setMessage(response?.data?.message);
+      setMessage(response?.response?.data?.message);
       setOpenNotification(true);
     }
   };
