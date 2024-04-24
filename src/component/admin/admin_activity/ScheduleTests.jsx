@@ -49,14 +49,14 @@ const ScheduleTests = () => {
     setDeleteQuestion(true);
   };
   const token = localStorage.getItem("token");
-  const fetchExtensions = async () => {
+  const fetchTest = async () => {
     const res = await Route("GET", "/tests", token, null, null);
     if (res?.status === 200) {
       setTests(res?.data?.tests);
     }
   };
   useEffect(() => {
-    fetchExtensions();
+    fetchTest();
   }, []);
   const userColumns = [
     { field: "sl", headerName: "Sl. No", width: 40 },
@@ -76,7 +76,12 @@ const ScheduleTests = () => {
     },
     { field: "end_time", headerName: "End Time", width: 100 },
     { field: "duration", headerName: "Duration", width: 100 },
-    { field: "status", headerName: "Status", width: 150 },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      valueGetter: (params) => params.row.status === true ? "Active" : "Inactive",
+    },
     {
       field: "action",
       headerName: "Action",
@@ -113,7 +118,13 @@ const ScheduleTests = () => {
           setOpenNotification={setOpenNotification}
         />
       ) : edit ? (
-        <EditScheduleTest details={details} open={edit} setOpen={setEdit} />
+        <EditScheduleTest
+          testDetails={details}
+          setOpen={setEdit}
+          setMessage={setMessage}
+          setOpenNotification={setOpenNotification}
+          fetchTest={fetchTest}
+        />
       ) : (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
