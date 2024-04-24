@@ -23,7 +23,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import Route from "../../../../routes/Route";
 
-const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification }) => {
+const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchTest }) => {
   const [questions, setQuestions] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [details, setDetails] = useState({
@@ -108,6 +108,7 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification }) => {
   const scheduleHandle = async() => {
     const res = await Route("POST", `/tests`, token, details, null);
     if (res?.status === 201) {
+      fetchTest();
       setScheduleTest(false);
       setMessage(res?.data?.message);
       setOpenNotification(true);

@@ -31,7 +31,7 @@ const ScheduleTests = () => {
   const [scheduleTest, setScheduleTest] = useState(false);
   const [edit, setEdit] = useState(false);
   const [details, setDetails] = useState({});
-  const [deleteQuestion, setDeleteQuestion] = useState(false);
+  const [deleteTest, setDeleteTest] = useState(false);
   const [id, setId] = useState("");
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
@@ -46,7 +46,7 @@ const ScheduleTests = () => {
   };
   const deleteHandle = (param) => {
     setId(param?.id);
-    setDeleteQuestion(true);
+    setDeleteTest(true);
   };
   const token = localStorage.getItem("token");
   const fetchTest = async () => {
@@ -109,6 +109,18 @@ const ScheduleTests = () => {
   const filteredData = tests?.filter((item) =>
     item?.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const deleteTestHandler = async() => {
+    const res = await Route("DELETE", `/tests`, token, null, id);
+    if (res?.status === 201) {
+      setDeleteTest(false);
+      setMessage(res?.data?.message);
+      fetchTest();
+      setOpenNotification(true);
+    } else {
+      setMessage(res?.data?.message);
+      setOpenNotification(true);
+    }
+  }
   return (
     <>
       {scheduleTest ? (
@@ -116,6 +128,7 @@ const ScheduleTests = () => {
           setScheduleTest={setScheduleTest}
           setMessage={setMessage}
           setOpenNotification={setOpenNotification}
+          fetchTest={fetchTest}
         />
       ) : edit ? (
         <EditScheduleTest
@@ -196,22 +209,22 @@ const ScheduleTests = () => {
           </Grid>
         </Box>
       )}
-      {deleteQuestion ? (
+      {deleteTest ? (
         <Dialog
-          open={deleteQuestion}
-          onClose={() => setDeleteQuestion(false)}
+          open={deleteTest}
+          onClose={() => setDeleteTest(false)}
           TransitionComponent={Transition}
         >
           <DialogContent>
             <Typography variant="h6">Confirmation</Typography>
             <Divider sx={{ my: 2 }} />
             <Typography variant="subtitle1">
-              Are you sure you want to delete this question?
+              Are you sure you want to delete this test?
             </Typography>
           </DialogContent>
           <DialogActions sx={{ mb: 2, mx: 2 }}>
             <Button
-              onClick={() => setDeleteQuestion(false)}
+              onClick={deleteTestHandler}
               variant="contained"
               autoFocus
               size="small"
@@ -219,7 +232,7 @@ const ScheduleTests = () => {
               Confirm
             </Button>
             <Button
-              onClick={() => setDeleteQuestion(false)}
+              onClick={() => setDeleteTest(false)}
               variant="outlined"
               color="error"
               size="small"
