@@ -53,14 +53,15 @@ const AdminNav = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
   const profileHandle = () => {
-    navigation("/admin/profile");
+    const user = JSON.parse(localStorage.getItem("user"));
+    user?.isAdmin ? navigation("/admin/profile") : navigation("/user/profile");
   };
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
   const logoutHandle = async () => {
-    const user = JSON.parse(localStorage.getItem("user"))
+    const user = JSON.parse(localStorage.getItem("user"));
     const data = {
-      empId: user?.empId
-    }
+      empId: user?.empId,
+    };
     const res = await Route("POST", "/logout", token, data, null);
     if (res?.status === 200) {
       localStorage.removeItem("user");

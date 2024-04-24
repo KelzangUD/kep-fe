@@ -34,7 +34,9 @@ const SignIn = () => {
     if (res?.status === 200) {
       localStorage.setItem("user", JSON.stringify(res?.data?.user));
       localStorage.setItem("token", res?.data?.token);
-      navigagte("/admin/dashboard");
+      res?.data?.user?.isAdmin
+        ? navigagte("/admin/dashboard")
+        : navigagte("/user/dashboard");
     } else {
       setMessage(res?.response?.data?.message);
       setOpen(true);
