@@ -13,7 +13,7 @@ import {
   Select,
 } from "@mui/material";
 import EditMcq from "./edit_question_types/EditMcq";
-import EditFillInTheBank from "./edit_question_types/EditFillInTheBank";
+import EditFillInTheBlank from "./edit_question_types/EditFillInTheBlank";
 import EditTrueOrFalse from "./edit_question_types/EditTrueOrFalse";
 import EditYesOrNo from "./edit_question_types/EditYesOrNo";
 import EditMatching from "./edit_question_types/EditMatching";
@@ -217,7 +217,7 @@ const EditQuestion = ({
         );
       case 2:
         return (
-          <EditFillInTheBank
+          <EditFillInTheBlank
             options={options}
             choiceHandle={choiceHandle}
             answerHandle={answerHandle}

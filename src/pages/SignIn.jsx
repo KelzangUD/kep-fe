@@ -38,7 +38,7 @@ const SignIn = () => {
         ? navigagte("/admin/dashboard")
         : navigagte("/user/dashboard");
     } else {
-      setMessage(res?.response?.data?.message);
+      setMessage(res?.data?.message);
       setOpen(true);
     }
   };

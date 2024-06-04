@@ -9,7 +9,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 
-const FillInTheBank = ({ choiceHandle, answerHandle }) => {
+const FillInTheBlank = ({ choiceHandle, answerHandle }) => {
   return (
     <>
       <Box p={2}>
@@ -42,4 +42,4 @@ const FillInTheBank = ({ choiceHandle, answerHandle }) => {
   );
 };
 
-export default FillInTheBank;
+export default FillInTheBlank;

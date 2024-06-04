@@ -17,7 +17,7 @@ import {
 import Transition from "../../../../common/Transition";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Mcq from "./question_types/Mcq";
-import FillInTheBank from "./question_types/FillInTheBank";
+import FillInTheBlank from "./question_types/FillInTheBlank";
 import TrueOrFalse from "./question_types/TrueOrFalse";
 import YesOrNo from "./question_types/YesOrNo";
 import Matching from "./question_types/Matching";
@@ -116,7 +116,7 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
       case 1:
         return <Mcq choiceHandle={choiceHandle} answerHandle={answerHandle} />;
       case 2:
-        return <FillInTheBank choiceHandle={choiceHandle} answerHandle={answerHandle} />;
+        return <FillInTheBlank choiceHandle={choiceHandle} answerHandle={answerHandle} />;
       case 3:
         return <TrueOrFalse answerHandle={answerHandle} />;
       case 4:

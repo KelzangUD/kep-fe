@@ -47,29 +47,19 @@ export default function UserSideNav() {
     {
       label: "Activity",
       icon: <AssignmentIcon />,
-      onClick: () => handleNestedItemClick(3),
+      onClick: () => handleNestedItemClick(1),
       nestedItems: [
         {
-          label: "Add Questions",
+          label: "Test",
           icon: <KeyboardArrowRightIcon />,
-          onClick: () => routeHandle("activity/add-questions"),
-        },
-        {
-          label: "Schedule Tests",
-          icon: <KeyboardArrowRightIcon />,
-          onClick: () => routeHandle("activity/schedule-tests"),
-        },
-        {
-          label: "Questions Used",
-          icon: <KeyboardArrowRightIcon />,
-          onClick: () => routeHandle("activity/questions-used"),
+          onClick: () => routeHandle("activity/test"),
         },
       ],
     },
     {
       label: "Report",
       icon: <AssessmentIcon />,
-      onClick: () => handleNestedItemClick(4),
+      onClick: () => handleNestedItemClick(2),
       nestedItems: [
         {
           label: "Current Month",
@@ -124,7 +114,7 @@ export default function UserSideNav() {
               Knowledge Enhancement Plateform
             </Typography>
             <Typography variant="h6" align="center" sx={{ color: "#3081D0", my: 1 }}>
-              ADMIN
+              USER
             </Typography>
           </Grid>
         </Grid>

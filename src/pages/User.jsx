@@ -5,6 +5,7 @@ import { Box, Grid, Paper } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
 import UserDashboard from "./user/UserDashboard";
 import UserProfile from "./user/UserProfile";
+import UserActivity from "./user/UserActivity";
 // import Report from "./admin/Report";
 import { styled } from "@mui/material/styles";
 
@@ -29,6 +30,7 @@ const User = () => {
                     <Routes>
                       <Route path="/dashboard" element={<UserDashboard />} />
                       <Route path="/profile" element={<UserProfile />} />
+                      <Route path="/activity/*" element={<UserActivity />} />
                       {/* <Route path="/profile" element={<Profile />} />
                       <Route path="/report/*" element={<Report />} /> */}
                     </Routes>
