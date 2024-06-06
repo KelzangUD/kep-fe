@@ -12,9 +12,11 @@ const Test = () => {
   const [tests, setTests] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [id, setId] = useState(null);
+  const [message, setMessage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
   const [takeTest, setTakeTest] = useState(false);
   const [details, setDetails] = useState({});
+  const [questions, setQuestions] = useState([]);
   const token = localStorage.getItem("token");
   const fetchTests = async () => {
     const res = await Route("GET", "/tests", token, null, null);
@@ -33,13 +35,28 @@ const Test = () => {
   const searchHandle = (e) => {
     setSearchQuery(e.target.value);
   };
+  const fetchQuestions = async (id, row) => {
+    const res = await Route("GET", "/tests", token, null, id);
+    if (res?.status === 200) {
+      if (res?.data?.message == "You have Already Appeared for Test") {
+        setMessage(res?.data?.message);
+        setShowNotification(true);
+      } else {
+        setQuestions(res?.data?.questions);
+        setDetails(row);
+        setTakeTest(true);
+      }
+    } else {
+      setMessage(res?.data?.message);
+      setShowNotification(true);
+    }
+  };
   const testHandle = (param) => {
-    setId(param?.row?.id);
     if (param?.row?.end_date < new Date().toJSON()) {
+      setMessage("You're unable to take the test at this time because registration is closed.");
       setShowNotification(true);
     } else {
-      setDetails(param?.row);
-      setTakeTest(true);
+      fetchQuestions(param?.row?.id, param?.row);
     }
   };
 
@@ -88,7 +105,11 @@ const Test = () => {
   return (
     <>
       {takeTest ? (
-        <TakeTest id={id} details={details} setTakeTest={setTakeTest} />
+        <TakeTest
+          details={details}
+          setTakeTest={setTakeTest}
+          questions={questions}
+        />
       ) : (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
@@ -148,7 +169,7 @@ const Test = () => {
         <Notification
           open={showNotification}
           setOpen={setShowNotification}
-          message="You're unable to take the test at this time because registration is closed."
+          message={message}
         />
       ) : null}
     </>

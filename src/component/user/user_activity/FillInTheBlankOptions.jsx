@@ -1,5 +1,13 @@
-import React from "react";
-import { Box, Grid, TextField, FormControl, RadioGroup } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Box,
+  Grid,
+  TextField,
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 
 const FillInTheBlankOptions = ({
   options,
@@ -8,6 +16,10 @@ const FillInTheBlankOptions = ({
   setSolvedQuestions,
   questionId,
 }) => {
+  const [answer, setAnswer] = useState("");
+  const fillInTheBlankHandle = (e) => {
+    setAnswer(e?.target?.value);
+  };
   const answerHandle = (e) => {
     setSolvedQuestions((prevQuestions) => {
       if (!prevQuestions.includes(questionId)) {
@@ -17,7 +29,7 @@ const FillInTheBlankOptions = ({
       }
     });
     if (
-      e.target.value?.toLowerCase().trim() ===
+      answer?.toLowerCase().trim() ===
       options[0]?.description.toLowerCase().trim()
     ) {
       setResult((prev) => ({
@@ -27,7 +39,7 @@ const FillInTheBlankOptions = ({
     } else {
       setResult((prev) => ({
         ...prev,
-        score: prev.score === 0 ? 0 : prev.score - point,
+        score: prev.score - point,
       }));
     }
   };
@@ -37,14 +49,20 @@ const FillInTheBlankOptions = ({
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={12}>
+              <Grid item xs={11}>
                 <TextField
                   fullWidth
                   label="Add Answer"
                   id="your-text"
                   variant="outlined"
                   size="small"
-                  onChange={answerHandle}
+                  onChange={fillInTheBlankHandle}
+                />
+              </Grid>
+              <Grid item xs={1}>
+                <FormControlLabel
+                  value="fourth"
+                  control={<Radio onChange={answerHandle} />}
                 />
               </Grid>
             </Grid>

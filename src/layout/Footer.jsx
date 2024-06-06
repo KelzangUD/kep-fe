@@ -14,7 +14,7 @@ const Footer = () => {
               Knowlegement Enhancement Plateform
             </Typography>
             <Typography variant="body1" sx={{ color: "text.secondary" }}>
-              © 2023 Software Development Unit
+              © 2023 Software & Application Section
             </Typography>
           </Grid>
           <Grid

@@ -88,6 +88,7 @@ const UploadVideo = ({
       `/videos`,
       token,
       formData,
+      null,
       "multipart/form-data"
     );
 

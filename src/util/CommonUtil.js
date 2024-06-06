@@ -42,5 +42,18 @@ export const dynamicHandle = (id, prop, value, setState) => {
   });
 };
 
+// ============================================= RETURN DURATION =================================
+export const calculateDuration = (value) => {
+  if (value === "1 Hr") {
+    return 1 * 60 * 60 * 1000;
+  } else if (value === "2 Hrs") {
+    return  2 * 60 * 60 * 1000
+  } else if (value === "3 Hrs") {
+    return 3 * 60 * 60 * 1000
+  } else {
+    return 30 * 60 * 1000
+  }
+}
+
 
 

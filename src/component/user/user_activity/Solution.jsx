@@ -7,6 +7,7 @@ import YesOrNoOptions from "./YesOrNoOptions";
 import MatchingOptions from "./MatchingOptions";
 import Route from "../../../routes/Route";
 import Notification from "../../../ui/Notification";
+import ReactPlayer from "react-player";
 
 const Solution = ({ index, question, setResult, setSolvedQuestions }) => {
   const [options, setOptions] = useState([]);
@@ -25,22 +26,64 @@ const Solution = ({ index, question, setResult, setSolvedQuestions }) => {
     }
   };
   useEffect(() => {
-    setOptions([])
+    console.log(question);
+    setOptions([]);
     setOptionsTwo([]);
     fetchOptions();
   }, [question]);
   const renderOptions = () => {
     switch (question?.question_type) {
       case 1:
-        return <McqOptions options={options} point={question?.point} setResult={setResult} setSolvedQuestions={setSolvedQuestions} questionId={question?.id} />;
+        return (
+          <McqOptions
+            options={options}
+            point={question?.point}
+            setResult={setResult}
+            setSolvedQuestions={setSolvedQuestions}
+            questionId={question?.id}
+          />
+        );
       case 2:
-        return <FillInTheBlankOptions options={options} point={question?.point} setResult={setResult} setSolvedQuestions={setSolvedQuestions} questionId={question?.id} />;
+        return (
+          <FillInTheBlankOptions
+            options={options}
+            point={question?.point}
+            setResult={setResult}
+            setSolvedQuestions={setSolvedQuestions}
+            questionId={question?.id}
+          />
+        );
       case 3:
-        return <TrueOrFalseOptions options={options} point={question?.point} setResult={setResult} setSolvedQuestions={setSolvedQuestions} questionId={question?.id} />;
+        return (
+          <TrueOrFalseOptions
+            options={options}
+            point={question?.point}
+            setResult={setResult}
+            setSolvedQuestions={setSolvedQuestions}
+            questionId={question?.id}
+          />
+        );
       case 4:
-        return <YesOrNoOptions options={options} point={question?.point} setResult={setResult} setSolvedQuestions={setSolvedQuestions} questionId={question?.id} />;
+        return (
+          <YesOrNoOptions
+            options={options}
+            point={question?.point}
+            setResult={setResult}
+            setSolvedQuestions={setSolvedQuestions}
+            questionId={question?.id}
+          />
+        );
       case 5:
-        return <MatchingOptions options={options} optionsTwo={optionsTwo} point={question?.point} setResult={setResult} setSolvedQuestions={setSolvedQuestions}  questionId={question?.id} />;
+        return (
+          <MatchingOptions
+            options={options}
+            optionsTwo={optionsTwo}
+            point={question?.point}
+            setResult={setResult}
+            setSolvedQuestions={setSolvedQuestions}
+            questionId={question?.id}
+          />
+        );
       default:
         return null;
     }
@@ -57,6 +100,22 @@ const Solution = ({ index, question, setResult, setSolvedQuestions }) => {
               {index}. {question?.question}
             </Typography>
           </Grid>
+          {
+            question?.video !== null || question?.audio !== null ? <Grid item xs={12} sx={{ paddingY: 2 }}>
+            <ReactPlayer
+              className="react-player"
+              url={question?.Video?.path || question?.Audio?.path}
+              width="100%"
+              height="400px"
+              controls
+              config={{
+                youtube: {
+                  playerVars: { rel: 0 },
+                },
+              }}
+            />
+          </Grid> : null
+          }
           <Grid item xs={12}>
             {options?.length > 0 && renderOptions()}
           </Grid>
