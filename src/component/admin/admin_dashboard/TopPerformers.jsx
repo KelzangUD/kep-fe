@@ -1,71 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Typography,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
-  Paper,
 } from "@mui/material";
-
-const rows = [
-  {
-    id: 1,
-    sl: 1,
-    name: "Kelzang Ugyen Dorji",
-    employeeID: "E00911",
-    email: "sw_engineer3.sdu@tashicell.com",
-    averageScore: 95,
-  },
-  {
-    id: 2,
-    sl: 2,
-    name: "Pema Dorji",
-    employeeID: "E00505",
-    email: "sw_engineer1.sdu@tashicell.com",
-    averageScore: 94,
-  },
-  {
-    id: 3,
-    sl: 3,
-    name: "Sangay Wangdi Moktan",
-    employeeID: "E00714",
-    email: "sw_engineer2.sdu@tashicell.com",
-    averageScore: 93,
-  },
-  {
-    id: 4,
-    sl: 4,
-    name: "Tula Ram",
-    employeeID: "E00883",
-    email: "sw_engineer9.sdu@tashicell.com",
-    averageScore: 92,
-  },
-  {
-    id: 5,
-    sl: 5,
-    name: "Tshering Dhendup",
-    employeeID: "E00875",
-    email: "sw_engineer6.sdu@tashicell.com",
-    averageScore: 91,
-  },
-];
+import Route from "../../../routes/Route";
 
 const TopPerformers = () => {
-  // const userColumns = [
-  //   { field: "sl", headerName: "Sl. No", width: 40 },
-  //   { field: "name", headerName: "Name", width: 200 },
-  //   { field: "employeeID", headerName: "Employee ID", width: 160 },
-  //   {
-  //     field: "email",
-  //     headerName: "Email",
-  //     width: 300,
-  //   },
-  //   { field: "averageScore", headerName: "Average Score (%)", width: 160 },
-  // ];
+  const [topPerformersData, setTopPerformarsData] = useState([]);
+  const token = localStorage.getItem("token");
+  const fetchTopPerformers = async () => {
+    const res = await Route("GET", "/results/top_performers", token, null, null);
+    if (res?.status === 200) {
+      setTopPerformarsData(res?.data?.results);
+    };
+  };
+  useEffect(() => {
+    fetchTopPerformers();
+  }, []);
   return (
     <>
       <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
@@ -85,13 +41,13 @@ const TopPerformers = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                {topPerformersData?.map((row, index) => (
                   <TableRow
-                    key={row.sl}
+                    key={row.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {row.sl}
+                      {index + 1}
                     </TableCell>
                     <TableCell>
                       {row.name}

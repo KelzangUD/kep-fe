@@ -126,4 +126,3 @@ export const calculateScoreAnalysis = (results) => {
     { name: "failed", value: testResults.failed },
   ];
 };
-
