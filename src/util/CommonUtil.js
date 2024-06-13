@@ -7,7 +7,7 @@ export const dynamicHandle = (id, prop, value, setState) => {
     } else {
       const item = prev[index];
       let updatedValue;
-      if (prop === 'choice' || prop === 'choice2' || prop === 'matching') {
+      if (prop === "choice" || prop === "choice2" || prop === "matching") {
         // Check if value is an empty array
         if (Array.isArray(value) && value.length === 0) {
           updatedValue = []; // Set choice array to empty if value is []
@@ -15,11 +15,16 @@ export const dynamicHandle = (id, prop, value, setState) => {
           // Check if item[prop] exists and is an array
           if (Array.isArray(item[prop])) {
             // Check if choice already contains object with provided name
-            const existingIndex = item[prop].findIndex(obj => obj[prop] === value[prop]);
+            const existingIndex = item[prop].findIndex(
+              (obj) => obj[prop] === value[prop]
+            );
             if (existingIndex !== -1) {
               // Update value of existing object if found
               const updatedChoice = [...item[prop]];
-              updatedChoice[existingIndex] = { ...updatedChoice[existingIndex], ...value };
+              updatedChoice[existingIndex] = {
+                ...updatedChoice[existingIndex],
+                ...value,
+              };
               updatedValue = updatedChoice;
             } else {
               // Add new object to choice array
@@ -47,13 +52,45 @@ export const calculateDuration = (value) => {
   if (value === "1 Hr") {
     return 1 * 60 * 60 * 1000;
   } else if (value === "2 Hrs") {
-    return  2 * 60 * 60 * 1000
+    return 2 * 60 * 60 * 1000;
   } else if (value === "3 Hrs") {
-    return 3 * 60 * 60 * 1000
+    return 3 * 60 * 60 * 1000;
   } else {
-    return 30 * 60 * 1000
+    return 30 * 60 * 1000;
   }
-}
+};
 
+// ========================================== LATEST RESULT ======================================
+export const calculateLatestTestResults = (results) => {
+  // Handle empty or non-array input
+  if (!Array.isArray(results) || results.length === 0) {
+    return [{
+      name: null, 
+      excel: 0,
+      good: 0,
+      average: 0,
+      failed: 0,
+    }];
+  }
+  const name = results[0]?.name;
+  // Use reduce for efficient calculation and object creation (assuming all elements have score and total)
+  const testResults = results.reduce((acc, result) => {
+    const currentRatio = (result.score / result.total) * 100;
+    if (currentRatio >= 90) {
+      acc.excel++;
+    } else if (currentRatio >= 70 && currentRatio < 90) {
+      acc.good++;
+    } else if (currentRatio >= 50 && currentRatio < 70) {
+      acc.average++;
+    } else {
+      acc.failed++;
+    }
+    return acc;
+  }, { excel: 0, good: 0, average: 0, failed: 0 });
 
+  return [{
+    name,
+    ...testResults,
+  }];
+};
 

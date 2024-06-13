@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Container, Typography, Grid } from "@mui/material";
 import {
   BarChart,
@@ -9,18 +9,31 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import Route from "../../../routes/Route";
+import { calculateLatestTestResults } from "../../../util/CommonUtil";
 
-const data = [
-  {
-    name: "December Test",
-    excel: 40,
-    good: 14,
-    average: 24,
-    failed: 10,
-  },
-];
+// const data = [
+//   {
+//     name: "December Test",
+//     excel: 40,
+//     good: 14,
+//     average: 24,
+//     failed: 10,
+//   },
+// ];
 
 const LastTestGraph = () => {
+  const [latestResults, setLatestResults] = useState([]);
+  const token = localStorage.getItem("token");
+  const fetchLatestResults = async () => {
+    const res = await Route("GET", "/results/latest", token, null, null);
+    if (res?.status === 200) {
+      setLatestResults(calculateLatestTestResults(res?.data?.results));
+    }
+  };
+  useEffect(() => {
+    fetchLatestResults();
+  }, []);
   return (
     <Box>
       <Typography variant="subtitle1">Last Test</Typography>
@@ -30,7 +43,7 @@ const LastTestGraph = () => {
             <BarChart
               width={600}
               height={300}
-              data={data}
+              data={latestResults}
               margin={{
                 top: 5,
                 right: 30,
