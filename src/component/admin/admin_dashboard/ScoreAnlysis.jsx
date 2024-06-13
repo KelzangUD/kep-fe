@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { Grid, Box, Paper, Typography } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import React, { useState, useEffect } from "react";
+import { Grid, Typography } from "@mui/material";
 import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
+import Route from "../../../routes/Route";
+import { calculateScoreAnalysis } from "../../../util/CommonUtil";
 
 const data = [
   { name: "excel", value: 25 },
@@ -43,19 +41,24 @@ const renderCustomizedLabel = ({
 };
 
 export default function ScoreAnalysis() {
-  const [year, setYear] = useState("");
-
-  const yearHandle = (event) => {
-    setYear(event.target.value);
+  const [scoreAnalysis, setScoreAnalysis] = useState([]);
+  const token = localStorage.getItem("token");
+  const fetchResults = async () => {
+    const res = await Route("GET", "/results", token, null, null);
+    if (res?.status === 200) {
+      setScoreAnalysis(calculateScoreAnalysis(res?.data?.results));
+    }
   };
-
+  useEffect(() => {
+    fetchResults();
+  }, []);
   return (
     <>
       <Typography>Score Analysis</Typography>
       <Grid>
         <PieChart width={400} height={300}>
           <Pie
-            data={data}
+            data={scoreAnalysis}
             cx={200}
             cy={140}
             labelLine={false}

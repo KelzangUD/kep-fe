@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import {
   BarChart,
   Bar,
@@ -12,15 +12,6 @@ import {
 import Route from "../../../routes/Route";
 import { calculateLatestTestResults } from "../../../util/CommonUtil";
 
-// const data = [
-//   {
-//     name: "December Test",
-//     excel: 40,
-//     good: 14,
-//     average: 24,
-//     failed: 10,
-//   },
-// ];
 
 const LastTestGraph = () => {
   const [latestResults, setLatestResults] = useState([]);

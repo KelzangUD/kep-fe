@@ -87,10 +87,43 @@ export const calculateLatestTestResults = (results) => {
     }
     return acc;
   }, { excel: 0, good: 0, average: 0, failed: 0 });
-
   return [{
     name,
     ...testResults,
   }];
+};
+
+// ========================================== SCORE ANALYSIS ======================================
+export const calculateScoreAnalysis = (results) => {
+  // Handle empty or non-array input
+  if (!Array.isArray(results) || results.length === 0) {
+    return [
+      { name: "excel", value: 0 },
+      { name: "good", value: 0 },
+      { name: "average", value: 0 },
+      { name: "failed", value: 0 },
+    ];
+  }
+  // Use reduce for efficient calculation
+  const testResults = results.reduce((acc, result) => {
+    const currentRatio = (result.score / result.total) * 100;
+    if (currentRatio >= 90) {
+      acc.excel++;
+    } else if (currentRatio >= 70 && currentRatio < 90) {
+      acc.good++;
+    } else if (currentRatio >= 50 && currentRatio < 70) {
+      acc.average++;
+    } else {
+      acc.failed++;
+    }
+    return acc;
+  }, { excel: 0, good: 0, average: 0, failed: 0 });
+  // Update values in the returned array
+  return [
+    { name: "excel", value: testResults.excel },
+    { name: "good", value: testResults.good },
+    { name: "average", value: testResults.average },
+    { name: "failed", value: testResults.failed },
+  ];
 };
 
