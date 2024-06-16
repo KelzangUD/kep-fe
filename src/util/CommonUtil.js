@@ -126,3 +126,110 @@ export const calculateScoreAnalysis = (results) => {
     { name: "failed", value: testResults.failed },
   ];
 };
+
+// ================================================= FILTER DATA BASED ON YEAR ==============================
+export const filterDataBasedOnYear = (results, year) => {
+  return results.filter((item) => item?.Test?.scheduled_at.split("-")[0] === year);
+};
+// ========================================== FILTER BASED ON YEAR AND HALF ==============================
+export const filterDataBasedOnYearAndHalf = (results, year, halfYear = "all") => {
+  return results.filter((item) => {
+    if (!item?.Test?.scheduled_at) {
+      return false; // Handle missing data gracefully
+    }
+
+    const scheduledYear = parseInt(item.Test.scheduled_at.split("-")[0], 10);
+    const month = parseInt(item.Test.scheduled_at.split("-")[1], 10);
+
+    if (scheduledYear !== year) {
+      return false; // Filter by year
+    }
+
+    if (halfYear === "first") {
+      return month <= 6; // Filter for first half of the year
+    } else if (halfYear === "second") {
+      return month > 6; // Filter for second half of the year
+    }
+
+    // Return true for all conditions met (year and optional half-year)
+    return true;
+  });
+};
+// =================================== FILTER BASED ON CURRENT YEAR AND CURRENT MONTH ============================
+export const filterDataBasedOnCurrentYearAndMonth = (results) => {
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth() + 1; // Months are zero-indexed
+
+  return results.filter((item) => {
+    if (!item?.Test?.scheduled_at) {
+      return false; // Handle missing data gracefully
+    }
+    const [yearString, monthString] = item.Test.scheduled_at.split("-");
+    const year = parseInt(yearString, 10);
+    const month = parseInt(monthString, 10);
+
+    return year === currentYear && month === currentMonth;
+  });
+};
+
+
+// ================================================== GET UNIQUE TEST NAME ===============================
+export const getUniqueTestNames = (results) => {
+  const testNames = new Set();
+  for (const result of results) {
+    testNames.add(result.Test.name);
+  }
+  return Array.from(testNames);
+};
+//  ================================================ REPORT COLUMNS =====================================
+export const reportColumns = (data) => {
+  const columns = [
+    { field: "sl", headerName: "Sl. No", width: 40 },
+    { field: "name", headerName: "Name", width: 160 },
+    { field: "empId", headerName: "Employee ID", width: 130 },
+    { field: "ccs", headerName: "Customer Care & Service", width: 200 },
+    {
+      field: "pksl",
+      headerName: "Product Knowledge & Self Learning",
+      width: 250,
+    },
+  ];
+  // Loop through data and insert test columns
+  for (let i = 0; i < data.length; i++) {
+    columns.splice(i + 3, 0, { field: data[i], headerName: data[i], width: 100 });
+  }
+
+  return columns;
+};
+
+// ================================================= YEARLY REPORT ==========================================
+export const yearlyReport = (results) => {
+  const output = [];
+  const userMap = {};
+  // Assign unique IDs while creating user objects
+  for (const result of results) {
+    const { User: user, Test: { name: testName }, score, total } = result;
+    const { name, empId } = user;
+    const userId = result?.User?.id;
+
+    if (!userMap[name]) {
+      userMap[name] = { id: userId, name, empId, ...{}, totalScore: 0,
+        totalMark: 0 };
+    }
+    userMap[name][testName] = parseFloat((score / total) * 100).toFixed(2);
+    userMap[name].totalScore += score;
+    userMap[name].totalMark += total;
+  }
+    // Calculate CCS and PSKL based on total score and mark
+  for (const userName in userMap) {
+    const user = userMap[userName];
+    user.ccs = parseFloat((user.totalScore / user.totalMark) * 5).toFixed(2);
+    user.pksl = parseFloat((user.totalScore / user.totalMark) * 2 + 3).toFixed(2);
+  }
+  // Convert userMap values to desired output format
+  for (const userName in userMap) {
+    output.push(userMap[userName]);
+  }
+  return output;
+};

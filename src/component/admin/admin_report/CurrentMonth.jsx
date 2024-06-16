@@ -1,50 +1,42 @@
-import React from "react";
-import {
-  Box,
-  Paper,
-  Grid,
-  Button,
-  InputBase,
-  IconButton,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Paper, Grid, Button, InputBase, IconButton } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
-import FileDownloadIcon from "@mui/icons-material/FileDownload"
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import SearchIcon from "@mui/icons-material/Search";
-
-const rows = [
-  {
-    id: 1,
-    sl: 1,
-    name: "Kelzang Ugyen Dorji",
-    employeeID: "E00911",
-    dec1: 90,
-    dec2: 90,
-    ccs: 4,
-    pksl: 4,
-  },
-  {
-    id: 2,
-    sl: 2,
-    name: "Pema Dorji",
-    employeeID: "E00505",
-    dec1: 90,
-    dec2: 90,
-    ccs: 4,
-    pksl: 4,
-  },
-];
+import Route from "../../../routes/Route";
+import {
+  filterDataBasedOnCurrentYearAndMonth,
+  getUniqueTestNames,
+  reportColumns,
+  yearlyReport,
+} from "../../../util/CommonUtil";
 
 const CurrentMonth = () => {
-  const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "name", headerName: "Name", width: 160 },
-    { field: "employeeID", headerName: "Employee ID", width: 130 },
-    { field: "dec1", headerName: "Dec Test-I", width: 100 },
-    { field: "dec2", headerName: "Dec Test-II", width: 100 },
-    { field: "ccs", headerName: "Customer Care & Service", width: 200 },
-    { field: "pksl", headerName: "Product Knowledge & Self Learning", width: 250 },
-  ];
+  const [results, setResults] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [currentMonthData, setCurrentMonthData] = useState([]);
+  const [reportData, setReportData] = useState([]);
+  const token = localStorage.getItem("token");
+  const fetchResults = async () => {
+    const res = await Route("GET", "/results", token, null, null);
+    if (res?.status === 200) {
+      setResults(res?.data?.results);
+    }
+  };
+  useEffect(() => {
+    fetchResults();
+  }, []);
+  const filterBasedOnHalf = () => {
+    setCurrentMonthData(filterDataBasedOnCurrentYearAndMonth(results));
+  };
+  useEffect(() => {
+    filterBasedOnHalf();
+  }, [results]);
+  useEffect(() => {
+    setColumns(reportColumns(getUniqueTestNames(currentMonthData)));
+    setReportData(yearlyReport(currentMonthData));
+  }, [currentMonthData]);
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -91,8 +83,11 @@ const CurrentMonth = () => {
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={rows}
-                columns={userColumns}
+                rows={reportData?.map((row, index) => ({
+                  ...row,
+                  sl: index + 1,
+                }))}
+                columns={columns}
                 initialState={{
                   pagination: {
                     paginationModel: { page: 0, pageSize: 5 },
