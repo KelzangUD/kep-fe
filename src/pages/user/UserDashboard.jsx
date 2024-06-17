@@ -1,25 +1,15 @@
 import React from "react";
 import { Box, Grid } from "@mui/material";
 import SubHeader from "../../common/SubHeader";
-import LastTestGraph from "../../component/admin/admin_dashboard/LastTestGraph";
-import ScoreAnalysis from "../../component/admin/admin_dashboard/ScoreAnlysis";
-import YearGraph from "../../component/admin/admin_dashboard/YearGraph";
+import UserYearGraph from "./user_dashboard/UserYearGraph";
 
 const UserDashboard = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
         <SubHeader text="Dashboard" />
-        <Grid item container xs={12}>
-          <Grid item xs={6}>
-            <LastTestGraph />
-          </Grid>
-          <Grid item xs={6}>
-            <ScoreAnalysis />
-          </Grid>
-        </Grid>
         <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
-          <YearGraph />
+          <UserYearGraph />
         </Grid>
       </Grid>
     </Box>

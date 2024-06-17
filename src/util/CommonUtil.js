@@ -233,3 +233,11 @@ export const yearlyReport = (results) => {
   }
   return output;
 };
+
+// ================================================================== USER YEAR GRAPH DATA ==============================
+export const userYearGraphData = (results) => {
+  return results?.map((item) => ({
+      name: item?.Test?.name,
+      score: parseFloat((item?.score/item?.total)*100).toFixed(2)
+  }))
+}

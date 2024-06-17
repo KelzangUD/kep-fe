@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  Container,
   Typography,
   Grid,
-  Card,
   InputLabel,
   MenuItem,
   FormControl,
@@ -20,26 +18,32 @@ import {
   Legend,
 } from "recharts";
 import Route from "../../../routes/Route";
+import { filterDataBasedOnYear, userYearGraphData } from "../../../util/CommonUtil";
 
-const YearGraph = () => {
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [yearlyData, setYearlyData] = useState([]);
+const UserYearGraph = () => {
+  const [year, setYear] = useState(new Date().getFullYear().toString());
+  const [data, setData] = useState([]);
+  const [yearData, setYearData] = useState([]);
+  const user = JSON.parse(localStorage.getItem('user'));
   const yearHandle = (e) => {
     setYear(e.target.value);
   };
   const token = localStorage.getItem("token");
   const fetchYearlyData = async () => {
-    const res = await Route("GET", `/results/yearly_result/${year}`, token, null, null);
+    const res = await Route("GET", `/results/${user?.id}`, token, null, null);
     if (res?.status === 200) {
-      setYearlyData(res?.data?.results);
+      setData(res?.data?.results);
     };
   };
   useEffect(() => {
     fetchYearlyData();
-  }, [year]);
+  }, [])
+  useEffect(() => {
+    setYearData(userYearGraphData(filterDataBasedOnYear(data, year)));
+  },[data, year]);
   return (
     <Box>
-      <Typography variant="subtitle1">One Year Report</Typography>
+      <Typography variant="subtitle1">One Year Graph</Typography>
       <Grid item xs={12}>
         <Grid sx={{ display: "flex", justifyContent: "flex-end", py: "4px" }}>
           <Box>
@@ -52,8 +56,8 @@ const YearGraph = () => {
                 label="Year"
                 onChange={yearHandle}
               >
-                <MenuItem value={2023}>2023</MenuItem>
-                <MenuItem value={2024}>2024</MenuItem>
+                <MenuItem value={"2023"}>2023</MenuItem>
+                <MenuItem value={"2024"}>2024</MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -62,8 +66,8 @@ const YearGraph = () => {
           <Box>
             <BarChart
               width={1140}
-              height={300}
-              data={yearlyData}
+              height={500}
+              data={yearData}
               margin={{
                 top: 5,
                 right: 30,
@@ -76,10 +80,7 @@ const YearGraph = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="excel" fill="#2AAF74" />
-              <Bar dataKey="good" fill="#3081D0" />
-              <Bar dataKey="average" fill="#EE7214" />
-              <Bar dataKey="failed" fill="#D3756B" />
+              <Bar dataKey="score" fill="#3081D0" />
             </BarChart>
           </Box>
         </Box>
@@ -88,4 +89,4 @@ const YearGraph = () => {
   );
 };
 
-export default YearGraph;
+export default UserYearGraph;
