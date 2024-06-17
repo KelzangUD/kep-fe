@@ -62,20 +62,20 @@ export default function UserSideNav() {
       onClick: () => handleNestedItemClick(2),
       nestedItems: [
         {
-          label: "Current Month",
+          label: "User Report",
           icon: <KeyboardArrowRightIcon />,
-          onClick: () => routeHandle("report/current-month"),
+          onClick: () => routeHandle("report/user-report"),
         },
-        {
-          label: "Six Months",
-          icon: <KeyboardArrowRightIcon />,
-          onClick: () => routeHandle("report/six-months"),
-        },
-        {
-          label: "One Year",
-          icon: <KeyboardArrowRightIcon />,
-          onClick: () => routeHandle("report/one-year"),
-        },
+        // {
+        //   label: "Six Months",
+        //   icon: <KeyboardArrowRightIcon />,
+        //   onClick: () => routeHandle("report/six-months"),
+        // },
+        // {
+        //   label: "One Year",
+        //   icon: <KeyboardArrowRightIcon />,
+        //   onClick: () => routeHandle("report/one-year"),
+        // },
       ],
     },
   ];

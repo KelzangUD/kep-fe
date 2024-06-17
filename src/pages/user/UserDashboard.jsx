@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Grid } from "@mui/material";
 import SubHeader from "../../common/SubHeader";
-import UserYearGraph from "./user_dashboard/UserYearGraph";
+import UserYearGraph from "../../component/user/user_dashboard/UserYearGraph";
 
 const UserDashboard = () => {
   return (
