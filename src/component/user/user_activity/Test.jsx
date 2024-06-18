@@ -7,6 +7,7 @@ import SubHeader from "../../../common/SubHeader";
 import Notification from "../../../ui/Notification";
 import Route from "../../../routes/Route";
 import TakeTest from "./TakeTest";
+import { shuffleArray } from "../../../util/CommonUtil";
 
 const Test = () => {
   const [tests, setTests] = useState([]);
@@ -42,7 +43,7 @@ const Test = () => {
         setMessage(res?.data?.message);
         setShowNotification(true);
       } else {
-        setQuestions(res?.data?.questions);
+        setQuestions(shuffleArray(res?.data?.questions));
         setDetails(row);
         setTakeTest(true);
       }
