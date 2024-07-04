@@ -27,7 +27,7 @@ import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
 import Route from "../../../routes/Route";
 
-const ScheduleTests = () => {
+const ReScheduledTests = () => {
   const [tests, setTests] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [scheduleTest, setScheduleTest] = useState(false);
@@ -53,13 +53,13 @@ const ScheduleTests = () => {
   };
   const token = localStorage.getItem("token");
   const fetchTest = async () => {
-    const res = await Route("GET", "/tests", token, null, null);
+    const res = await Route("GET", "/retests", token, null, null);
     if (res?.status === 200) {
       setTests(res?.data?.tests);
     }
   };
   const fetchTestDetails = async (id) => {
-    const res = await Route("GET", "/tests/test_details", token, null, id);
+    const res = await Route("GET", "/retests", token, null, id);
     if (res?.status === 200) {
       if (res?.data?.absent?.length > 0) {
         setAbsents(res?.data?.absent);
@@ -76,10 +76,6 @@ const ScheduleTests = () => {
   useEffect(() => {
     fetchTest();
   }, []);
-  const retestHandle = (params) => {
-    setId(params?.row?.id)
-    fetchTestDetails(params?.row?.id)
-  };
   const userColumns = [
     { field: "sl", headerName: "Sl. No", width: 40 },
     { field: "name", headerName: "Test Name", width: 250 },
@@ -124,13 +120,6 @@ const ScheduleTests = () => {
           >
             <DeleteIcon />
           </IconButton>
-          <IconButton
-            aria-label="view"
-            size="small"
-            onClick={() => retestHandle(params)}
-          >
-            <VisibilityIcon />
-          </IconButton>
         </div>
       ),
     },
@@ -152,34 +141,19 @@ const ScheduleTests = () => {
   }
   return (
     <>
-      {scheduleTest ? (
-        <ScheduleTest
-          setScheduleTest={setScheduleTest}
-          setMessage={setMessage}
-          setOpenNotification={setOpenNotification}
-          fetchTest={fetchTest}
-        />
-      ) : rescheduleTest ? (
-        <ReScheduleTest
-          setScheduleTest={setRescheduleTest}
-          setMessage={setMessage}
-          setOpenNotification={setOpenNotification}
-          fetchTest={fetchTest}
-          absents={absents}
-          id={id}
-        />
-      ): edit ? (
+      {edit ? (
         <EditScheduleTest
           testDetails={details}
           setOpen={setEdit}
           setMessage={setMessage}
           setOpenNotification={setOpenNotification}
           fetchTest={fetchTest}
+          route="retests"
         />
       ) : (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
-            <SubHeader text="Scheduled Tests" />
+            <SubHeader text="Re-Scheduled Tests" />
             <Grid
               item
               xs={12}
@@ -210,14 +184,6 @@ const ScheduleTests = () => {
                 </Paper>
               </Grid>
               <Grid item>
-                <Button
-                  variant="outlined"
-                  endIcon={<QuizIcon />}
-                  sx={{ mr: 2 }}
-                  onClick={() => setScheduleTest(true)}
-                >
-                  Schedule Test
-                </Button>
                 <Button
                   variant="contained"
                   color="success"
@@ -291,4 +257,4 @@ const ScheduleTests = () => {
   );
 };
 
-export default ScheduleTests;
+export default ReScheduledTests;

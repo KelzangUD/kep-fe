@@ -122,6 +122,11 @@ export default function SideNav() {
           onClick: () => routeHandle("activity/schedule-tests"),
         },
         {
+          label: "Re-Schedule Tests",
+          icon: <KeyboardArrowRightIcon />,
+          onClick: () => routeHandle("activity/reschedule-tests"),
+        },
+        {
           label: "Questions Used",
           icon: <KeyboardArrowRightIcon />,
           onClick: () => routeHandle("activity/questions-used"),

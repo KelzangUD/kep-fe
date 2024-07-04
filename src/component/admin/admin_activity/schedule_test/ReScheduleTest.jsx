@@ -8,9 +8,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  // FormGroup,
-  // FormControlLabel,
-  // Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
   Button,
 } from "@mui/material";
 import SubHeader from "../../../../common/SubHeader";
@@ -22,39 +22,33 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import SaveIcon from "@mui/icons-material/Save";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import Route from "../../../../routes/Route";
-import dayjs from "dayjs";
 
-const EditScheduleTest = ({
-  testDetails,
-  setOpen,
-  setMessage,
-  setOpenNotification,
-  fetchTest,
-  route="tests"
-}) => {
-  // const [questions, setQuestions] = useState([]);
-  // const [selectAll, setSelectAll] = useState(false);
+const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchTest, absents, id }) => {
+  const [questions, setQuestions] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectAllUsers, setSelectAllUsers] = useState(false);
   const [details, setDetails] = useState({
-    testName: testDetails?.name,
-    startDate: testDetails?.start_date,
-    endDate: testDetails?.end_date,
-    duration: testDetails?.duration,
-    startTime: new Date().toISOString().split("T")[0]+"T"+testDetails?.start_time+".000Z",
-    endTime: new Date().toISOString().split("T")[0]+"T"+testDetails?.end_time+".000Z",
-    message: testDetails?.message,
-    status: testDetails?.status,
-    // questions: [],
+    testName: "",
+    startDate: "",
+    endDate: "",
+    duration: "",
+    startTime: "",
+    endTime: "",
+    message: "",
+    questions: [],
+    test: id,
+    absents: [],
   });
   const token = localStorage.getItem("token");
-  // const fetchQuestions = async () => {
-  //   const res = await Route("GET", "/questions", token, null, null);
-  //   if (res?.status === 200) {
-  //     setQuestions(res?.data?.questions);
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchQuestions();
-  // }, []);
+  const fetchQuestions = async () => {
+    const res = await Route("GET", "/questions", token, null, null);
+    if (res?.status === 200) {
+      setQuestions(res?.data?.questions);
+    }
+  };
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
   const testNameHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
@@ -82,13 +76,13 @@ const EditScheduleTest = ({
   const startTimeHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
-      startTime: e?.$d,
+      startTime: e?.$d
     }));
   };
   const endTimeHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
-      endTime: e?.$d,
+      endTime: e?.$d
     }));
   };
   const messageHandler = (e) => {
@@ -97,34 +91,37 @@ const EditScheduleTest = ({
       message: e.target.value,
     }));
   };
-  const statusHandler = (e) => {
+  const selectAllHandler = (e) => {
+    setSelectAll(e.target.checked);
+    const allQuestionIds = questions.map((question) => question.id);
     setDetails((prev) => ({
       ...prev,
-      status: e.target.value,
+      questions: e.target.checked ? allQuestionIds : [],
     }));
   };
-  // const selectAllHandler = (e) => {
-  //   setSelectAll(e.target.checked);
-  //   const allQuestionIds = questions.map((question) => question.id);
-  //   setDetails((prev) => ({
-  //     ...prev,
-  //     questions: e.target.checked ? allQuestionIds : [],
-  //   }));
-  // };
-  // const itemHandler = (e, id) => {
-  //   const isChecked = e.target.checked;
-  //   setDetails((prev) => ({
-  //     ...prev,
-  //     questions: isChecked
-  //       ? [...prev.questions, id] // Add the question id if checked
-  //       : prev.questions.filter((questionId) => questionId !== id), // Remove the question id if unchecked
-  //   }));
-  // };
-  const editScheduleHandle = async () => {
-    const res = await Route("PUT", `/${route}`, token, details, testDetails?.id);
+  const selectAllUserHandler = (e) => {
+    setSelectAllUsers(e.target.checked);
+    const UsersIds = absents.map((absent) => absent?.id);
+    setDetails((prev) => ({
+      ...prev,
+      absents: e.target.checked ? UsersIds : [],
+    }));
+  };
+  const itemHandler = (e, id) => {
+    const isChecked = e.target.checked;
+    setDetails((prev) => ({
+      ...prev,
+      questions: isChecked
+        ? [...prev.questions, id] // Add the question id if checked
+        : prev.questions.filter((questionId) => questionId !== id), // Remove the question id if unchecked
+    }));
+  };
+  const scheduleHandle = async() => {
+    console.log(details);
+    const res = await Route("POST", `/tests/test_reschedule`, token, details, null);
     if (res?.status === 201) {
       fetchTest();
-      setOpen(false);
+      setScheduleTest(false);
       setMessage(res?.data?.message);
       setOpenNotification(true);
     } else {
@@ -136,7 +133,7 @@ const EditScheduleTest = ({
     <>
       <>
         <Grid container spacing={2} sx={{ px: 2 }}>
-          <SubHeader text="Scheduled Tests | Schedule Test" />
+          <SubHeader text="Scheduled Tests | Re-Schedule Test" />
           <Grid
             container
             sx={{ display: "flex", justifyContent: "flex-end", my: 2 }}
@@ -144,16 +141,16 @@ const EditScheduleTest = ({
             <Button
               variant="contained"
               endIcon={<SaveIcon />}
-              onClick={editScheduleHandle}
+              onClick={scheduleHandle}
               sx={{ mr: 2 }}
             >
-              Update
+              Re-Schedule
             </Button>
             <Button
               variant="outlined"
               color="error"
               endIcon={<HighlightOffIcon />}
-              onClick={() => setOpen(false)}
+              onClick={() => setScheduleTest(false)}
             >
               Cancel
             </Button>
@@ -161,7 +158,7 @@ const EditScheduleTest = ({
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <Card variant="outlined" sx={{ width: 1100 }}>
               <Grid item xs={12} sx={{ p: 2 }}>
-                <Typography as="h6">Schedule Test</Typography>
+                <Typography as="h6">Re-Schedule Test</Typography>
               </Grid>
               <Grid
                 item
@@ -171,13 +168,36 @@ const EditScheduleTest = ({
                 spacing={2}
                 sx={{ px: 2 }}
               >
+                <Grid item xs={12}>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label="Select All Users"
+                      onClick={selectAllUserHandler}
+                    />
+                  </FormGroup>
+                </Grid>
+                {absents?.map((absent, index) => (
+                  <Grid item xs={12} key={absent?.id}>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={details?.absents.includes(absent?.id)||false}
+                            // onChange={(e) => itemHandler(e, question?.id)}
+                          />
+                        }
+                        label={`${index + 1}. ${absent?.name}`}
+                      />
+                    </FormGroup>
+                  </Grid>
+                ))}
                 <Grid item xs={4} sx={{ mt: 1 }}>
                   <TextField
                     id="outlined-basic"
                     label="Test Name"
                     variant="outlined"
                     fullWidth
-                    defaultValue={testDetails?.name}
                     onChange={testNameHandler}
                     required
                   />
@@ -188,9 +208,6 @@ const EditScheduleTest = ({
                       <DatePicker
                         label="Start Date"
                         sx={{ width: "100%" }}
-                        defaultValue={
-                          testDetails ? dayjs(testDetails.start_date) : null
-                        }
                         onChange={startDateHandler}
                       />
                     </DemoContainer>
@@ -202,9 +219,6 @@ const EditScheduleTest = ({
                       <DatePicker
                         label="End Date"
                         sx={{ width: "100%" }}
-                        defaultValue={
-                          testDetails ? dayjs(testDetails.end_date) : null
-                        }
                         onChange={endDateHandler}
                       />
                     </DemoContainer>
@@ -226,7 +240,6 @@ const EditScheduleTest = ({
                       labelId="duration-select-label"
                       id="duration-select-small"
                       label="Duration"
-                      defaultValue={testDetails?.duration}
                       onChange={durationHandler}
                     >
                       <MenuItem value="30 mins">30 mins</MenuItem>
@@ -242,57 +255,28 @@ const EditScheduleTest = ({
                       <TimePicker
                         label="Start Time"
                         sx={{ width: "100%" }}
-                        defaultValue={
-                          testDetails
-                            ? dayjs(`2022-01-01T${testDetails.start_time}`)
-                            : null
-                        }
                         onChange={startTimeHandler}
                       />
                     </DemoContainer>
                   </LocalizationProvider>
                 </Grid>
+
                 <Grid item xs={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["TimePicker"]}>
                       <TimePicker
                         label="End Time"
                         sx={{ width: "100%" }}
-                        defaultValue={
-                          testDetails
-                            ? dayjs(`2022-01-01T${testDetails.end_time}`)
-                            : null
-                        }
                         onChange={endTimeHandler}
                       />
                     </DemoContainer>
                   </LocalizationProvider>
                 </Grid>
                 <Grid item xs={12} sx={{ mt: 1 }}>
-                  <Grid item xs={4} sx={{ mt: 1 }}>
-                    <FormControl fullWidth>
-                      <InputLabel id="duration-select-label">
-                        Status
-                      </InputLabel>
-                      <Select
-                        labelId="duration-select-label"
-                        id="duration-select-small"
-                        label="Duration"
-                        defaultValue={testDetails?.status}
-                        onChange={statusHandler}
-                      >
-                        <MenuItem value={true}>Active</MenuItem>
-                        <MenuItem value={false}>Inactive</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} sx={{ mt: 1 }}>
                   <TextField
                     id="outlined-basic"
                     label="Message"
                     multiline
-                    defaultValue={testDetails?.message}
                     rows={3}
                     variant="outlined"
                     fullWidth
@@ -300,7 +284,7 @@ const EditScheduleTest = ({
                     required
                   />
                 </Grid>
-                {/* <Grid item xs={12}>
+                <Grid item xs={12}>
                   <FormGroup>
                     <FormControlLabel
                       control={<Checkbox />}
@@ -323,7 +307,7 @@ const EditScheduleTest = ({
                       />
                     </FormGroup>
                   </Grid>
-                ))} */}
+                ))}
               </Grid>
             </Card>
           </Grid>
@@ -333,4 +317,4 @@ const EditScheduleTest = ({
   );
 };
 
-export default EditScheduleTest;
+export default ReScheduleTest;
