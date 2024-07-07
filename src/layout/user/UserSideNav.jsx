@@ -54,6 +54,11 @@ export default function UserSideNav() {
           icon: <KeyboardArrowRightIcon />,
           onClick: () => routeHandle("activity/test"),
         },
+        {
+          label: "Re-Test",
+          icon: <KeyboardArrowRightIcon />,
+          onClick: () => routeHandle("activity/retest"),
+        },
       ],
     },
     {

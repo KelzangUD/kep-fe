@@ -15,14 +15,10 @@ import {
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import SearchIcon from "@mui/icons-material/Search";
-import QuizIcon from "@mui/icons-material/Quiz";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import ScheduleTest from "./schedule_test/ScheduleTest";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditScheduleTest from "./schedule_test/EditScheduleTest";
-import ReScheduleTest from "./schedule_test/ReScheduleTest";
 import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
 import Route from "../../../routes/Route";
@@ -30,15 +26,12 @@ import Route from "../../../routes/Route";
 const ReScheduledTests = () => {
   const [tests, setTests] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [scheduleTest, setScheduleTest] = useState(false);
   const [edit, setEdit] = useState(false);
   const [details, setDetails] = useState({});
   const [deleteTest, setDeleteTest] = useState(false);
   const [id, setId] = useState("");
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
-  const [absents, setAbsents] = useState([]);
-  const [rescheduleTest, setRescheduleTest] = useState(false);
   // handlers
   const searchHandle = (e) => {
     setSearchQuery(e.target.value);
@@ -56,21 +49,6 @@ const ReScheduledTests = () => {
     const res = await Route("GET", "/retests", token, null, null);
     if (res?.status === 200) {
       setTests(res?.data?.tests);
-    }
-  };
-  const fetchTestDetails = async (id) => {
-    const res = await Route("GET", "/retests", token, null, id);
-    if (res?.status === 200) {
-      if (res?.data?.absent?.length > 0) {
-        setAbsents(res?.data?.absent);
-        setRescheduleTest(true);
-      } else {
-        setMessage(res?.data?.message);
-        setOpenNotification(true);
-      }
-    } else {
-      setMessage(res?.data?.message);
-      setOpenNotification(true);
     }
   };
   useEffect(() => {
@@ -128,7 +106,7 @@ const ReScheduledTests = () => {
     item?.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
   const deleteTestHandler = async() => {
-    const res = await Route("DELETE", `/tests`, token, null, id);
+    const res = await Route("DELETE", `/retests`, token, null, id);
     if (res?.status === 201) {
       setDeleteTest(false);
       setMessage(res?.data?.message);

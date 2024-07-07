@@ -26,7 +26,6 @@ const Solution = ({ index, question, setResult, setSolvedQuestions }) => {
     }
   };
   useEffect(() => {
-    console.log(question);
     setOptions([]);
     setOptionsTwo([]);
     fetchOptions();

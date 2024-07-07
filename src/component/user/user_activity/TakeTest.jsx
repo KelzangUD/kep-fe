@@ -11,7 +11,7 @@ import DialogUi from "../../../ui/DialogUi";
 import Route from "../../../routes/Route";
 import { calculateDuration } from "../../../util/CommonUtil";
 
-const TakeTest = ({ id, details, setTakeTest, questions }) => {
+const TakeTest = ({ id, details, setTakeTest, questions, route="results" }) => {
   const [testDetails, setTestDetails] = useState(details);
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
@@ -63,7 +63,7 @@ const TakeTest = ({ id, details, setTakeTest, questions }) => {
     return () => clearInterval(intervalId);
   }, []);
   const submitSolutionHandle = async() => {
-    const res = await Route("POST", "/results", token, result, null);
+    const res = await Route("POST", `/${route}`, token, result, null);
     if (res?.status === 201) {
       setMessage(res?.data?.message);
       setOpenNotification(true);
