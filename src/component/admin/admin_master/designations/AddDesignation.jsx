@@ -25,7 +25,7 @@ const AddDesignation = ({ open, setOpen, setOpenNotification, setMessage, fetchD
   });
   const token = localStorage.getItem("token");
   const fetchDepartments = async () => {
-    const res = await Route("GET", "/departments", token, null);
+    const res = await Route("GET", "/departments", token, null, null);
     if (res?.status === 200) {
       setDepartments(res?.data?.departments);
     };
@@ -48,7 +48,7 @@ const AddDesignation = ({ open, setOpen, setOpenNotification, setMessage, fetchD
     }))
   };
   const addHandle = async() => {
-    const response = await Route("POST", `/designations`, token, data);
+    const response = await Route("POST", `/designations`, token, data, null);
     if (response?.status === 201) {
       setMessage(response?.data?.message);
       setOpenNotification(true);

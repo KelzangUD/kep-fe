@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -13,6 +13,30 @@ import {
 import SubHeader from "../../common/SubHeader";
 
 const UserProfile = () => {
+  const [userDetails, setUserDetails] = useState({
+    empId: "",
+    name: "",
+    email: "",
+    designation: "",
+    gender: "",
+    contact: "",
+    region: "",
+    extension: "",
+  });
+  const user = JSON.parse(localStorage.getItem("user"));
+  useEffect(() => {
+    setUserDetails((prev) => ({
+      ...prev,
+      empId: user?.empId,
+      name: user?.name,
+      email: user?.email,
+      designation: user?.designation,
+      gender: user?.gender,
+      contact: user?.contact,
+      region: user?.region,
+      extension: user?.extension,
+    }));
+  }, []);
   return (
     <Box sx={{ px: 2 }}>
       <Grid container spacing={4} alignItems="center">
@@ -26,6 +50,7 @@ const UserProfile = () => {
                   variant="outlined"
                   fullWidth
                   name="employeeID"
+                  defaultValue={userDetails?.empId}
                   required
                 />
               </Grid>
@@ -51,7 +76,9 @@ const UserProfile = () => {
               </Grid>
               <Grid item xs={4}>
                 <FormControl fullWidth>
-                  <InputLabel id="designation-select-label">Designation</InputLabel>
+                  <InputLabel id="designation-select-label">
+                    Designation
+                  </InputLabel>
                   <Select
                     labelId="designation-select-label"
                     id="designation-simple-select"

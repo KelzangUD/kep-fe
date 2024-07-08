@@ -4,7 +4,8 @@ import UserSideNav from "../layout/user/UserSideNav";
 import { Box, Grid, Paper } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
 import UserDashboard from "./user/UserDashboard";
-import UserProfile from "./user/UserProfile";
+// import UserProfile from "./user/UserProfile";
+import Profile from "./admin/Profile";
 import UserActivity from "./user/UserActivity";
 import UserReport from "./user/UserReport";
 import { styled } from "@mui/material/styles";
@@ -29,7 +30,7 @@ const User = () => {
                   <Item>
                     <Routes>
                       <Route path="/dashboard" element={<UserDashboard />} />
-                      <Route path="/profile" element={<UserProfile />} />
+                      <Route path="/profile" element={<Profile />} />
                       <Route path="/activity/*" element={<UserActivity />} />
                       <Route path="/report/*" element={<UserReport />} /> 
                       {/* <Route path="/profile" element={<Profile />} />

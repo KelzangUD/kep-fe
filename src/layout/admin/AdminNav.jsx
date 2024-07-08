@@ -170,7 +170,7 @@ const AdminNav = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleNotificationOpen}>
+      {/* <MenuItem onClick={handleNotificationOpen}>
         <IconButton
           size="large"
           aria-label="show new notifications"
@@ -182,7 +182,7 @@ const AdminNav = () => {
           </Badge>
         </IconButton>
         <p>Notifications</p>
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -204,7 +204,7 @@ const AdminNav = () => {
         <AppBar position="static" sx={{ background: "#fff", color: "#393E46" }}>
           <Toolbar sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <IconButton
+              {/* <IconButton
                 size="large"
                 aria-label="show new notifications"
                 color="inherit"
@@ -214,7 +214,7 @@ const AdminNav = () => {
                 <Badge badgeContent={4} color="error">
                   <NotificationsIcon />
                 </Badge>
-              </IconButton>
+              </IconButton> */}
               <IconButton
                 size="large"
                 edge="end"
@@ -243,7 +243,7 @@ const AdminNav = () => {
         </AppBar>
         {renderMobileMenu}
         {renderMenu}
-        {renderNotification}
+        {/* {renderNotification} */}
       </Box>
       {open && <Notification open={open} setOpen={setOpen} message={message} />}
     </>

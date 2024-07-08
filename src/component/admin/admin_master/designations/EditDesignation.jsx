@@ -32,7 +32,7 @@ const EditDesignation = ({
   });
   const token = localStorage.getItem("token");
   const fetchDepartments = async () => {
-    const res = await Route("GET", "/departments", token, null);
+    const res = await Route("GET", "/departments", token, null, null);
     if (res?.status === 200) {
       setDepartments(res?.data?.departments);
     }
@@ -59,7 +59,8 @@ const EditDesignation = ({
       "PUT",
       `/designations/${details?.id}`,
       token,
-      data
+      data,
+      null
     );
     if (response?.status === 201) {
       setMessage(response?.data?.message);
