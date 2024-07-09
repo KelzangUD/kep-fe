@@ -44,7 +44,7 @@ const Profile = () => {
       region: user?.region,
       extension: user?.extension,
     }));
-  }, []);
+  }, [user]);
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
   const fetchDesignations = async() => {
@@ -69,7 +69,7 @@ const Profile = () => {
     fetchDesignations();
     fetchRegions();
     fetchExtensions();
-  },[]);
+  });
 
   const nameHandle = (e) => {
     setUserDetails((prev) => ({

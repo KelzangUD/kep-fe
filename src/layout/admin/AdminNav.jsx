@@ -4,13 +4,13 @@ import {
   Box,
   Toolbar,
   IconButton,
-  Badge,
+  // Badge,
   MenuItem,
   Menu,
   Typography,
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+// import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import MarkChatUnreadIcon from "@mui/icons-material/MarkChatUnread";

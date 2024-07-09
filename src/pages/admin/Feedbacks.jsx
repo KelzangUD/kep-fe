@@ -17,7 +17,7 @@ const Feedbacks = () => {
     };
     useEffect(() => {
         fetchFeedbacks();
-    }, []);
+    });
     const userColumns = [
         {
           field: "sl",

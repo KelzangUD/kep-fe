@@ -36,7 +36,7 @@ const UserProfile = () => {
       region: user?.region,
       extension: user?.extension,
     }));
-  }, []);
+  }, [user]);
   return (
     <Box sx={{ px: 2 }}>
       <Grid container spacing={4} alignItems="center">
