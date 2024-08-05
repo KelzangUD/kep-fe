@@ -117,8 +117,7 @@ const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetc
     }));
   };
   const scheduleHandle = async() => {
-    console.log(details);
-    const res = await Route("POST", `/tests/test_reschedule`, token, details, null);
+    const res = await Route("POST", `/retests`, token, details, null);
     if (res?.status === 201) {
       fetchTest();
       setScheduleTest(false);
