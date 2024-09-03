@@ -8,10 +8,10 @@ import Route from "../routes/Route";
 
 const SSOLogin = () => {
   const navigagte = useNavigate();
-  const [formData, setFormData] = useState({
-    empId: "",
-    password: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   empId: "",
+  //   password: "",
+  // });
   const [message, setMessage] = useState("");
   const [open, setOpen] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -66,6 +66,11 @@ const SSOLogin = () => {
       }
     }
   };
+  useEffect(() => {
+    if (token !== "") {
+      ssoAuth(encodeURIComponent(token));
+    }
+  }, [token]);
 
   return (
     <>

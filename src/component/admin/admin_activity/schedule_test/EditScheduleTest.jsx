@@ -8,9 +8,6 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  // FormGroup,
-  // FormControlLabel,
-  // Checkbox,
   Button,
 } from "@mui/material";
 import SubHeader from "../../../../common/SubHeader";
@@ -32,8 +29,6 @@ const EditScheduleTest = ({
   fetchTest,
   route="tests"
 }) => {
-  // const [questions, setQuestions] = useState([]);
-  // const [selectAll, setSelectAll] = useState(false);
   const [details, setDetails] = useState({
     testName: testDetails?.name,
     startDate: testDetails?.start_date,
@@ -46,15 +41,6 @@ const EditScheduleTest = ({
     // questions: [],
   });
   const token = localStorage.getItem("token");
-  // const fetchQuestions = async () => {
-  //   const res = await Route("GET", "/questions", token, null, null);
-  //   if (res?.status === 200) {
-  //     setQuestions(res?.data?.questions);
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchQuestions();
-  // }, []);
   const testNameHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
@@ -80,6 +66,7 @@ const EditScheduleTest = ({
     }));
   };
   const startTimeHandler = (e) => {
+    console.log(typeof e?.$d);
     setDetails((prev) => ({
       ...prev,
       startTime: e?.$d,
@@ -103,25 +90,9 @@ const EditScheduleTest = ({
       status: e.target.value,
     }));
   };
-  // const selectAllHandler = (e) => {
-  //   setSelectAll(e.target.checked);
-  //   const allQuestionIds = questions.map((question) => question.id);
-  //   setDetails((prev) => ({
-  //     ...prev,
-  //     questions: e.target.checked ? allQuestionIds : [],
-  //   }));
-  // };
-  // const itemHandler = (e, id) => {
-  //   const isChecked = e.target.checked;
-  //   setDetails((prev) => ({
-  //     ...prev,
-  //     questions: isChecked
-  //       ? [...prev.questions, id] // Add the question id if checked
-  //       : prev.questions.filter((questionId) => questionId !== id), // Remove the question id if unchecked
-  //   }));
-  // };
   const editScheduleHandle = async () => {
     const res = await Route("PUT", `/${route}`, token, details, testDetails?.id);
+    console.log(res);
     if (res?.status === 201) {
       fetchTest();
       setOpen(false);
