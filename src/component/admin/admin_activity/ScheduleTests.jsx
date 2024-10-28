@@ -146,7 +146,8 @@ const ScheduleTests = () => {
       fetchTest();
       setOpenNotification(true);
     } else {
-      setMessage(res?.data?.message);
+      console.log(res)
+      setMessage(res?.response?.data?.message);
       setOpenNotification(true);
     }
   }

@@ -37,7 +37,11 @@ const SignIn = () => {
       res?.data?.user?.isAdmin
         ? navigagte("/admin/dashboard")
         : navigagte("/user/dashboard");
-    } else {
+    } else if (res?.status === 206) {
+      setMessage(res?.data?.message);
+      setOpen(true);
+    }
+     else {
       setMessage(res?.response?.data?.message);
       setOpen(true);
     }
