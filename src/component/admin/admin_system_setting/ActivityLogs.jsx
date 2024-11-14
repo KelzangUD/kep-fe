@@ -3,16 +3,9 @@ import { Box, Paper, Grid, InputBase, IconButton } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import SearchIcon from "@mui/icons-material/Search";
-// import VisibilityIcon from '@mui/icons-material/Visibility';
 import Route from "../../../routes/Route";
 
 const ActivityLogs = () => {
-  // const [view, setView] = React.useState(false);
-  // const [details, setDetails] = React.useState({});
-  // const viewHandle = (param) => {
-  //   setDetails(param?.row);
-  //   setView(true);
-  // };
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const userColumns = [
@@ -21,31 +14,18 @@ const ActivityLogs = () => {
     {
       field: "description",
       headerName: "Description",
-      width: 600,
+      width: 400,
     },
     { field: "date_time", headerName: "Date and Time", width: 200 },
-    // { field: "session", headerName: "Session", width: 200 },
-    // {
-    //   field: "action",
-    //   headerName: "Action",
-    //   width: 120,
-    //   renderCell: (params) => (
-    //     <div>
-    //       <IconButton
-    //         aria-label="edit"
-    //         size="small"
-    //         onClick={() => viewHandle(params)}
-    //       >
-    //         <VisibilityIcon />
-    //       </IconButton>
-    //     </div>
-    //   ),
-    // },
   ];
+  const searchHandle = (e) => {
+    setSearchQuery(e.target.value?.toLowerCase() || "");
+  };
   const token = localStorage.getItem("token");
   const fetchActivityLogs = async () => {
     const res = await Route("GET", "/activity-logs", token, null, null);
     if (res?.status === 200) {
+      console.log(res?.data?.activityLogs)
       setData(
         res?.data?.activityLogs?.map((item, index) => ({
           id: item?.id,
@@ -61,7 +41,7 @@ const ActivityLogs = () => {
     fetchActivityLogs();
   }, []);
   const filteredData = data.filter((item) =>
-    item?.username.toLowerCase().includes(searchQuery.toLowerCase())
+    (item?.username?.toLowerCase() || "").includes(searchQuery.toLowerCase())
   );
   return (
     <>
@@ -82,6 +62,7 @@ const ActivityLogs = () => {
                   sx={{ ml: 1, flex: 1 }}
                   placeholder="Search"
                   inputProps={{ "aria-label": "search" }}
+                  onChange={searchHandle}
                 />
                 <IconButton
                   type="button"
