@@ -24,9 +24,6 @@ import EditUser from "./EditUser";
 import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
 import Route from "../../../routes/Route";
-// import io from "socket.io-client";
-
-// const socket = io.connect("http://localhost:8080");
 
 const User = () => {
   // init states
@@ -39,13 +36,9 @@ const User = () => {
   const [userId, setUserId] = useState("");
   const [message, setMessage] = React.useState("");
   const [openNotification, setOpenNotification] = useState(false);
-  // useEffect(() => {
-  //   socket.emit('chat message', message);
-  //   console.log(socket.emit('chat message', message));
-  // },[message]);
   // handlers
   const searchHandle = (e) => {
-    setSearchQuery(e.target.value);
+    setSearchQuery(e.target.value?.toLowerCase() || "");
   };
   const editHandle = (param) => {
     setUserDetails(param?.row);
@@ -62,31 +55,30 @@ const User = () => {
       width: 40,
       valueGetter: (params) => params.row.sl,
     },
-    { field: "name", headerName: "Name", width: 160 },
-    { field: "empId", headerName: "Employee ID", width: 130 },
+    { field: "name", headerName: "Name", width: 180 },
+    { field: "empId", headerName: "Employee ID", width: 90 },
     {
       field: "email",
       headerName: "Email",
-      width: 260,
+      width: 240,
     },
     {
       field: "designation ",
       headerName: "Designation",
-      width: 200,
+      width: 140,
       valueGetter: (params) => params.row.Designation?.title || "N/A",
     },
     { field: "contact", headerName: "Contact No.", width: 100 },
     {
       field: "isAdmin",
       headerName: "Admin",
-      width: 70,
-      valueGetter: (params) =>
-        params.row.isAdmin === true ? "Yes" : "No",
+      width: 60,
+      valueGetter: (params) => (params.row.isAdmin === true ? "Yes" : "No"),
     },
     {
       field: "action",
       headerName: "Action",
-      width: 120,
+      width: 100,
       renderCell: (params) => (
         <div>
           <IconButton
@@ -122,9 +114,9 @@ const User = () => {
   }, []);
   const filteredData = users.filter(
     (item) =>
-      item?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item?.employeeID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item?.designation.toLowerCase().includes(searchQuery.toLowerCase())
+      (item?.name?.toLowerCase() || "").includes(searchQuery) ||
+      (item?.empId?.toLowerCase() || "").includes(searchQuery) ||
+      (item?.Designation?.title?.toLowerCase() || "").includes(searchQuery)
   );
   const confirmDeleteHandler = async () => {
     const res = await Route("PUT", `/users/delete-users`, token, null, userId);
@@ -151,7 +143,7 @@ const User = () => {
             <Grid item>
               <Paper
                 sx={{
-                  p: "2px 4px",
+                  p: "2px 2px",
                   display: "flex",
                   alignItems: "center",
                   width: 400,
@@ -174,7 +166,7 @@ const User = () => {
             </Grid>
             <Grid item>
               <Button
-                variant="outlined"
+                variant="contained"
                 endIcon={<PersonAddIcon />}
                 sx={{ mr: 2 }}
                 onClick={createUserHandle}
@@ -190,7 +182,7 @@ const User = () => {
               </Button>
             </Grid>
           </Grid>
-          <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+          <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
                 rows={filteredData?.map((row, index) => ({

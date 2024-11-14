@@ -42,7 +42,7 @@ const Header = () => {
         </Box>
         {
           currentLoction === "/sign-in" ? null : <Box>
-          <Button variant="outlined" onClick={signInHandle}>
+          <Button variant="contained" onClick={signInHandle} size="small">
             SIGN IN
           </Button>
         </Box>
