@@ -16,7 +16,14 @@ import {
 import Transition from "../../../../common/Transition";
 import Route from "../../../../routes/Route";
 
-const AddDesignation = ({ open, setOpen, setOpenNotification, setMessage, fetchDesignations }) => {
+const AddDesignation = ({
+  open,
+  setOpen,
+  setOpenNotification,
+  setSeverity,
+  setMessage,
+  fetchDesignations,
+}) => {
   // init states
   const [departments, setDepartments] = useState([]);
   const [data, setData] = useState({
@@ -28,7 +35,7 @@ const AddDesignation = ({ open, setOpen, setOpenNotification, setMessage, fetchD
     const res = await Route("GET", "/departments", token, null, null);
     if (res?.status === 200) {
       setDepartments(res?.data?.departments);
-    };
+    }
   };
   useEffect(() => {
     fetchDepartments();
@@ -36,28 +43,30 @@ const AddDesignation = ({ open, setOpen, setOpenNotification, setMessage, fetchD
 
   // handlers
   const titleHandle = (e) => {
-    setData(prev => ({
+    setData((prev) => ({
       ...prev,
-      title: e.target.value
-    }))
+      title: e.target.value,
+    }));
   };
   const departmentHandle = (e) => {
-    setData(prev => ({
+    setData((prev) => ({
       ...prev,
-      department: e.target.value
-    }))
+      department: e.target.value,
+    }));
   };
-  const addHandle = async() => {
+  const addHandle = async () => {
     const response = await Route("POST", `/designations`, token, data, null);
     if (response?.status === 201) {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      setSeverity("success");
       fetchDesignations();
       setOpen(false);
     } else {
       setMessage(response?.data?.message);
       setOpenNotification(true);
-    };
+      setSeverity("error");
+    }
   };
   return (
     <Dialog
@@ -91,9 +100,11 @@ const AddDesignation = ({ open, setOpen, setOpenNotification, setMessage, fetchD
                 required
                 onChange={departmentHandle}
               >
-                {
-                  departments?.map((item) => (<MenuItem key={item?.id} value={item?.id}>{item?.title}</MenuItem>))
-                }
+                {departments?.map((item) => (
+                  <MenuItem key={item?.id} value={item?.id}>
+                    {item?.title}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>

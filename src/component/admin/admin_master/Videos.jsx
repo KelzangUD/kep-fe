@@ -72,7 +72,7 @@ const Videos = () => {
   const userColumns = [
     { field: "sl", headerName: "Sl. No", width: 40 },
     { field: "title", headerName: "Title", width: 200 },
-    { field: "description", headerName: "Description", width: 600 },
+    { field: "description", headerName: "Description", width: 500 },
     { field: "visible", headerName: "Visible", width: 100 },
     {
       field: "action",
@@ -156,7 +156,7 @@ const Videos = () => {
             </Grid>
             <Grid item>
               <Button
-                variant="outlined"
+                variant="contained"
                 endIcon={<CloudUploadIcon />}
                 sx={{ mr: 2 }}
                 onClick={addHandle}
@@ -172,7 +172,7 @@ const Videos = () => {
               </Button>
             </Grid>
           </Grid>
-          <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+          <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
                 rows={filteredData?.map((row, index) => ({

@@ -21,6 +21,7 @@ const EditDesignation = ({
   open,
   setOpen,
   setOpenNotification,
+  setSeverity,
   setMessage,
   fetchDesignations,
 }) => {
@@ -65,11 +66,13 @@ const EditDesignation = ({
     if (response?.status === 201) {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      setSeverity("success");
       fetchDesignations();
       setOpen(false);
     } else {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      setSeverity("error");
     }
   };
   return (

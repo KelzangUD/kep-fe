@@ -24,6 +24,7 @@ const VideoPlayer = ({ details, open, setOpen }) => {
         "GET",
         `/videos/${details?.id}`,
         token,
+        null,
         null
       );
       if (response?.status === 200) {

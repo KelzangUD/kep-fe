@@ -36,6 +36,7 @@ const Designations = () => {
   const [id, setId] = useState("");
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
+  const [severity, setSeverity] = useState("info");
 
   // handlers
   const searchHandle = (e) => {
@@ -150,7 +151,7 @@ const Designations = () => {
             </Grid>
             <Grid item>
               <Button
-                variant="outlined"
+                variant="contained"
                 endIcon={<AddIcon />}
                 sx={{ mr: 2 }}
                 onClick={() => setAdd(true)}
@@ -166,7 +167,7 @@ const Designations = () => {
               </Button>
             </Grid>
           </Grid>
-          <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+          <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
                 rows={filteredData?.map((row, index) => ({
@@ -190,6 +191,7 @@ const Designations = () => {
           open={add}
           setOpen={setAdd}
           setOpenNotification={setOpenNotification}
+          setSeverity={setSeverity}
           setMessage={setMessage}
           fetchDesignations={fetchDesignations}
         />
@@ -200,6 +202,7 @@ const Designations = () => {
           open={edit}
           setOpen={setEdit}
           setOpenNotification={setOpenNotification}
+          setSeverity={setSeverity}
           setMessage={setMessage}
           fetchDesignations={fetchDesignations}
         />
@@ -242,6 +245,7 @@ const Designations = () => {
         <Notification
           open={openNotification}
           setOpen={setOpenNotification}
+          severity={severity}
           message={message}
         />
       )}
