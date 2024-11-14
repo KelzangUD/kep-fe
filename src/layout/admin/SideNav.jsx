@@ -14,10 +14,10 @@ import {
 } from "@mui/material";
 import Logo from "../../assets/images/logo.ico";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from "@mui/icons-material/Settings";
 import DnsIcon from "@mui/icons-material/Dns";
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import FeedbackIcon from '@mui/icons-material/Feedback';
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import FeedbackIcon from "@mui/icons-material/Feedback";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -44,98 +44,98 @@ export default function SideNav() {
   const menuItems = [
     {
       label: "Dashboard",
-      icon: <DashboardIcon />,
+      icon: <DashboardIcon fontSize="small" />,
       onClick: () => routeHandle("dashboard"),
     },
     {
       label: "System Setting",
-      icon: <SettingsIcon />,
+      icon: <SettingsIcon fontSize="small" />,
       onClick: () => handleNestedItemClick(1),
       nestedItems: [
         {
           label: "User",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("system-setting/user"),
         },
         {
           label: "Activity Logs",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("system-setting/activity-logs"),
         },
       ],
     },
     {
       label: "Master",
-      icon: <DnsIcon />,
+      icon: <DnsIcon fontSize="small" />,
       onClick: () => handleNestedItemClick(2),
       nestedItems: [
         {
           label: "Grades",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("master/grades"),
         },
         {
           label: "Department/Unit",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("master/departments_or_unit"),
         },
         {
           label: "Designations",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("master/designations"),
         },
         {
           label: "Regions",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("master/regions"),
         },
         {
           label: "Extensions",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("master/extensions"),
         },
         {
           label: "Videos",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("master/videos"),
         },
         {
           label: "Audios",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("master/audios"),
         },
       ],
     },
     {
       label: "Activity",
-      icon: <AssignmentIcon />,
+      icon: <AssignmentIcon fontSize="small" />,
       onClick: () => handleNestedItemClick(3),
       nestedItems: [
         {
           label: "Add Questions",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("activity/add-questions"),
         },
         {
           label: "Schedule Tests",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("activity/schedule-tests"),
         },
         {
           label: "Re-Schedule Tests",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("activity/reschedule-tests"),
         },
         {
           label: "Questions Used",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("activity/questions-used"),
         },
       ],
     },
     {
       label: "Feedbacks",
-      icon: <FeedbackIcon />,
+      icon: <FeedbackIcon fontSize="small" />,
       onClick: () => routeHandle("feedbacks"),
     },
     {
@@ -145,17 +145,17 @@ export default function SideNav() {
       nestedItems: [
         {
           label: "Current Month",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("report/current-month"),
         },
         {
           label: "Six Months",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("report/six-months"),
         },
         {
           label: "One Year",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("report/one-year"),
         },
       ],
@@ -192,10 +192,14 @@ export default function SideNav() {
             </Button>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body1" align="center">
+            <Typography variant="body2" align="center">
               Knowledge Enhancement Plateform
             </Typography>
-            <Typography variant="h6" align="center" sx={{ color: "#3081D0", my: 1 }}>
+            <Typography
+              variant="body1"
+              align="center"
+              sx={{ color: "#3081D0", my: 1 }}
+            >
               ADMIN
             </Typography>
           </Grid>
@@ -211,9 +215,11 @@ export default function SideNav() {
           <React.Fragment key={index}>
             <ListItemButton onClick={item.onClick}>
               <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} />
+              <ListItemText sx={{ ml: -3 }}>
+                <Typography variant="body2">{item.label}</Typography>
+              </ListItemText>
               {item.nestedItems &&
-                (openStates[index] ? <ExpandLess /> : <ExpandMore />)}
+                (openStates[index] ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />)}
             </ListItemButton>
             {item.nestedItems && (
               <Collapse in={openStates[index]} timeout="auto" unmountOnExit>
@@ -221,11 +227,14 @@ export default function SideNav() {
                   {item.nestedItems.map((nestedItem, nestedIndex) => (
                     <ListItemButton
                       key={nestedIndex}
-                      sx={{ pl: 4 }}
                       onClick={nestedItem.onClick}
                     >
                       <ListItemIcon>{nestedItem.icon}</ListItemIcon>
-                      <ListItemText primary={nestedItem.label} />
+                      <ListItemText sx={{ ml: -3 }}>
+                        <Typography variant="body2">
+                          {nestedItem.label}
+                        </Typography>
+                      </ListItemText>
                     </ListItemButton>
                   ))}
                 </List>

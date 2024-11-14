@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import Logo from "../../assets/images/logo.ico";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -41,34 +41,34 @@ export default function UserSideNav() {
   const menuItems = [
     {
       label: "Dashboard",
-      icon: <DashboardIcon />,
+      icon: <DashboardIcon fontSize="small" />,
       onClick: () => routeHandle("dashboard"),
     },
     {
       label: "Activity",
-      icon: <AssignmentIcon />,
+      icon: <AssignmentIcon fontSize="small" />,
       onClick: () => handleNestedItemClick(1),
       nestedItems: [
         {
           label: "Test",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("activity/test"),
         },
         {
           label: "Re-Test",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("activity/retest"),
         },
       ],
     },
     {
       label: "Report",
-      icon: <AssessmentIcon />,
+      icon: <AssessmentIcon fontSize="small" />,
       onClick: () => handleNestedItemClick(2),
       nestedItems: [
         {
           label: "User Report",
-          icon: <KeyboardArrowRightIcon />,
+          icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("report/user-report"),
         },
         // {
@@ -115,10 +115,14 @@ export default function UserSideNav() {
             </Button>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body1" align="center">
+            <Typography variant="body2" align="center">
               Knowledge Enhancement Plateform
             </Typography>
-            <Typography variant="h6" align="center" sx={{ color: "#3081D0", my: 1 }}>
+            <Typography
+              variant="body1"
+              align="center"
+              sx={{ color: "#3081D0", my: 1 }}
+            >
               USER
             </Typography>
           </Grid>
@@ -134,9 +138,15 @@ export default function UserSideNav() {
           <React.Fragment key={index}>
             <ListItemButton onClick={item.onClick}>
               <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} />
+              <ListItemText sx={{ ml: -3 }}>
+                <Typography variant="body2">{item.label}</Typography>
+              </ListItemText>
               {item.nestedItems &&
-                (openStates[index] ? <ExpandLess /> : <ExpandMore />)}
+                (openStates[index] ? (
+                  <ExpandLess fontSize="small" />
+                ) : (
+                  <ExpandMore fontSize="small" />
+                ))}
             </ListItemButton>
             {item.nestedItems && (
               <Collapse in={openStates[index]} timeout="auto" unmountOnExit>
@@ -144,11 +154,14 @@ export default function UserSideNav() {
                   {item.nestedItems.map((nestedItem, nestedIndex) => (
                     <ListItemButton
                       key={nestedIndex}
-                      sx={{ pl: 4 }}
                       onClick={nestedItem.onClick}
                     >
                       <ListItemIcon>{nestedItem.icon}</ListItemIcon>
-                      <ListItemText primary={nestedItem.label} />
+                      <ListItemText sx={{ ml: -3 }}>
+                        <Typography variant="body2">
+                          {nestedItem.label}
+                        </Typography>
+                      </ListItemText>
                     </ListItemButton>
                   ))}
                 </List>

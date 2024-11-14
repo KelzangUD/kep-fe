@@ -25,7 +25,6 @@ const ActivityLogs = () => {
   const fetchActivityLogs = async () => {
     const res = await Route("GET", "/activity-logs", token, null, null);
     if (res?.status === 200) {
-      console.log(res?.data?.activityLogs)
       setData(
         res?.data?.activityLogs?.map((item, index) => ({
           id: item?.id,
