@@ -21,6 +21,7 @@ const EditExtension = ({
   open,
   setOpen,
   setOpenNotification,
+  setSeverity,
   setMessage,
   fetchExtensions,
 }) => {
@@ -34,7 +35,7 @@ const EditExtension = ({
 
   const token = localStorage.getItem("token");
   const fetchRegions = async () => {
-    const res = await Route("GET", "/regions", token, null);
+    const res = await Route("GET", "/regions", token, null, null);
     if (res?.status === 200) {
       setRegions(res?.data?.regions);
     }
@@ -67,16 +68,19 @@ const EditExtension = ({
       "PUT",
       `/extensions/${details?.id}`,
       token,
-      data
+      data,
+      null
     );
     if (response?.status === 201) {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      setSeverity("success")
       fetchExtensions();
       setOpen(false);
     } else {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      setSeverity("error");
     }
   };
   return (

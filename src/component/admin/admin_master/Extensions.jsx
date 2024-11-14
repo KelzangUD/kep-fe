@@ -36,6 +36,7 @@ const Extensions = () => {
   const [id, setId] = useState("");
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
+  const [severity, setSeverity] = useState("info");
 
   const token = localStorage.getItem("token");
   const fetchExtensions = async () => {
@@ -93,7 +94,7 @@ const Extensions = () => {
       width: 200,
       valueGetter: (params) => params.row.Region?.region || "N/A",
     },
-    { field: "description", headerName: "Description", width: 600 },
+    { field: "description", headerName: "Description", width: 300 },
     {
       field: "action",
       headerName: "Action",
@@ -154,7 +155,7 @@ const Extensions = () => {
             </Grid>
             <Grid item>
               <Button
-                variant="outlined"
+                variant="contained"
                 endIcon={<AddIcon />}
                 sx={{ mr: 2 }}
                 onClick={() => setAdd(true)}
@@ -194,6 +195,7 @@ const Extensions = () => {
           open={add}
           setOpen={setAdd}
           setOpenNotification={setOpenNotification}
+          setSeverity={setSeverity}
           setMessage={setMessage}
           fetchExtensions={fetchExtensions}
         />
@@ -204,6 +206,7 @@ const Extensions = () => {
           open={edit}
           setOpen={setEdit}
           setOpenNotification={setOpenNotification}
+          setSeverity={setSeverity}
           setMessage={setMessage}
           fetchExtensions={fetchExtensions}
         />
@@ -246,6 +249,7 @@ const Extensions = () => {
           open={openNotification}
           setOpen={setOpenNotification}
           message={message}
+          severity={severity}
         />
       )}
     </>

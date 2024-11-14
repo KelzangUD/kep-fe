@@ -21,6 +21,7 @@ const AddExtension = ({
   setOpen,
   setOpenNotification,
   setMessage,
+  setSeverity,
   fetchExtensions,
 }) => {
   // init states
@@ -33,7 +34,7 @@ const AddExtension = ({
 
   const token = localStorage.getItem("token");
   const fetchRegions = async () => {
-    const res = await Route("GET", "/regions", token, null);
+    const res = await Route("GET", "/regions", token, null, null);
     if (res?.status === 200) {
       setRegions(res?.data?.regions);
     }
@@ -62,15 +63,17 @@ const AddExtension = ({
     }));
   };
   const addHandle = async () => {
-    const response = await Route("POST", `/extensions`, token, data);
+    const response = await Route("POST", `/extensions`, token, data, null);
     if (response?.status === 201) {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      setSeverity("success");
       fetchExtensions();
       setOpen(false);
     } else {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      setSeverity("error");
     }
   };
   return (
