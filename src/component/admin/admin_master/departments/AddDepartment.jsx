@@ -12,26 +12,35 @@ import {
 import Transition from "../../../../common/Transition";
 import Route from "../../../../routes/Route";
 
-const AddDepartment = ({ open, setOpen, setOpenNotification, setMessage, fetchDepartments }) => {
+const AddDepartment = ({
+  open,
+  setOpen,
+  setOpenNotification,
+  setSeverity,
+  setMessage,
+  fetchDepartments,
+}) => {
   const [data, setData] = useState({
     title: "",
-  }); 
+  });
   const titleHandle = (e) => {
     setData({
-      title: e.target.value
-    })
+      title: e.target.value,
+    });
   };
   const token = localStorage.getItem("token");
-  const addHandle = async() => {
-    const response = await Route("POST", `/departments`, token, data);
+  const addHandle = async () => {
+    const response = await Route("POST", `/departments`, token, data, null);
     if (response?.status === 201) {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      setSeverity("success");
       fetchDepartments();
       setOpen(false);
     } else {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      setSeverity("error");
     }
   };
   return (

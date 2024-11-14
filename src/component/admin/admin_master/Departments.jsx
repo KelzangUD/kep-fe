@@ -36,7 +36,7 @@ const Departments = () => {
   const [departments, setDepartments] = useState([]);
   const [message, setMessage] = React.useState("");
   const [openNotification, setOpenNotification] = useState(false);
-
+  const [severity, setSeverity] = useState("info");
   // handlers
   const searchHandle = (e) => {
     setSearchQuery(e.target.value);
@@ -142,7 +142,7 @@ const Departments = () => {
             </Grid>
             <Grid item>
               <Button
-                variant="outlined"
+                variant="contained"
                 endIcon={<AddIcon />}
                 sx={{ mr: 2 }}
                 onClick={() => setAdd(true)}
@@ -182,6 +182,7 @@ const Departments = () => {
           open={add}
           setOpen={setAdd}
           setMessage={setMessage}
+          setSeverity={setSeverity}
           setOpenNotification={setOpenNotification}
           fetchDepartments={fetchDepartments}
         />
@@ -192,6 +193,7 @@ const Departments = () => {
           open={edit}
           setOpen={setEdit}
           setMessage={setMessage}
+          setSeverity={setSeverity}
           setOpenNotification={setOpenNotification}
           fetchDepartments={fetchDepartments}
         />
@@ -234,6 +236,7 @@ const Departments = () => {
         <Notification
           open={openNotification}
           setOpen={setOpenNotification}
+          severity={severity}
           message={message}
         />
       )}

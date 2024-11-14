@@ -36,6 +36,7 @@ const User = () => {
   const [userId, setUserId] = useState("");
   const [message, setMessage] = React.useState("");
   const [openNotification, setOpenNotification] = useState(false);
+  const [severity, setSeverity] = useState("info");
   // handlers
   const searchHandle = (e) => {
     setSearchQuery(e.target.value?.toLowerCase() || "");
@@ -120,7 +121,7 @@ const User = () => {
   );
   const confirmDeleteHandler = async () => {
     const res = await Route("PUT", `/users/delete-users`, token, null, userId);
-    if (res?.status === 201) {
+    if (res?.status === 200) {
       setDeleteUser(false);
       setMessage(res?.data?.message);
       fetchUsers();
@@ -216,6 +217,7 @@ const User = () => {
           open={editUser}
           setOpen={setEditUser}
           setOpenNotification={setOpenNotification}
+          setSeverity={setSeverity}
           setMessage={setMessage}
           fetchUsers={fetchUsers}
         />
@@ -257,6 +259,7 @@ const User = () => {
         <Notification
           open={openNotification}
           setOpen={setOpenNotification}
+          severity={severity}
           message={message}
         />
       )}

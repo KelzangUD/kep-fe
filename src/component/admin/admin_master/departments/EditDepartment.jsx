@@ -12,29 +12,45 @@ import {
 import Transition from "../../../../common/Transition";
 import Route from "../../../../routes/Route";
 
-const EditDepartment = ({ details, open, setOpen, setMessage, setOpenNotification, fetchDepartments }) => {
+const EditDepartment = ({
+  details,
+  open,
+  setOpen,
+  setMessage,
+  setSeverity,
+  setOpenNotification,
+  fetchDepartments,
+}) => {
   // init states
   const [data, setData] = React.useState({
-    title: details?.title
+    title: details?.title,
   });
-  
+
   // handlers
   const titleHandle = (e) => {
     setData({
-      title: e.target.value
+      title: e.target.value,
     });
   };
   const token = localStorage.getItem("token");
-  const editHandle = async() => {
-    const response = await Route("PUT", `/departments/${details?.id}`, token, data);
-    if (response?.status === 201) {
+  const editHandle = async () => {
+    const response = await Route(
+      "PUT",
+      `/departments/${details?.id}`,
+      token,
+      data,
+      null
+    );
+    if (response?.status === 200) {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      setSeverity("success");
       fetchDepartments();
       setOpen(false);
     } else {
       setMessage(response?.data?.message);
       setOpenNotification(true);
+      setSeverity("error");
     }
   };
   return (
