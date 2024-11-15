@@ -12,10 +12,10 @@ import {
 const Mcq = ({choiceHandle, answerHandle}) => {
   return (
     <>
-      <Box p={2}>
+      <Box px={2}>
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
+            <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
               <Grid item xs={5}>
                 <TextField
                   fullWidth
@@ -43,7 +43,7 @@ const Mcq = ({choiceHandle, answerHandle}) => {
                 <FormControlLabel value="second" control={<Radio onChange={(e) => answerHandle(e.target.value)} />} />
               </Grid>
             </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
+            <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
               <Grid item xs={5}>
                 <TextField
                   fullWidth

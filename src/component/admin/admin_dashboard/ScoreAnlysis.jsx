@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
 import Route from "../../../routes/Route";
 import { calculateScoreAnalysis } from "../../../util/CommonUtil";
@@ -53,10 +53,10 @@ export default function ScoreAnalysis() {
     fetchResults();
   }, []);
   return (
-    <>
+    <Paper sx={{  padding: 1}}>
       <Typography>Score Analysis</Typography>
       <Grid>
-        <PieChart width={400} height={300}>
+        <PieChart width={480} height={304}>
           <Pie
             data={scoreAnalysis}
             cx={200}
@@ -79,6 +79,6 @@ export default function ScoreAnalysis() {
           <Legend />
         </PieChart>
       </Grid>
-    </>
+    </Paper>
   );
 }

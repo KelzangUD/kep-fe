@@ -23,7 +23,12 @@ import SaveIcon from "@mui/icons-material/Save";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import Route from "../../../../routes/Route";
 
-const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchTest }) => {
+const ScheduleTest = ({
+  setScheduleTest,
+  setMessage,
+  setOpenNotification,
+  fetchTest,
+}) => {
   const [questions, setQuestions] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [details, setDetails] = useState({
@@ -73,13 +78,13 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
   const startTimeHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
-      startTime: e?.$d
+      startTime: e?.$d,
     }));
   };
   const endTimeHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
-      endTime: e?.$d
+      endTime: e?.$d,
     }));
   };
   const messageHandler = (e) => {
@@ -105,7 +110,7 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
         : prev.questions.filter((questionId) => questionId !== id), // Remove the question id if unchecked
     }));
   };
-  const scheduleHandle = async() => {
+  const scheduleHandle = async () => {
     const res = await Route("POST", `/tests`, token, details, null);
     if (res?.status === 201) {
       fetchTest();
@@ -131,6 +136,7 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
               endIcon={<SaveIcon />}
               onClick={scheduleHandle}
               sx={{ mr: 2 }}
+              size="small"
             >
               Schedule
             </Button>
@@ -139,13 +145,14 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
               color="error"
               endIcon={<HighlightOffIcon />}
               onClick={() => setScheduleTest(false)}
+              size="small"
             >
               Cancel
             </Button>
           </Grid>
-          <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+          <Grid item container alignItems="center" xs={12}>
             <Card variant="outlined" sx={{ width: 1100 }}>
-              <Grid item xs={12} sx={{ p: 2 }}>
+              <Grid item xs={12} px={2} py={1}>
                 <Typography as="h6">Schedule Test</Typography>
               </Grid>
               <Grid
@@ -153,8 +160,8 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
                 container
                 xs={12}
                 alignItems="center"
-                spacing={2}
-                sx={{ px: 2 }}
+                spacing={1}
+                px={2}
               >
                 <Grid item xs={4} sx={{ mt: 1 }}>
                   <TextField
@@ -164,6 +171,7 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
                     fullWidth
                     onChange={testNameHandler}
                     required
+                    size="small"
                   />
                 </Grid>
                 <Grid item xs={4}>
@@ -173,6 +181,11 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
                         label="Start Date"
                         sx={{ width: "100%" }}
                         onChange={startDateHandler}
+                        slotProps={{
+                          textField: {
+                            size: "small",
+                          },
+                        }}
                       />
                     </DemoContainer>
                   </LocalizationProvider>
@@ -184,6 +197,11 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
                         label="End Date"
                         sx={{ width: "100%" }}
                         onChange={endDateHandler}
+                        slotProps={{
+                          textField: {
+                            size: "small",
+                          },
+                        }}
                       />
                     </DemoContainer>
                   </LocalizationProvider>
@@ -194,11 +212,11 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
                 container
                 xs={12}
                 alignItems="center"
-                spacing={2}
-                sx={{ p: 2 }}
+                spacing={1}
+                sx={{ px: 2 }}
               >
                 <Grid item xs={4} sx={{ mt: 1 }}>
-                  <FormControl fullWidth>
+                  <FormControl fullWidth size="small">
                     <InputLabel id="duration-select-label">Duration</InputLabel>
                     <Select
                       labelId="duration-select-label"
@@ -220,6 +238,11 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
                         label="Start Time"
                         sx={{ width: "100%" }}
                         onChange={startTimeHandler}
+                        slotProps={{
+                          textField: {
+                            size: "small",
+                          },
+                        }}
                       />
                     </DemoContainer>
                   </LocalizationProvider>
@@ -232,6 +255,11 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
                         label="End Time"
                         sx={{ width: "100%" }}
                         onChange={endTimeHandler}
+                        slotProps={{
+                          textField: {
+                            size: "small",
+                          },
+                        }}
                       />
                     </DemoContainer>
                   </LocalizationProvider>
@@ -246,6 +274,7 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
                     fullWidth
                     onChange={messageHandler}
                     required
+                    size="small"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -263,7 +292,9 @@ const ScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchT
                       <FormControlLabel
                         control={
                           <Checkbox
-                            checked={details?.questions.includes(question?.id)||false}
+                            checked={
+                              details?.questions.includes(question?.id) || false
+                            }
                             onChange={(e) => itemHandler(e, question?.id)}
                           />
                         }

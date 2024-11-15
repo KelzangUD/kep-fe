@@ -165,7 +165,7 @@ const AddQuestions = () => {
               </Grid>
               <Grid item>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   endIcon={<PersonAddIcon />}
                   sx={{ mr: 2 }}
                   onClick={questionSetUpHandle}

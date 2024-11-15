@@ -14,10 +14,10 @@ import { option } from "../../../../../data/Static";
 const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
   return (
     <>
-      <Box p={2}>
+      <Box px={2}>
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
+            <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
@@ -39,7 +39,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
+            <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
@@ -61,7 +61,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
+            <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
@@ -83,7 +83,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
+            <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
@@ -111,9 +111,9 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
       <Box p={2}>
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
+            <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
               <Grid item xs={6}>
-                <FormControl fullWidth>
+                <FormControl fullWidth size="small">
                   <InputLabel id="question-type-label">Option A</InputLabel>
                   <Select
                     labelId="question-type-label"
@@ -130,7 +130,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                 </FormControl>
               </Grid>
               <Grid item xs={6}>
-                <FormControl fullWidth>
+                <FormControl fullWidth size="small">
                   <InputLabel id="question-type-label">Option B</InputLabel>
                   <Select
                     labelId="question-type-label"
@@ -147,9 +147,9 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                 </FormControl>
               </Grid>
             </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
+            <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
               <Grid item xs={6}>
-                <FormControl fullWidth>
+                <FormControl fullWidth size="small">
                   <InputLabel id="question-type-label">Option C</InputLabel>
                   <Select
                     labelId="question-type-label"
@@ -166,7 +166,7 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
                 </FormControl>
               </Grid>
               <Grid item xs={6}>
-                <FormControl fullWidth>
+                <FormControl fullWidth size="small">
                   <InputLabel id="question-type-label">Option D</InputLabel>
                   <Select
                     labelId="question-type-label"

@@ -82,18 +82,18 @@ const ScheduleTests = () => {
   };
   const userColumns = [
     { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "name", headerName: "Test Name", width: 250 },
+    { field: "name", headerName: "Test Name", width: 150 },
     {
       field: "start_date",
       headerName: "Start Date",
-      width: 150,
+      width: 100,
       valueGetter: (params) => params.row.start_date.split("T")[0],
     },
     { field: "start_time", headerName: "Start Time", width: 100 },
     {
       field: "end_date",
       headerName: "End Date",
-      width: 150,
+      width: 100,
       valueGetter: (params) => params.row.end_date.split("T")[0],
     },
     { field: "end_time", headerName: "End Time", width: 100 },
@@ -101,7 +101,7 @@ const ScheduleTests = () => {
     {
       field: "status",
       headerName: "Status",
-      width: 150,
+      width: 100,
       valueGetter: (params) => params.row.status === true ? "Active" : "Inactive",
     },
     {
@@ -212,7 +212,7 @@ const ScheduleTests = () => {
               </Grid>
               <Grid item>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   endIcon={<QuizIcon />}
                   sx={{ mr: 2 }}
                   onClick={() => setScheduleTest(true)}
@@ -228,7 +228,7 @@ const ScheduleTests = () => {
                 </Button>
               </Grid>
             </Grid>
-            <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+            <Grid item container alignItems="center" xs={12}>
               <div style={{ height: "auto", width: "100%" }}>
                 <DataGrid
                   rows={filteredData?.map((row, index) => ({

@@ -11,18 +11,18 @@ const AdminDashboard = () => {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
         <SubHeader text="Dashboard" />
-        <Grid item container xs={12}>
+        <Grid item container xs={12} spacing={2}>
           <Grid item xs={6}>
-              <LastTestGraph />
-            </Grid>
-            <Grid item xs={6}>
-              <ScoreAnalysis />
-            </Grid>
+            <LastTestGraph />
+          </Grid>
+          <Grid item xs={6}>
+            <ScoreAnalysis />
+          </Grid>
         </Grid>
-        <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+        <Grid item container alignItems="center" xs={12}>
           <TopPerformers />
         </Grid>
-        <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+        <Grid item container alignItems="center" xs={12}>
           <YearGraph />
         </Grid>
       </Grid>

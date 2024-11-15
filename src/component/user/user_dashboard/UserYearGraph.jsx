@@ -7,6 +7,7 @@ import {
   MenuItem,
   FormControl,
   Select,
+  Paper,
 } from "@mui/material";
 import {
   BarChart,
@@ -45,10 +46,10 @@ const UserYearGraph = () => {
     <Box>
       <Typography variant="subtitle1">One Year Graph</Typography>
       <Grid item xs={12}>
-        <Grid sx={{ display: "flex", justifyContent: "flex-end", py: "4px" }}>
+        <Grid sx={{ display: "flex", justifyContent: "flex-end", py: "8px" }}>
           <Box>
-            <FormControl>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <FormControl size="small">
+              <InputLabel id="demo-simple-select-label">Year</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -63,10 +64,10 @@ const UserYearGraph = () => {
           </Box>
         </Grid>
         <Box sx={{ display: "flex", alignItems: "left" }}>
-          <Box>
+          <Paper sx={{ py: 2 }}>
             <BarChart
-              width={1140}
-              height={500}
+              width={960}
+              height={400}
               data={yearData}
               margin={{
                 top: 5,
@@ -82,7 +83,7 @@ const UserYearGraph = () => {
               <Legend />
               <Bar dataKey="score" fill="#3081D0" />
             </BarChart>
-          </Box>
+          </Paper>
         </Box>
       </Grid>
     </Box>

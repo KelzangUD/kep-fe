@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, Paper } from "@mui/material";
 import {
   BarChart,
   Bar,
@@ -26,18 +26,18 @@ const LastTestGraph = () => {
     fetchLatestResults();
   }, []);
   return (
-    <Box>
+    <Paper sx={{ padding: 1 }}>
       <Typography variant="subtitle1">Last Test</Typography>
       <Grid item xs={12}>
         <Box sx={{ display: "flex", alignItems: "left" }}>
           <Box>
             <BarChart
-              width={600}
+              width={450}
               height={300}
               data={latestResults}
               margin={{
                 top: 5,
-                right: 30,
+                // right: 30,
                 left: -30,
                 bottom: 5,
               }}
@@ -55,7 +55,7 @@ const LastTestGraph = () => {
           </Box>
         </Box>
       </Grid>
-    </Box>
+    </Paper>
   );
 };
 

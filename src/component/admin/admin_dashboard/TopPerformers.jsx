@@ -7,6 +7,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Paper,
 } from "@mui/material";
 import Route from "../../../routes/Route";
 
@@ -23,14 +24,14 @@ const TopPerformers = () => {
     fetchTopPerformers();
   }, []);
   return (
-    <>
-      <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
+    <Paper sx={{ padding: 1}}>
+      <Grid container alignItems="center">
         <Grid item xs={12}>
           <Typography>Top Five Performers</Typography>
         </Grid>
         <Grid item xs={12}>
           {/* <TableContainer> */}
-            <Table sx={{ minWidth: 550 }} aria-label="simple table">
+            <Table sx={{ minWidth: 950 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>Sl.No</TableCell>
@@ -62,7 +63,7 @@ const TopPerformers = () => {
           {/* </TableContainer> */}
         </Grid>
       </Grid>
-    </>
+    </Paper>
   );
 };
 

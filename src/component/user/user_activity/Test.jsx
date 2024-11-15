@@ -63,18 +63,18 @@ const Test = () => {
 
   const userColumns = [
     { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "name", headerName: "Test Name", width: 250 },
+    { field: "name", headerName: "Test Name", width: 200 },
     {
       field: "start_date",
       headerName: "Start Date",
-      width: 150,
+      width: 100,
       valueGetter: (params) => params.row.start_date.split("T")[0],
     },
     { field: "start_time", headerName: "Start Time", width: 100 },
     {
       field: "end_date",
       headerName: "End Date",
-      width: 150,
+      width: 100,
       valueGetter: (params) => params.row.end_date.split("T")[0],
     },
     { field: "end_time", headerName: "End Time", width: 100 },
@@ -82,14 +82,14 @@ const Test = () => {
     {
       field: "status",
       headerName: "Status",
-      width: 150,
+      width: 100,
       valueGetter: (params) =>
         params.row.status === true ? "Active" : "Inactive",
     },
     {
       field: "action",
       headerName: "Action",
-      width: 140,
+      width: 100,
       renderCell: (params) => (
         <div>
           <IconButton

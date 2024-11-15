@@ -16,12 +16,12 @@ const QuestionsUsed = () => {
   };
   const userColumns = [
     { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "question", headerName: "Question", width: 550 },
+    { field: "question", headerName: "Question", width: 650 },
     { field: "point", headerName: "Point", width: 60 },
     {
       field: "type",
       headerName: "Question Type",
-      width: 250,
+      width: 200,
       valueGetter: (params) => params.row.QuestionType?.title || "N/A",
     },
   ];
@@ -83,7 +83,7 @@ const QuestionsUsed = () => {
               </Button>
             </Grid>
           </Grid>
-          <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+          <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
                 rows={filteredData?.map((row, index) => ({

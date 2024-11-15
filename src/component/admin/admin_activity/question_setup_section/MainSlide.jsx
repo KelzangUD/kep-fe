@@ -131,7 +131,7 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
     <>
       <Card variant="outlined" sx={{ mb: 2 }}>
         <Box p={2} sx={{ display: "flex", justifyContent: "space-between" }}>
-          <FormControl required sx={{ minWidth: 300 }}>
+          <FormControl required sx={{ minWidth: 300 }} size="small">
             <InputLabel id="question-type-label">Question Type</InputLabel>
             <Select
               labelId="question-type-label"
@@ -153,10 +153,11 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
               id="point"
               required
               onChange={pointHandle}
+              size="small"
             />
           </FormControl>
         </Box>
-        <Box p={2}>
+        <Box px={2}>
           <TextField
             fullWidth
             label="Question"
@@ -165,10 +166,11 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
             rows={9}
             required
             onChange={questionHandle}
+            size="small"
           />
         </Box>
         <Box p={2} sx={{ display: "flex", justifyContent: "space-between" }}>
-          <FormControl sx={{ minWidth: 300 }}>
+          <FormControl sx={{ minWidth: 300 }} size="small">
             <InputLabel id="attachment-label">Attachment</InputLabel>
             <Select
               labelId="attachment-label"
@@ -184,7 +186,7 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
             </Select>
           </FormControl>
           {attachFile === 2 ? (
-            <FormControl sx={{ minWidth: 300 }}>
+            <FormControl sx={{ minWidth: 300 }} size="small">
               <InputLabel id="video-label">Video</InputLabel>
               <Select
                 labelId="video-label"
@@ -201,7 +203,7 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
             </FormControl>
           ) : null}
           {attachFile === 3 ? (
-            <FormControl sx={{ minWidth: 300 }}>
+            <FormControl sx={{ minWidth: 300 }} size="small">
               <InputLabel id="audio-label">Audio</InputLabel>
               <Select
                 labelId="audio-label"
