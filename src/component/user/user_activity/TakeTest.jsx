@@ -105,7 +105,7 @@ const TakeTest = ({ id, details, setTakeTest, questions, route="results" }) => {
             }}
           >
             {testDetails?.message !== "" && (
-              <Stack sx={{ width: "80%" }} spacing={2}>
+              <Stack sx={{ width: "80%" }} spacing={1}>
                 <Alert severity="info">{testDetails?.message}</Alert>
               </Stack>
             )}
