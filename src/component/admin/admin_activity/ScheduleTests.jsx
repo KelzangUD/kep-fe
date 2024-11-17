@@ -20,11 +20,12 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ScheduleTest from "./schedule_test/ScheduleTest";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditScheduleTest from "./schedule_test/EditScheduleTest";
 import ReScheduleTest from "./schedule_test/ReScheduleTest";
 import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
+import RenderStatus from "../../../ui/RenderStatus";
 import Route from "../../../routes/Route";
 
 const ScheduleTests = () => {
@@ -77,8 +78,8 @@ const ScheduleTests = () => {
     fetchTest();
   }, []);
   const retestHandle = (params) => {
-    setId(params?.row?.id)
-    fetchTestDetails(params?.row?.id)
+    setId(params?.row?.id);
+    fetchTestDetails(params?.row?.id);
   };
   const userColumns = [
     { field: "sl", headerName: "Sl. No", width: 40 },
@@ -102,7 +103,12 @@ const ScheduleTests = () => {
       field: "status",
       headerName: "Status",
       width: 100,
-      valueGetter: (params) => params.row.status === true ? "Active" : "Inactive",
+      renderCell: (params) => (
+        <RenderStatus
+          status={params.row.status === true ? "Active" : "Inactive"}
+        />
+      ),
+      // valueGetter: (params) => params.row.status === true ? "Active" : "Inactive",
     },
     {
       field: "action",
@@ -114,22 +120,25 @@ const ScheduleTests = () => {
             aria-label="edit"
             size="small"
             onClick={() => editHandle(params)}
+            color="primary"
           >
             <EditIcon />
-          </IconButton>
-          <IconButton
-            aria-label="delete"
-            size="small"
-            onClick={() => deleteHandle(params)}
-          >
-            <DeleteIcon />
           </IconButton>
           <IconButton
             aria-label="view"
             size="small"
             onClick={() => retestHandle(params)}
+            color="success"
           >
             <VisibilityIcon />
+          </IconButton>
+          <IconButton
+            aria-label="delete"
+            size="small"
+            onClick={() => deleteHandle(params)}
+            color="error"
+          >
+            <DeleteIcon />
           </IconButton>
         </div>
       ),
@@ -138,7 +147,7 @@ const ScheduleTests = () => {
   const filteredData = tests?.filter((item) =>
     item?.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  const deleteTestHandler = async() => {
+  const deleteTestHandler = async () => {
     const res = await Route("DELETE", `/tests`, token, null, id);
     if (res?.status === 201) {
       setDeleteTest(false);
@@ -146,11 +155,10 @@ const ScheduleTests = () => {
       fetchTest();
       setOpenNotification(true);
     } else {
-      console.log(res)
       setMessage(res?.response?.data?.message);
       setOpenNotification(true);
     }
-  }
+  };
   return (
     <>
       {scheduleTest ? (
@@ -169,7 +177,7 @@ const ScheduleTests = () => {
           absents={absents}
           id={id}
         />
-      ): edit ? (
+      ) : edit ? (
         <EditScheduleTest
           testDetails={details}
           setOpen={setEdit}

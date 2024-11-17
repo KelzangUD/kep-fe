@@ -37,6 +37,7 @@ const AddQuestions = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
+  const [severity, setSeverity] = useState("info");
 
   // handlers
   const searchHandle = (e) => {
@@ -61,12 +62,12 @@ const AddQuestions = () => {
   };
   const userColumns = [
     { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "question", headerName: "Question", width: 550 },
+    { field: "question", headerName: "Question", width: 500 },
     { field: "point", headerName: "Point", width: 60 },
     {
       field: "type",
       headerName: "Question Type",
-      width: 250,
+      width: 200,
       valueGetter: (params) => params.row.QuestionType?.title || "N/A",
     },
     {
@@ -79,6 +80,7 @@ const AddQuestions = () => {
             aria-label="edit"
             size="small"
             onClick={() => editHandle(params)}
+            color="primary"
           >
             <EditIcon />
           </IconButton>
@@ -86,6 +88,7 @@ const AddQuestions = () => {
             aria-label="delete"
             size="small"
             onClick={() => deleteHandle(params)}
+            color="error"
           >
             <DeleteIcon />
           </IconButton>
@@ -114,10 +117,12 @@ const AddQuestions = () => {
     if (res?.status === 201) {
       setDeleteQuestion(false);
       setMessage(res?.data?.message);
+      setSeverity("success");
       fetchQuestions();
       setOpenNotification(true);
     } else {
       setMessage(res?.data?.message);
+      setSeverity("error");
       setOpenNotification(true);
     }
   };
@@ -252,6 +257,7 @@ const AddQuestions = () => {
           open={openNotification}
           setOpen={setOpenNotification}
           message={message}
+          severity={severity}
         />
       )}
     </>

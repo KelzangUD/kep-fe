@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Box, Grid, IconButton, Paper, InputBase } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import SearchIcon from "@mui/icons-material/Search";
-import EditNoteIcon from "@mui/icons-material/EditNote";
+import EditIcon from '@mui/icons-material/Edit';
 import SubHeader from "../../../common/SubHeader";
 import Notification from "../../../ui/Notification";
+import RenderStatus from "../../../ui/RenderStatus";
 import Route from "../../../routes/Route";
 import TakeTest from "./TakeTest";
 import { shuffleArray } from "../../../util/CommonUtil";
@@ -54,7 +55,9 @@ const ReTest = () => {
   };
   const testHandle = (param) => {
     if (param?.row?.end_date < new Date().toJSON()) {
-      setMessage("You're unable to take the test at this time because registration is closed.");
+      setMessage(
+        "You're unable to take the test at this time because registration is closed."
+      );
       setShowNotification(true);
     } else {
       fetchQuestions(param?.row?.id, param?.row);
@@ -83,8 +86,11 @@ const ReTest = () => {
       field: "status",
       headerName: "Status",
       width: 100,
-      valueGetter: (params) =>
-        params.row.status === true ? "Active" : "Inactive",
+      renderCell: (params) => (
+        <RenderStatus
+          status={params.row.status === true ? "Active" : "Inactive"}
+        />
+      ),
     },
     {
       field: "action",
@@ -96,8 +102,9 @@ const ReTest = () => {
             aria-label="edit"
             size="small"
             onClick={() => testHandle(params)}
+            color="primary"
           >
-            <EditNoteIcon />
+            <EditIcon />
           </IconButton>
         </div>
       ),

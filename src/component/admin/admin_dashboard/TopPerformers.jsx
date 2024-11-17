@@ -31,7 +31,7 @@ const TopPerformers = () => {
         </Grid>
         <Grid item xs={12}>
           {/* <TableContainer> */}
-            <Table sx={{ minWidth: 950 }} aria-label="simple table">
+            <Table sx={{ minWidth: 920 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>Sl.No</TableCell>

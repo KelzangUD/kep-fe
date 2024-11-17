@@ -89,6 +89,7 @@ const Designations = () => {
             aria-label="edit"
             size="small"
             onClick={() => editHandle(params)}
+            color="primary"
           >
             <EditIcon />
           </IconButton>
@@ -96,6 +97,7 @@ const Designations = () => {
             aria-label="delete"
             size="small"
             onClick={() => deleteHandle(params)}
+            color="error"
           >
             <DeleteIcon />
           </IconButton>

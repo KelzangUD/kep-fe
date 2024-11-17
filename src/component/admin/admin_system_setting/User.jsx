@@ -23,6 +23,7 @@ import CreateUser from "./CreateUser";
 import EditUser from "./EditUser";
 import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
+import RenderStatus from "../../../ui/RenderStatus";
 import Route from "../../../routes/Route";
 
 const User = () => {
@@ -73,19 +74,22 @@ const User = () => {
     {
       field: "isAdmin",
       headerName: "Admin",
-      width: 60,
-      valueGetter: (params) => (params.row.isAdmin === true ? "Yes" : "No"),
+      width: 80,
+      renderCell: (params) => (
+        <RenderStatus status={params?.row?.isAdmin === true ? "Yes" : "No"} />
+      ),
     },
     {
       field: "action",
       headerName: "Action",
-      width: 100,
+      width: 90,
       renderCell: (params) => (
         <div>
           <IconButton
             aria-label="edit"
             size="small"
             onClick={() => editHandle(params)}
+            color="primary"
           >
             <EditIcon />
           </IconButton>
@@ -93,6 +97,7 @@ const User = () => {
             aria-label="delete"
             size="small"
             onClick={() => deleteHandle(params)}
+            color="error"
           >
             <DeleteIcon />
           </IconButton>

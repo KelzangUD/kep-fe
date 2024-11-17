@@ -62,8 +62,8 @@ const YearGraph = () => {
         <Box sx={{ display: "flex", alignItems: "left" }}>
           <Box>
             <BarChart
-              width={970}
-              height={300}
+              width={945}
+              height={280}
               data={yearlyData}
               margin={{
                 top: 5,

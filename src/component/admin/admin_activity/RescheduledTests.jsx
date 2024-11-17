@@ -21,6 +21,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import EditScheduleTest from "./schedule_test/EditScheduleTest";
 import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
+import RenderStatus from "../../../ui/RenderStatus";
 import Route from "../../../routes/Route";
 
 const ReScheduledTests = () => {
@@ -76,7 +77,7 @@ const ReScheduledTests = () => {
       field: "status",
       headerName: "Status",
       width: 100,
-      valueGetter: (params) => params.row.status === true ? "Active" : "Inactive",
+      renderCell: (params) => (<RenderStatus status={params?.row?.status === true ? "Active" : "Inactive"} />)
     },
     {
       field: "action",
@@ -88,6 +89,7 @@ const ReScheduledTests = () => {
             aria-label="edit"
             size="small"
             onClick={() => editHandle(params)}
+            color="primary"
           >
             <EditIcon />
           </IconButton>
@@ -95,6 +97,7 @@ const ReScheduledTests = () => {
             aria-label="delete"
             size="small"
             onClick={() => deleteHandle(params)}
+            color="error"
           >
             <DeleteIcon />
           </IconButton>

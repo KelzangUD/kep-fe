@@ -245,16 +245,22 @@ const EditQuestion = ({
   };
   // update function
   const handleSubmit = async () => {
-      const response = await Route("PUT", `/questions`, token, questionDetails, id);
-      if (response?.status === 201) {
-        setMessage(response?.data?.message);
-        setOpenNotification(true);
-        fetchQuestions();
-        setOpen(false);
-      } else {
-        setMessage(response?.response?.data?.message);
-        setOpenNotification(true);
-      }
+    const response = await Route(
+      "PUT",
+      `/questions`,
+      token,
+      questionDetails,
+      id
+    );
+    if (response?.status === 201) {
+      setMessage(response?.data?.message);
+      setOpenNotification(true);
+      fetchQuestions();
+      setOpen(false);
+    } else {
+      setMessage(response?.response?.data?.message);
+      setOpenNotification(true);
+    }
   };
   return (
     <>
@@ -264,10 +270,10 @@ const EditQuestion = ({
         onClose={() => setOpen(false)}
         TransitionComponent={Transition}
       >
-        <DialogTitle>Edit Question</DialogTitle>
+        <DialogTitle ml={2}>Edit Question</DialogTitle>
         <DialogContent>
           <Box p={2} sx={{ display: "flex", justifyContent: "space-between" }}>
-            <FormControl required sx={{ minWidth: 300 }}>
+            <FormControl required sx={{ minWidth: 300 }} size="small">
               <InputLabel id="question-type-label">Question Type</InputLabel>
               <Select
                 labelId="question-type-label"
@@ -291,6 +297,7 @@ const EditQuestion = ({
                 required
                 defaultValue={details?.point}
                 onChange={pointHandle}
+                size="small"
               />
             </FormControl>
           </Box>
@@ -304,10 +311,11 @@ const EditQuestion = ({
               required
               defaultValue={details?.question}
               onChange={questionHandle}
+              size="small"
             />
           </Box>
           <Box p={2} sx={{ display: "flex", justifyContent: "space-between" }}>
-            <FormControl sx={{ minWidth: 300 }}>
+            <FormControl sx={{ minWidth: 300 }} size="small">
               <InputLabel id="attachment-label">Attachment</InputLabel>
               <Select
                 labelId="attachment-label"
@@ -323,7 +331,7 @@ const EditQuestion = ({
               </Select>
             </FormControl>
             {attachFile === 2 ? (
-              <FormControl sx={{ minWidth: 300 }}>
+              <FormControl sx={{ minWidth: 300 }} size="small">
                 <InputLabel id="video-label">Video</InputLabel>
                 <Select
                   labelId="video-label"
@@ -341,7 +349,7 @@ const EditQuestion = ({
               </FormControl>
             ) : null}
             {attachFile === 3 ? (
-              <FormControl sx={{ minWidth: 300 }}>
+              <FormControl sx={{ minWidth: 300 }} size="small">
                 <InputLabel id="audio-label">Audio</InputLabel>
                 <Select
                   labelId="audio-label"
@@ -361,14 +369,15 @@ const EditQuestion = ({
           </Box>
           {renderQuestionType()}
         </DialogContent>
-        <DialogActions sx={{ mb: 2, mx: 2 }}>
-          <Button variant="contained" onClick={handleSubmit}>
+        <DialogActions sx={{ mb: 2, mx: 4 }}>
+          <Button variant="contained" onClick={handleSubmit} size="small">
             Update
           </Button>
           <Button
             onClick={() => setOpen(false)}
             variant="outlined"
             color="error"
+            size="small"
           >
             Cancel
           </Button>

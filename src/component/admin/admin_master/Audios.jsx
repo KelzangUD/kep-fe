@@ -84,6 +84,7 @@ const Audios = () => {
             aria-label="edit"
             size="small"
             onClick={() => editHandle(params)}
+            color="primary"
           >
             <EditIcon />
           </IconButton>
@@ -91,6 +92,7 @@ const Audios = () => {
             aria-label="edit"
             size="small"
             onClick={() => viewHandle(params)}
+            color="success"
           >
             <VisibilityIcon />
           </IconButton>
@@ -98,6 +100,7 @@ const Audios = () => {
             aria-label="delete"
             size="small"
             onClick={() => deleteHandle(params)}
+            color="danger"
           >
             <DeleteIcon />
           </IconButton>

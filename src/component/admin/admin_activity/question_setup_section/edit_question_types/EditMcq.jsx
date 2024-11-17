@@ -27,7 +27,7 @@ const EditMcq = ({ options, choiceHandle, answerHandle }) => {
                 : "fourth"
             }
           >
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
+            <Grid container spacing={1} alignItems="center">
               <Grid item xs={5}>
                 <TextField
                   fullWidth
