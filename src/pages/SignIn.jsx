@@ -23,6 +23,7 @@ const SignIn = () => {
   });
   const [message, setMessage] = React.useState("");
   const [open, setOpen] = useState(false);
+  const [severity, setSeverity] = useState("info");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,10 +41,11 @@ const SignIn = () => {
     } else if (res?.status === 206) {
       setMessage(res?.data?.message);
       setOpen(true);
-    }
-     else {
+      setSeverity("error");
+    } else {
       setMessage(res?.response?.data?.message);
       setOpen(true);
+      setSeverity("error");
     }
   };
 
@@ -114,7 +116,14 @@ const SignIn = () => {
         </Box>
         <Footer />
       </Container>
-      {open && <Notification open={open} setOpen={setOpen} message={message} />}
+      {open && (
+        <Notification
+          open={open}
+          setOpen={setOpen}
+          message={message}
+          severity={severity}
+        />
+      )}
     </>
   );
 };

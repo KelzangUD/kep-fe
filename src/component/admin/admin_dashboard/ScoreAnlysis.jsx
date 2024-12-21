@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Paper, Typography } from "@mui/material";
-import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import Route from "../../../routes/Route";
 import { calculateScoreAnalysis } from "../../../util/CommonUtil";
 
@@ -11,7 +18,7 @@ const data = [
   { name: "faild", value: 12 },
 ];
 
-const COLORS = ["#2AAF74","#3081D0", "#EE7214", "#D3756B"];
+const COLORS = ["#2AAF74", "#3081D0", "#EE7214", "#D3756B"];
 
 const renderCustomizedLabel = ({
   cx,
@@ -20,7 +27,6 @@ const renderCustomizedLabel = ({
   innerRadius,
   outerRadius,
   value,
-  index,
 }) => {
   const RADIAN = Math.PI / 180;
   const radius = 25 + innerRadius + (outerRadius - innerRadius);
@@ -53,14 +59,16 @@ export default function ScoreAnalysis() {
     fetchResults();
   }, []);
   return (
-    <Paper sx={{  padding: 1}}>
-      <Typography>Score Analysis</Typography>
-      <Grid>
-        <PieChart width={480} height={304}>
+    <Paper sx={{ width: "100%", height: 300, padding: 1 }}>
+      <Typography variant="subtitle2" ml={3}>
+        Score Analysis
+      </Typography>
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
           <Pie
             data={scoreAnalysis}
-            cx={200}
-            cy={140}
+            cx="50%"
+            cy="50%"
             labelLine={false}
             label={renderCustomizedLabel}
             innerRadius={60}
@@ -75,10 +83,17 @@ export default function ScoreAnalysis() {
               />
             ))}
           </Pie>
+          <Legend
+            layout="horizontal"
+            verticalAlign="bottom"
+            align="center"
+            wrapperStyle={{
+              marginBottom: 25,
+            }}
+          />
           <Tooltip formatter={(value) => `${value}%`} />
-          <Legend />
         </PieChart>
-      </Grid>
+      </ResponsiveContainer>
     </Paper>
   );
 }

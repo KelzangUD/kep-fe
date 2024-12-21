@@ -8,7 +8,7 @@ import YearGraph from "../../component/admin/admin_dashboard/YearGraph";
 
 const AdminDashboard = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ height: "100%" }}>
       <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
         <SubHeader text="Dashboard" />
         <Grid item container xs={12} spacing={2}>
@@ -19,10 +19,10 @@ const AdminDashboard = () => {
             <ScoreAnalysis />
           </Grid>
         </Grid>
-        <Grid item container alignItems="center" xs={12}>
+        <Grid item container xs={12}>
           <TopPerformers />
         </Grid>
-        <Grid item container alignItems="center" xs={12}>
+        <Grid item container xs={12} mb={5}>
           <YearGraph />
         </Grid>
       </Grid>

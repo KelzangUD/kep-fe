@@ -12,8 +12,8 @@ const Counter = ({ value, name }) => {
         sx={{
           padding: 1,
           display: "flex",
-          flexDirection: "column", // Set flex direction to column
-          alignItems: "center", // Align items within the column to center
+          flexDirection: "column",
+          alignItems: "center",
           justifyContent: "center",
           width: 80,
           height: 80,

@@ -8,10 +8,10 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 import Route from "../../../routes/Route";
 import { calculateLatestTestResults } from "../../../util/CommonUtil";
-
 
 const LastTestGraph = () => {
   const [latestResults, setLatestResults] = useState([]);
@@ -26,35 +26,29 @@ const LastTestGraph = () => {
     fetchLatestResults();
   }, []);
   return (
-    <Paper sx={{ padding: 1 }}>
-      <Typography variant="subtitle1">Last Test</Typography>
-      <Grid item xs={12}>
-        <Box sx={{ display: "flex", alignItems: "left" }}>
-          <Box>
-            <BarChart
-              width={450}
-              height={300}
-              data={latestResults}
-              margin={{
-                top: 5,
-                // right: 30,
-                left: -30,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="excel" fill="#2AAF74" />
-              <Bar dataKey="good" fill="#3081D0" />
-              <Bar dataKey="average" fill="#EE7214" />
-              <Bar dataKey="failed" fill="#D3756B" />
-            </BarChart>
-          </Box>
-        </Box>
-      </Grid>
+    <Paper sx={{ width: "100%", height: 300, padding: 1 }}>
+      <Typography variant="subtitle2" ml={3}>
+        Last Test
+      </Typography>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          data={latestResults}
+          margin={{
+            top: 10,
+            right: 20,
+            left: 20,
+            bottom: 30,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="excel" fill="#2AAF74" />
+          <Bar dataKey="good" fill="#3081D0" />
+          <Bar dataKey="average" fill="#EE7214" />
+          <Bar dataKey="failed" fill="#D3756B" />
+        </BarChart>
+      </ResponsiveContainer>
     </Paper>
   );
 };
