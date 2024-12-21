@@ -9,14 +9,14 @@ const ActivityLogs = () => {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "username", headerName: "Name", width: 260 },
+    { field: "sl", headerName: "Sl. No", flex: 40 },
+    { field: "username", headerName: "Name", flex: 260 },
     {
       field: "description",
       headerName: "Description",
-      width: 400,
+      flex: 400,
     },
-    { field: "date_time", headerName: "Date and Time", width: 200 },
+    { field: "date_time", headerName: "Date and Time", flex: 200 },
   ];
   const searchHandle = (e) => {
     setSearchQuery(e.target.value?.toLowerCase() || "");

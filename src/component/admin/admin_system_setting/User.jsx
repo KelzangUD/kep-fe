@@ -54,7 +54,7 @@ const User = () => {
     {
       field: "sl",
       headerName: "Sl. No",
-      width: 40,
+      flex: 40,
       valueGetter: (params) => params.row.sl,
     },
     { field: "name", headerName: "Name", width: 180 },
@@ -62,19 +62,19 @@ const User = () => {
     {
       field: "email",
       headerName: "Email",
-      width: 240,
+      flex: 240,
     },
     {
       field: "designation ",
       headerName: "Designation",
-      width: 140,
+      flex: 140,
       valueGetter: (params) => params.row.Designation?.title || "N/A",
     },
-    { field: "contact", headerName: "Contact No.", width: 100 },
+    { field: "contact", headerName: "Contact No.", flex: 100 },
     {
       field: "isAdmin",
       headerName: "Admin",
-      width: 80,
+      flex: 80,
       renderCell: (params) => (
         <RenderStatus status={params?.row?.isAdmin === true ? "Yes" : "No"} />
       ),
@@ -82,7 +82,7 @@ const User = () => {
     {
       field: "action",
       headerName: "Action",
-      width: 90,
+      flex: 90,
       renderCell: (params) => (
         <div>
           <IconButton
