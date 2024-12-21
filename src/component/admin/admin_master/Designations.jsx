@@ -69,20 +69,20 @@ const Designations = () => {
     {
       field: "sl",
       headerName: "Sl. No",
-      width: 40,
+      flex: 40,
       valueGetter: (params) => params.row.sl,
     },
-    { field: "title", headerName: "Title", width: 400 },
+    { field: "title", headerName: "Title", flex: 400 },
     {
       field: "department_or_unit",
       headerName: "Department/Unit",
-      width: 200,
+      flex: 200,
       valueGetter: (params) => params.row.Department?.title || "N/A",
     },
     {
       field: "action",
       headerName: "Action",
-      width: 120,
+      flex: 120,
       renderCell: (params) => (
         <div>
           <IconButton

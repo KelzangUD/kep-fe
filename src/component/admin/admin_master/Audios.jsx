@@ -70,14 +70,14 @@ const Audios = () => {
     setDeleteAudio(true);
   };
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "title", headerName: "Title", width: 150 },
-    { field: "description", headerName: "Description", width: 500 },
-    { field: "visible", headerName: "Visible", width: 100 },
+    { field: "sl", headerName: "Sl. No", flex: 40 },
+    { field: "title", headerName: "Title", flex: 150 },
+    { field: "description", headerName: "Description", flex: 500 },
+    { field: "visible", headerName: "Visible", flex: 100 },
     {
       field: "action",
       headerName: "Action",
-      width: 120,
+      flex: 120,
       renderCell: (params) => (
         <div>
           <IconButton

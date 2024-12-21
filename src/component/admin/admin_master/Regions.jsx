@@ -80,15 +80,15 @@ const Regions = () => {
     {
       field: "sl",
       headerName: "Sl. No",
-      width: 40,
+      flex: 40,
       valueGetter: (params) => params.row.sl,
     },
-    { field: "region", headerName: "Region", width: 200 },
-    { field: "description", headerName: "Description", width: 600 },
+    { field: "region", headerName: "Region", flex: 200 },
+    { field: "description", headerName: "Description", flex: 600 },
     {
       field: "action",
       headerName: "Action",
-      width: 120,
+      flex: 120,
       renderCell: (params) => (
         <div>
           <IconButton

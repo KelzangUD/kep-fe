@@ -84,21 +84,21 @@ const Extensions = () => {
     {
       field: "sl",
       headerName: "Sl. No",
-      width: 40,
+      flex: 40,
       valueGetter: (params) => params.row.sl,
     },
-    { field: "extension", headerName: "Extension", width: 200 },
+    { field: "extension", headerName: "Extension", flex: 200 },
     {
       field: "regionName",
       headerName: "Region",
-      width: 200,
+      flex: 200,
       valueGetter: (params) => params.row.Region?.region || "N/A",
     },
-    { field: "description", headerName: "Description", width: 300 },
+    { field: "description", headerName: "Description", flex: 300 },
     {
       field: "action",
       headerName: "Action",
-      width: 120,
+      flex: 120,
       renderCell: (params) => (
         <div>
           <IconButton

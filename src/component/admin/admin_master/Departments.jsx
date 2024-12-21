@@ -66,14 +66,14 @@ const Departments = () => {
     {
       field: "sl",
       headerName: "Sl. No",
-      width: 40,
+      flex: 40,
       valueGetter: (params) => params.row.sl,
     },
-    { field: "title", headerName: "Title", width: 200 },
+    { field: "title", headerName: "Title", flex: 200 },
     {
       field: "action",
       headerName: "Action",
-      width: 120,
+      flex: 120,
       renderCell: (params) => (
         <div>
           <IconButton

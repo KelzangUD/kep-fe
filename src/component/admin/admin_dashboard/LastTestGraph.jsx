@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Grid, Paper } from "@mui/material";
+import { Typography, Paper } from "@mui/material";
 import {
   BarChart,
   Bar,
-  XAxis,
-  YAxis,
   CartesianGrid,
   Tooltip,
   Legend,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Paper, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import {
   PieChart,
   Pie,

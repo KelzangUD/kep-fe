@@ -1,24 +1,7 @@
-import React, {useState, useEffect} from "react";
-import {
-  Box,
-  Grid,
-  // Divider,
-  // Typography,
-  // Button,
-  // IconButton,
-  // Dialog,
-  // DialogActions,
-  // DialogContent,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Grid } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
-// import AddIcon from "@mui/icons-material/Add";
-// import FileDownloadIcon from "@mui/icons-material/FileDownload";
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import EditIcon from "@mui/icons-material/Edit";
-// import Transition from "../../../common/Transition";
-// import AddGrade from "./grades/AddGrade";
-// import EditGrade from "./grades/EditGrade";
 import Route from "../../../routes/Route";
 
 const rows = [
@@ -59,98 +42,38 @@ const rows = [
 const Grades = () => {
   // init states
   const [grades, setGrades] = useState([]);
-  // const [add, setAdd] = useState(false);
-  // const [edit, setEdit] = useState(false);
-  // const [details, setDetails] = useState({});
-  // const [deleteGrade, setDeleteGrade] = useState(false);
-  // const [id, setId] = useState("");
 
   const token = localStorage.getItem("token");
   const fetchGrades = async () => {
     const res = await Route("GET", "/grades", token, null);
     if (res?.status === 200) {
-      setGrades(res?.data?.grades?.map(((item,index) => ({
-        sl: index+1,
-        title: item?.title,
-        range: `${item?.min}-${item?.max}`
-      }))));
+      setGrades(
+        res?.data?.grades?.map((item, index) => ({
+          sl: index + 1,
+          title: item?.title,
+          range: `${item?.min}-${item?.max}`,
+        }))
+      );
     }
   };
   useEffect(() => {
     fetchGrades();
   }, []);
-  // handlers
-  // const editHandle = (param) => {
-  //   setDetails(param?.row);
-  //   setEdit(true);
-  // };
-  // const deleteHandle = (param) => {
-  //   setId(param?.id);
-  //   setDeleteGrade(true);
-  // };
   const userColumns = [
     {
       field: "sl",
       headerName: "Sl. No",
-      width: 40,
+      flex: 40,
     },
-    { field: "title", headerName: "Title", width: 200 },
-    { field: "range", headerName: "Range", width: 200 },
-    // {
-    //   field: "action",
-    //   headerName: "Action",
-    //   width: 120,
-    //   renderCell: (params) => (
-    //     <div>
-    //       <IconButton
-    //         aria-label="edit"
-    //         size="small"
-    //         onClick={() => editHandle(params)}
-    //       >
-    //         <EditIcon />
-    //       </IconButton>
-    //       <IconButton
-    //         aria-label="delete"
-    //         size="small"
-    //         onClick={() => deleteHandle(params)}
-    //       >
-    //         <DeleteIcon />
-    //       </IconButton>
-    //     </div>
-    //   ),
-    // },
+    { field: "title", headerName: "Title", flex: 200 },
+    { field: "range", headerName: "Range", flex: 200 },
   ];
-  // const addHandle = () => {
-  //   setAdd(true);
-  // };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
           <SubHeader text="Grades" />
-          {/* <Grid
-            item
-            xs={12}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <Grid item>
-              <Button
-                variant="outlined"
-                endIcon={<AddIcon />}
-                sx={{ mr: 2 }}
-                onClick={addHandle}
-              >
-                Add Grade
-              </Button>
-              <Button
-                variant="contained"
-                color="success"
-                endIcon={<FileDownloadIcon />}
-              >
-                Export
-              </Button>
-            </Grid>
-          </Grid> */}
           <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
