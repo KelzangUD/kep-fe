@@ -71,8 +71,8 @@ export default function ScoreAnalysis() {
             cy="50%"
             labelLine={false}
             label={renderCustomizedLabel}
-            innerRadius={60}
-            outerRadius={120}
+            innerRadius={30}
+            outerRadius={100}
             fill="#8884d8"
             dataKey="value"
           >
