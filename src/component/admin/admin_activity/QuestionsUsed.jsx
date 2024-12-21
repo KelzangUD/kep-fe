@@ -15,13 +15,13 @@ const QuestionsUsed = () => {
     setSearchQuery(e.target.value);
   };
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "question", headerName: "Question", width: 650 },
-    { field: "point", headerName: "Point", width: 60 },
+    { field: "sl", headerName: "Sl. No", flex: 40 },
+    { field: "question", headerName: "Question", flex: 650 },
+    { field: "point", headerName: "Point", flex: 60 },
     {
       field: "type",
       headerName: "Question Type",
-      width: 200,
+      flex: 200,
       valueGetter: (params) => params.row.QuestionType?.title || "N/A",
     },
   ];

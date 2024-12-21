@@ -56,33 +56,33 @@ const ReScheduledTests = () => {
     fetchTest();
   }, []);
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "name", headerName: "Test Name", width: 200 },
+    { field: "sl", headerName: "Sl. No", fl: 40 },
+    { field: "name", headerName: "Test Name", flex: 200 },
     {
       field: "start_date",
       headerName: "Start Date",
-      width: 100,
+      flex: 100,
       valueGetter: (params) => params.row.start_date.split("T")[0],
     },
-    { field: "start_time", headerName: "Start Time", width: 100 },
+    { field: "start_time", headerName: "Start Time", flex: 100 },
     {
       field: "end_date",
       headerName: "End Date",
-      width: 100,
+      flex: 100,
       valueGetter: (params) => params.row.end_date.split("T")[0],
     },
-    { field: "end_time", headerName: "End Time", width: 90 },
-    { field: "duration", headerName: "Duration", width: 90 },
+    { field: "end_time", headerName: "End Time", flex: 90 },
+    { field: "duration", headerName: "Duration", flex: 90 },
     {
       field: "status",
       headerName: "Status",
-      width: 100,
+      flex: 100,
       renderCell: (params) => (<RenderStatus status={params?.row?.status === true ? "Active" : "Inactive"} />)
     },
     {
       field: "action",
       headerName: "Action",
-      width: 140,
+      flex: 140,
       renderCell: (params) => (
         <div>
           <IconButton

@@ -61,19 +61,19 @@ const AddQuestions = () => {
     setDeleteQuestion(true);
   };
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "question", headerName: "Question", width: 500 },
-    { field: "point", headerName: "Point", width: 60 },
+    { field: "sl", headerName: "Sl. No", flex: 40 },
+    { field: "question", headerName: "Question", flex: 500 },
+    { field: "point", headerName: "Point", flex: 60 },
     {
       field: "type",
       headerName: "Question Type",
-      width: 200,
+      flex: 200,
       valueGetter: (params) => params.row.QuestionType?.title || "N/A",
     },
     {
       field: "action",
       headerName: "Action",
-      width: 120,
+      flex: 120,
       renderCell: (params) => (
         <div>
           <IconButton
@@ -133,6 +133,7 @@ const AddQuestions = () => {
           setQuestionsSetUp={setQuestionsSetUp}
           setOpenNotification={setOpenNotification}
           setMessage={setMessage}
+          setSeverity={setSeverity}
           fetchQuestions={fetchQuestions}
         />
       ) : (
@@ -186,7 +187,7 @@ const AddQuestions = () => {
                 </Button>
               </Grid>
             </Grid>
-            <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+            <Grid item container alignItems="center" xs={12}>
               <div style={{ height: "auto", width: "100%" }}>
                 <DataGrid
                   rows={filteredData?.map((row, index) => ({

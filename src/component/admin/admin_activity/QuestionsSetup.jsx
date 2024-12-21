@@ -23,7 +23,8 @@ const QuestionsSetup = ({
   setQuestionsSetUp,
   setOpenNotification,
   setMessage,
-  fetchQuestions
+  setSeverity,
+  fetchQuestions,
 }) => {
   // init states
   const [questionTypes, setQuestionTypes] = useState([]);
@@ -69,14 +70,23 @@ const QuestionsSetup = ({
 
   const saveHandle = async () => {
     if (questions.length > 0) {
-      const response = await Route("POST", `/questions`, token, questions, null);
+      const response = await Route(
+        "POST",
+        `/questions`,
+        token,
+        questions,
+        null
+      );
+      console.log(response);
       if (response?.status === 201) {
         setMessage(response?.data?.message);
+        setSeverity("success");
         setOpenNotification(true);
         fetchQuestions();
         setQuestionsSetUp(false);
       } else {
         setMessage(response?.response?.data?.message);
+        setSeverity("error");
         setOpenNotification(true);
       }
     } else {
