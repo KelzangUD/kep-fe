@@ -185,19 +185,19 @@ export const getUniqueTestNames = (results) => {
 //  ================================================ REPORT COLUMNS =====================================
 export const reportColumns = (data) => {
   const columns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "name", headerName: "Name", width: 160 },
-    { field: "empId", headerName: "Employee ID", width: 130 },
-    { field: "ccs", headerName: "Customer Care & Service", width: 200 },
+    { field: "sl", headerName: "Sl. No", flex: 40 },
+    { field: "name", headerName: "Name", flex: 160 },
+    { field: "empId", headerName: "Employee ID", flex: 130 },
+    { field: "ccs", headerName: "Customer Care & Service", flex: 200 },
     {
       field: "pksl",
       headerName: "Product Knowledge & Self Learning",
-      width: 250,
+      flex: 250,
     },
   ];
   // Loop through data and insert test columns
   for (let i = 0; i < data.length; i++) {
-    columns.splice(i + 3, 0, { field: data[i], headerName: data[i], width: 100 });
+    columns.splice(i + 3, 0, { field: data[i], headerName: data[i], flex: 100 });
   }
 
   return columns;
