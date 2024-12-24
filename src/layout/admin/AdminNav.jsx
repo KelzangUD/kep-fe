@@ -14,6 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Logout from "@mui/icons-material/Logout";
 import Notification from "../../ui/Notification";
 import SideNav from "./SideNav";
+import UserSideNav from "../user/UserSideNav";
 import Route from "../../routes/Route";
 import { useNavigate } from "react-router-dom";
 import { useCommon } from "../../contexts/CommonContext";
@@ -21,6 +22,7 @@ import { useCommon } from "../../contexts/CommonContext";
 const AdminNav = () => {
   const { sideMenuOpen, setSideMenuOpen } = useCommon();
   const navigation = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
   const [message, setMessage] = useState("");
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -117,7 +119,7 @@ const AdminNav = () => {
         anchor="left"
       >
         <div style={{ width: 300, height: "100%" }}>
-          <SideNav />
+          {user?.isAdmin ? <SideNav /> : <UserSideNav />}
         </div>
       </Drawer>
     </>

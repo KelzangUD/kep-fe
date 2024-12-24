@@ -5,10 +5,10 @@ import UserYearGraph from "../../component/user/user_dashboard/UserYearGraph";
 
 const UserDashboard = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ height: "100%" }}>
       <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
         <SubHeader text="Dashboard" />
-        <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+        <Grid item xs={12} mb={5}>
           <UserYearGraph />
         </Grid>
       </Grid>

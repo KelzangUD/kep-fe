@@ -32,7 +32,7 @@ const TrueOrFalseOptions = ({
   };
   return (
     <>
-      <Box p={2}>
+      <Box mb={4}>
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>

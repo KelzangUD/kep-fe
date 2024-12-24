@@ -124,7 +124,7 @@ const EditMatching = ({
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={6}>
+              <Grid item xs={6} >
                 <FormControl fullWidth size="small">
                   <InputLabel id="question-type-label">Option A</InputLabel>
                   <Select

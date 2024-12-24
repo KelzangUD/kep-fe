@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, IconButton, Paper, InputBase } from "@mui/material";
+import { Box, Grid, IconButton } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import SearchIcon from "@mui/icons-material/Search";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import SubHeader from "../../../common/SubHeader";
 import Notification from "../../../ui/Notification";
 import RenderStatus from "../../../ui/RenderStatus";
 import Route from "../../../routes/Route";
 import TakeTest from "./TakeTest";
+import CustomToolbar from "../../../ui/CustomToolBar";
 import { shuffleArray } from "../../../util/CommonUtil";
+import { useCommon } from "../../../contexts/CommonContext";
 
 const ReTest = () => {
+  const { isMdUp } = useCommon();
   const [tests, setTests] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [id, setId] = useState(null);
@@ -65,27 +67,55 @@ const ReTest = () => {
   };
 
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", width: 40 },
-    { field: "name", headerName: "Test Name", width: 200 },
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      flex: isMdUp ? 40 : undefined,
+      width: isMdUp ? undefined : 40,
+    },
+    {
+      field: "name",
+      headerName: "Test Name",
+      flex: isMdUp ? 200 : undefined,
+      width: isMdUp ? undefined : 200,
+    },
     {
       field: "start_date",
       headerName: "Start Date",
-      width: 100,
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
       valueGetter: (params) => params.row.start_date.split("T")[0],
     },
-    { field: "start_time", headerName: "Start Time", width: 100 },
+    {
+      field: "start_time",
+      headerName: "Start Time",
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
+    },
     {
       field: "end_date",
       headerName: "End Date",
-      width: 100,
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
       valueGetter: (params) => params.row.end_date.split("T")[0],
     },
-    { field: "end_time", headerName: "End Time", width: 100 },
-    { field: "duration", headerName: "Duration", width: 100 },
+    {
+      field: "end_time",
+      headerName: "End Time",
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
+    },
+    {
+      field: "duration",
+      headerName: "Duration",
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
+    },
     {
       field: "status",
       headerName: "Status",
-      width: 100,
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
       renderCell: (params) => (
         <RenderStatus
           status={params.row.status === true ? "Active" : "Inactive"}
@@ -95,7 +125,8 @@ const ReTest = () => {
     {
       field: "action",
       headerName: "Action",
-      width: 100,
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
       renderCell: (params) => (
         <div>
           <IconButton
@@ -123,36 +154,6 @@ const ReTest = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
             <SubHeader text="Re-Test" />
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <Grid item>
-                <Paper
-                  sx={{
-                    p: "2px 4px",
-                    display: "flex",
-                    alignItems: "center",
-                    width: 400,
-                  }}
-                >
-                  <InputBase
-                    sx={{ ml: 1, flex: 1 }}
-                    placeholder="Search"
-                    inputProps={{ "aria-label": "search" }}
-                    onChange={searchHandle}
-                  />
-                  <IconButton
-                    type="button"
-                    sx={{ p: "10px" }}
-                    aria-label="search"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </Paper>
-              </Grid>
-            </Grid>
             <Grid item container alignItems="center" xs={12}>
               <div style={{ height: "auto", width: "100%" }}>
                 <DataGrid
@@ -167,6 +168,7 @@ const ReTest = () => {
                     },
                   }}
                   pageSizeOptions={[5, 10]}
+                  slots={{ toolbar: CustomToolbar }}
                 />
               </div>
             </Grid>

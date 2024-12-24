@@ -1,5 +1,5 @@
 import React from "react";
-import AdminNav from '../layout/admin/AdminNav';
+import AdminNav from "../layout/admin/AdminNav";
 import SideNav from "../layout/admin/SideNav";
 import { Box, Grid, Paper } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
@@ -28,20 +28,23 @@ const Admin = () => {
           <Grid item xs={12} md={10}>
             <AdminNav />
             <Grid container>
-                <Grid item xs={12}>
-                  <Item>
-                    <Routes>
-                      <Route path="/dashboard" element={<AdminDashboard />} />
-                      <Route path="/profile" element={<Profile />} />
-                      <Route path="/system-setting/*" element={<SystemSetting />} />
-                      <Route path="/master/*" element={<Master />} />
-                      <Route path="/activity/*" element={<Activity />} />
-                      <Route path="/Feedbacks" element={<Feedbacks />} />
-                      <Route path="/report/*" element={<Report />} />
-                    </Routes>
-                  </Item>
-                </Grid>
+              <Grid item xs={12}>
+                <Item>
+                  <Routes>
+                    <Route path="/dashboard" element={<AdminDashboard />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route
+                      path="/system-setting/*"
+                      element={<SystemSetting />}
+                    />
+                    <Route path="/master/*" element={<Master />} />
+                    <Route path="/activity/*" element={<Activity />} />
+                    <Route path="/Feedbacks" element={<Feedbacks />} />
+                    <Route path="/report/*" element={<Report />} />
+                  </Routes>
+                </Item>
               </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Box>

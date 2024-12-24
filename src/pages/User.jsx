@@ -9,37 +9,35 @@ import UserActivity from "./user/UserActivity";
 import UserReport from "./user/UserReport";
 import { styled } from "@mui/material/styles";
 
-const Item = styled(Paper)(({ theme }) => ({
+const Item = styled(Paper)((theme) => ({
   borderRadius: 0,
   minHeight: "100vh",
 }));
 
 const User = () => {
   return (
-    <>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container sx={{ minWidth: "100vw" }}>
-          <Grid item xs={2}>
-            <UserSideNav />
-          </Grid>
-          <Grid item xs={10}>
-            <AdminNav />
-            <Grid container>
-              <Grid item xs={12}>
-                <Item>
-                  <Routes>
-                    <Route path="/dashboard" element={<UserDashboard />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/activity/*" element={<UserActivity />} />
-                    <Route path="/report/*" element={<UserReport />} />
-                  </Routes>
-                </Item>
-              </Grid>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container>
+        <Grid item xs={2} sx={{ display: { xs: "none", md: "flex" } }}>
+          <UserSideNav />
+        </Grid>
+        <Grid item xs={12} md={10}>
+          <AdminNav />
+          <Grid container>
+            <Grid item xs={12}>
+              <Item>
+                <Routes>
+                  <Route path="/dashboard" element={<UserDashboard />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/activity/*" element={<UserActivity />} />
+                  <Route path="/report/*" element={<UserReport />} />
+                </Routes>
+              </Item>
             </Grid>
           </Grid>
         </Grid>
-      </Box>
-    </>
+      </Grid>
+    </Box>
   );
 };
 

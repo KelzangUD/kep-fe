@@ -15,7 +15,9 @@ import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import SearchIcon from "@mui/icons-material/Search";
+import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
+import { useCommon } from "../../../contexts/CommonContext";
 import {
   filterDataBasedOnYear,
   getUniqueTestNames,
@@ -24,6 +26,7 @@ import {
 } from "../../../util/CommonUtil";
 
 const UserYearReport = () => {
+  const { isMdUp } = useCommon();
   const [results, setResults] = useState([]);
   const [columns, setColumns] = useState([]);
   const [yearlyData, setYearlyData] = useState([]);
@@ -50,7 +53,7 @@ const UserYearReport = () => {
     filterBasedOnYear();
   }, [results, year]);
   useEffect(() => {
-    setColumns(reportColumns(getUniqueTestNames(yearlyData)));
+    setColumns(reportColumns(getUniqueTestNames(yearlyData), isMdUp));
     setReportData(yearlyReport(yearlyData));
   }, [yearlyData]);
   return (
@@ -61,63 +64,22 @@ const UserYearReport = () => {
           <Grid
             item
             xs={12}
-            sx={{ display: "flex", justifyContent: "space-between" }}
+            sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <Grid item>
-              <Paper
-                sx={{
-                  p: "2px 4px",
-                  display: "flex",
-                  alignItems: "center",
-                  width: 400,
-                }}
+            <FormControl size="small">
+              <InputLabel id="select-label">Select</InputLabel>
+              <Select
+                labelId="select-label"
+                id="simple-select"
+                defaultValue={new Date().getFullYear()}
+                label="Select"
+                onChange={yearHandle}
               >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder="Search"
-                  inputProps={{ "aria-label": "search" }}
-                />
-                <IconButton
-                  type="button"
-                  sx={{ p: "10px" }}
-                  aria-label="search"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
-            </Grid>
-            <Grid
-              item
-              con
-              sx={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <Grid item sx={{ mr: 2 }}>
-                <Box sx={{ minWidth: 120 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel id="select-label">Select</InputLabel>
-                    <Select
-                      labelId="select-label"
-                      id="simple-select"
-                      defaultValue={new Date().getFullYear()}
-                      label="Select"
-                      onChange={yearHandle}
-                    >
-                      <MenuItem value={2023}>2023</MenuItem>
-                      <MenuItem value={2024}>2024</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="success"
-                  endIcon={<FileDownloadIcon />}
-                >
-                  Export
-                </Button>
-              </Grid>
-            </Grid>
+                <MenuItem value={2023}>2023</MenuItem>
+                <MenuItem value={2024}>2024</MenuItem>
+                <MenuItem value={2025}>2025</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
@@ -133,6 +95,7 @@ const UserYearReport = () => {
                   },
                 }}
                 pageSizeOptions={[5, 10]}
+                slots={{ toolbar: CustomToolbar }}
               />
             </div>
           </Grid>

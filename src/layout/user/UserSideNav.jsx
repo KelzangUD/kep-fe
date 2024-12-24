@@ -20,23 +20,22 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { useCommon } from "../../contexts/CommonContext";
 
 export default function UserSideNav() {
+  const { setSideMenuOpen } = useCommon();
   const navigation = useNavigate();
-  const containerStyle = {
-    minHeight: "100%",
-    display: "flex",
-    flexDirection: "column",
-    borderRadius: 0,
-    backgroundColor: "#F5F7F8",
-  };
   const routeHandle = (route) => {
     navigation(route);
+    setSideMenuOpen(false);
   };
   const handleNestedItemClick = (index) => {
-    const newOpenStates = [...openStates];
-    newOpenStates[index] = !newOpenStates[index];
-    setOpenStates(newOpenStates);
+    setOpenStates((prevOpenStates) => {
+      const isAlreadyOpen = prevOpenStates[index];
+      const newOpenStates = prevOpenStates.map(() => false);
+      newOpenStates[index] = !isAlreadyOpen;
+      return newOpenStates;
+    });
   };
   const menuItems = [
     {
@@ -71,69 +70,45 @@ export default function UserSideNav() {
           icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("report/user-report"),
         },
-        // {
-        //   label: "Six Months",
-        //   icon: <KeyboardArrowRightIcon />,
-        //   onClick: () => routeHandle("report/six-months"),
-        // },
-        // {
-        //   label: "One Year",
-        //   icon: <KeyboardArrowRightIcon />,
-        //   onClick: () => routeHandle("report/one-year"),
-        // },
       ],
     },
   ];
   const [openStates, setOpenStates] = React.useState(
     menuItems.map(() => false)
   );
-
   return (
-    <Paper style={containerStyle}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Grid container alignItems="center">
-          <Grid item xs={12} alignItems="center">
-            <Button
-              type="button"
-              variant="text"
-              color="primary"
-              size="large"
-              fullWidth
-            >
-              <img
-                src={Logo}
-                alt="Logo"
-                style={{ width: "30%", height: "auto" }}
-              />
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body2" align="center">
-              Knowledge Enhancement Plateform
-            </Typography>
-            <Typography
-              variant="body1"
-              align="center"
-              sx={{ color: "#3081D0", my: 1 }}
-            >
-              USER
-            </Typography>
-          </Grid>
+    <Paper
+      style={{
+        minHeight: "100%",
+        borderRadius: 0,
+        backgroundColor: "#F5F7F8",
+      }}
+    >
+      <Grid container>
+        <Grid item xs={12}>
+          <Button variant="text" size="small" align="center" fullWidth>
+            <img
+              src={Logo}
+              alt="Logo"
+              style={{ width: "30%", height: "auto" }}
+            />
+          </Button>
         </Grid>
-      </Box>
+        <Grid item xs={12}>
+          <Typography variant="body2" align="center">
+            Knowledge Enhancement Plateform
+          </Typography>
+          <Typography
+            variant="body1"
+            align="center"
+            sx={{ color: "#3081D0", my: 1 }}
+          >
+            USER
+          </Typography>
+        </Grid>
+      </Grid>
       <Divider />
-      <List
-        sx={{ width: "100%", maxWidth: 360 }}
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-      >
+      <List component="nav" aria-labelledby="nested-list-subheader">
         {menuItems.map((item, index) => (
           <React.Fragment key={index}>
             <ListItemButton onClick={item.onClick}>

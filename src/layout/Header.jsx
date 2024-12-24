@@ -1,13 +1,11 @@
-import React from "react";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
+import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../assets/images/logo.ico";
-import { Box, Typography, Button, Grid } from "@mui/material";
+import { Typography, Button, Grid } from "@mui/material";
+import { useCommon } from "../contexts/CommonContext";
 
 const Header = () => {
-  const theme = useTheme();
-  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const {isMdUp} = useCommon();
   const navigation = useNavigate();
   const location = useLocation();
   const [currentLoction, setCurrentLocation] = React.useState();
@@ -17,7 +15,7 @@ const Header = () => {
   const signInHandle = () => {
     navigation("/sign-in");
   };
-  React.useEffect(() => {
+  useEffect(() => {
     setCurrentLocation(location?.pathname);
   }, [location]);
   return (
@@ -50,7 +48,7 @@ const Header = () => {
               textDecoration: "none",
             }}
           >
-            Knowledge Enhancement Platform
+            { isMdUp ? " Knowledge Enhancement Platform" : "KEP"}
           </Typography>
         </Grid>
         {currentLoction === "/sign-in" ? null : (

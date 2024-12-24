@@ -32,11 +32,11 @@ const McqOptions = ({
   };
   return (
     <>
-      <Box p={2}>
+      <Box mb={4}>
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={5}>
+              <Grid item xs={10} md={5}>
                 <TextField
                   fullWidth
                   label="Option 1"
@@ -47,7 +47,7 @@ const McqOptions = ({
                   size="small"
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2} md={1}>
                 <FormControlLabel
                   value="first"
                   control={
@@ -55,7 +55,7 @@ const McqOptions = ({
                   }
                 />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={10} md={5}>
                 <TextField
                   fullWidth
                   label="Option 2"
@@ -66,7 +66,7 @@ const McqOptions = ({
                   size="small"
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2} md={1}>
                 <FormControlLabel
                   value="second"
                   control={
@@ -76,7 +76,7 @@ const McqOptions = ({
               </Grid>
             </Grid>
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={5}>
+              <Grid item xs={10} md={5}>
                 <TextField
                   fullWidth
                   label="Option 3"
@@ -87,7 +87,7 @@ const McqOptions = ({
                   size="small"
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2} md={1}>
                 <FormControlLabel
                   value="third"
                   control={
@@ -95,7 +95,7 @@ const McqOptions = ({
                   }
                 />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={10} md={5}>
                 <TextField
                   fullWidth
                   label="Option 4"
@@ -106,7 +106,7 @@ const McqOptions = ({
                   size="small"
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2} md={1}>
                 <FormControlLabel
                   value="fourth"
                   control={

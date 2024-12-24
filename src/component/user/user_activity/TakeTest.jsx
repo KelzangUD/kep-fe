@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Grid, Button, Alert, Stack } from "@mui/material";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import PublishIcon from '@mui/icons-material/Publish';
+import PublishIcon from "@mui/icons-material/Publish";
 import SubHeader from "../../../common/SubHeader";
 import Notification from "../../../ui/Notification";
 import Counter from "../../../ui/Counter";
@@ -11,7 +11,13 @@ import DialogUi from "../../../ui/DialogUi";
 import Route from "../../../routes/Route";
 import { calculateDuration } from "../../../util/CommonUtil";
 
-const TakeTest = ({ id, details, setTakeTest, questions, route="results" }) => {
+const TakeTest = ({
+  id,
+  details,
+  setTakeTest,
+  questions,
+  route = "results",
+}) => {
   const [testDetails, setTestDetails] = useState(details);
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
@@ -29,11 +35,11 @@ const TakeTest = ({ id, details, setTakeTest, questions, route="results" }) => {
   const [showSubmit, setShowSubmit] = useState(false);
   const token = localStorage.getItem("token");
   useEffect(() => {
-    setResult(prev => ({
+    setResult((prev) => ({
       ...prev,
       total: questions?.reduce((accumulator, item) => {
         return accumulator + item?.point;
-      }, 0)
+      }, 0),
     }));
   }, [questions]);
   let intervalId = null;
@@ -62,7 +68,7 @@ const TakeTest = ({ id, details, setTakeTest, questions, route="results" }) => {
 
     return () => clearInterval(intervalId);
   }, []);
-  const submitSolutionHandle = async() => {
+  const submitSolutionHandle = async () => {
     const res = await Route("POST", `/${route}`, token, result, null);
     if (res?.status === 201) {
       setMessage(res?.data?.message);
@@ -73,16 +79,21 @@ const TakeTest = ({ id, details, setTakeTest, questions, route="results" }) => {
       setMessage(res?.data?.message);
       setOpenNotification(true);
     }
-  }
+  };
   // Handle timer reaching zero (optional)
   if (hours === 0 && minutes === 0 && seconds === 0) {
     clearInterval(intervalId);
   }
   const currentItem = (
-    <Solution index={currentIndex + 1} question={questions[currentIndex]} setResult={setResult} setSolvedQuestions={setSolvedQuestions} />
+    <Solution
+      index={currentIndex + 1}
+      question={questions[currentIndex]}
+      setResult={setResult}
+      setSolvedQuestions={setSolvedQuestions}
+    />
   );
   const nextHandle = () => {
-    if(solvedQuestions?.length < currentIndex+1) {
+    if (solvedQuestions?.length < currentIndex + 1) {
       setMessage("Please Submit a answer");
       setOpenNotification(true);
     } else {
@@ -92,11 +103,12 @@ const TakeTest = ({ id, details, setTakeTest, questions, route="results" }) => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ minHeight: "100%" }}>
         <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
           <SubHeader text="Take Test" />
           <Grid
             item
+            container
             xs={12}
             sx={{
               display: "flex",
@@ -104,55 +116,61 @@ const TakeTest = ({ id, details, setTakeTest, questions, route="results" }) => {
               alignItems: "center",
             }}
           >
-            {testDetails?.message !== "" && (
-              <Stack sx={{ width: "80%" }} spacing={1}>
-                <Alert severity="info">{testDetails?.message}</Alert>
-              </Stack>
-            )}
-            <Counter value={hours} name="Hours" />
-            <Counter value={minutes} name="Mins" />
-            <Counter value={seconds} name="Secs" />
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <Button
-              variant="outlined"
-              endIcon={<StopCircleIcon />}
-              sx={{ mr: 2 }}
-              onClick={submitSolutionHandle}
+            <Grid item xs={12} md={6}>
+              {testDetails?.message !== "" && (
+                <Stack sx={{ width: "100%" }} spacing={1}>
+                  <Alert severity="info">{testDetails?.message}</Alert>
+                </Stack>
+              )}
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "space-between", md: "flex-end" },
+                mt: { xs: 4, md: 0 },
+              }}
             >
-              End Test
-            </Button>
+              <Counter value={hours} name="Hours" />
+              <Counter value={minutes} name="Mins" />
+              <Counter value={seconds} name="Secs" />
+            </Grid>
+          </Grid>
+          <Grid item container spacing={2} sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Grid item>
+              <Button
+                variant="outlined"
+                endIcon={<StopCircleIcon />}
+                onClick={submitSolutionHandle}
+                color="error"
+              >
+                End Test
+              </Button>
+            </Grid>
+            <Grid item>
+              {questions?.length - 1 > currentIndex ? (
+                <Button
+                  variant="outlined"
+                  endIcon={<ArrowForwardIcon />}
+                  onClick={nextHandle}
+                >
+                  Next
+                </Button>
+              ) : (
+                <Button
+                  variant="outlined"
+                  startIcon={<PublishIcon />}
+                  onClick={submitSolutionHandle}
+                >
+                  Submit
+                </Button>
+              )}
+            </Grid>
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }}>
             {currentItem && currentItem}
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            {questions?.length - 1 > currentIndex ? (
-              <Button
-                variant="outlined"
-                endIcon={<ArrowForwardIcon />}
-                sx={{ mr: 2 }}
-                onClick={nextHandle}
-              >
-                Next
-              </Button>
-            ) : (<Button
-            variant="outlined"
-            startIcon={<PublishIcon />}
-            sx={{ mr: 2 }}
-            onClick={submitSolutionHandle}
-          >
-            Submit
-          </Button>
-        )}
           </Grid>
         </Grid>
       </Box>
@@ -163,9 +181,15 @@ const TakeTest = ({ id, details, setTakeTest, questions, route="results" }) => {
           message={message}
         />
       )}
-      {
-        showSubmit && (<DialogUi title="" message="Thank you for taking the time to participate in the test. Please submit your solutions." open={showSubmit} cancelHandle={() => setShowSubmit(false)} submitHandle={submitSolutionHandle} />)
-      }
+      {showSubmit && (
+        <DialogUi
+          title=""
+          message="Thank you for taking the time to participate in the test. Please submit your solutions."
+          open={showSubmit}
+          cancelHandle={() => setShowSubmit(false)}
+          submitHandle={submitSolutionHandle}
+        />
+      )}
     </>
   );
 };

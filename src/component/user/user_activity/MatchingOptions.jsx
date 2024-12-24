@@ -40,109 +40,107 @@ const MatchingOptions = ({
   };
   return (
     <>
-      <Box p={2}>
+      <Box py={2}>
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="A"
-                  id="your-text"
-                  variant="outlined"
-                  size="small"
-                  defaultValue={options[0]?.description}
-                  disabled
-                />
+            <Grid container>
+              <Grid item container spacing={2} xs={12} md={6}>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="A"
+                    id="your-text"
+                    variant="outlined"
+                    size="small"
+                    defaultValue={options[0]?.description}
+                    disabled
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="B"
+                    id="your-text"
+                    variant="outlined"
+                    size="small"
+                    defaultValue={options[1]?.description}
+                    disabled
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="C"
+                    id="your-text"
+                    variant="outlined"
+                    size="small"
+                    defaultValue={options[2]?.description}
+                    disabled
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="D"
+                    id="your-text"
+                    variant="outlined"
+                    size="small"
+                    defaultValue={options[3]?.description}
+                    disabled
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="I"
-                  id="your-text"
-                  variant="outlined"
-                  size="small"
-                  defaultValue={optionsTwo[0]?.description}
-                  disabled
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="B"
-                  id="your-text"
-                  variant="outlined"
-                  size="small"
-                  defaultValue={options[1]?.description}
-                  disabled
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="II"
-                  id="your-text"
-                  variant="outlined"
-                  size="small"
-                  defaultValue={optionsTwo[1]?.description}
-                  disabled
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="C"
-                  id="your-text"
-                  variant="outlined"
-                  size="small"
-                  defaultValue={options[2]?.description}
-                  disabled
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="III"
-                  id="your-text"
-                  variant="outlined"
-                  size="small"
-                  defaultValue={optionsTwo[2]?.description}
-                  disabled
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="D"
-                  id="your-text"
-                  variant="outlined"
-                  size="small"
-                  defaultValue={options[3]?.description}
-                  disabled
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="IV"
-                  id="your-text"
-                  variant="outlined"
-                  size="small"
-                  defaultValue={optionsTwo[3]?.description}
-                  disabled
-                />
+              <Grid item container xs={12} md={6} spacing={2} mt={{ xs: 1, md: 0}}>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="I"
+                    id="your-text"
+                    variant="outlined"
+                    size="small"
+                    defaultValue={optionsTwo[0]?.description}
+                    disabled
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="II"
+                    id="your-text"
+                    variant="outlined"
+                    size="small"
+                    defaultValue={optionsTwo[1]?.description}
+                    disabled
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="III"
+                    id="your-text"
+                    variant="outlined"
+                    size="small"
+                    defaultValue={optionsTwo[2]?.description}
+                    disabled
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="IV"
+                    id="your-text"
+                    variant="outlined"
+                    size="small"
+                    defaultValue={optionsTwo[3]?.description}
+                    disabled
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </RadioGroup>
         </FormControl>
       </Box>
-      <Box p={2}>
+      <Box mb={4}>
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
