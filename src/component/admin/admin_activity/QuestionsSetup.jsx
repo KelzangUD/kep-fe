@@ -77,7 +77,6 @@ const QuestionsSetup = ({
         questions,
         null
       );
-      console.log(response);
       if (response?.status === 201) {
         setMessage(response?.data?.message);
         setSeverity("success");
@@ -142,6 +141,9 @@ const QuestionsSetup = ({
           color="primary"
           endIcon={<AddIcon />}
           onClick={addNewRowHandle}
+          sx={{
+            mb: 2,
+          }}
         >
           Add Question
         </Button>

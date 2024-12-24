@@ -12,11 +12,11 @@ import {
 const EditFillInTheBlank = ({ options, choiceHandle, answerHandle }) => {
   return (
     <>
-      <Box p={2}>
+      <Box mt={2}>
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group" defaultValue={1}>
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={11}>
+              <Grid item xs={10}>
                 <TextField
                   fullWidth
                   label="Add Answer"
@@ -27,7 +27,7 @@ const EditFillInTheBlank = ({ options, choiceHandle, answerHandle }) => {
                   onChange={(e) => choiceHandle("first", e.target.value)}
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2}>
                 <FormControlLabel
                   value={1}
                   control={

@@ -3,8 +3,10 @@ import { Box, Grid } from "@mui/material";
 import SubHeader from "../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import Route from "../../routes/Route";
+import { useCommon } from "../../contexts/CommonContext";
 
 const Feedbacks = () => {
+  const { isMdUp } = useCommon();
   // init states
   const [feedbacks, setFeedbacks] = useState([]);
 
@@ -17,15 +19,21 @@ const Feedbacks = () => {
   };
   useEffect(() => {
     fetchFeedbacks();
-  });
+  },[]);
   const userColumns = [
     {
       field: "sl",
       headerName: "Sl. No",
-      flex: 10,
+      flex: isMdUp ? 10 : undefined,
+      width: isMdUp ? undefined : 40,
       valueGetter: (params) => params.row.sl,
     },
-    { field: "message", headerName: "Message", flex: 90 },
+    {
+      field: "message",
+      headerName: "Message",
+      flex: isMdUp ? 90 : undefined,
+      width: isMdUp ? undefined : 40,
+    },
   ];
   return (
     <Box sx={{ flexGrow: 1 }}>

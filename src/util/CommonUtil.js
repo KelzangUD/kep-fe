@@ -64,33 +64,40 @@ export const calculateDuration = (value) => {
 export const calculateLatestTestResults = (results) => {
   // Handle empty or non-array input
   if (!Array.isArray(results) || results.length === 0) {
-    return [{
-      name: null, 
-      excel: 0,
-      good: 0,
-      average: 0,
-      failed: 0,
-    }];
+    return [
+      {
+        name: null,
+        excel: 0,
+        good: 0,
+        average: 0,
+        failed: 0,
+      },
+    ];
   }
   const name = results[0]?.name;
   // Use reduce for efficient calculation and object creation (assuming all elements have score and total)
-  const testResults = results.reduce((acc, result) => {
-    const currentRatio = (result.score / result.total) * 100;
-    if (currentRatio >= 90) {
-      acc.excel++;
-    } else if (currentRatio >= 70 && currentRatio < 90) {
-      acc.good++;
-    } else if (currentRatio >= 50 && currentRatio < 70) {
-      acc.average++;
-    } else {
-      acc.failed++;
-    }
-    return acc;
-  }, { excel: 0, good: 0, average: 0, failed: 0 });
-  return [{
-    name,
-    ...testResults,
-  }];
+  const testResults = results.reduce(
+    (acc, result) => {
+      const currentRatio = (result.score / result.total) * 100;
+      if (currentRatio >= 90) {
+        acc.excel++;
+      } else if (currentRatio >= 70 && currentRatio < 90) {
+        acc.good++;
+      } else if (currentRatio >= 50 && currentRatio < 70) {
+        acc.average++;
+      } else {
+        acc.failed++;
+      }
+      return acc;
+    },
+    { excel: 0, good: 0, average: 0, failed: 0 }
+  );
+  return [
+    {
+      name,
+      ...testResults,
+    },
+  ];
 };
 
 // ========================================== SCORE ANALYSIS ======================================
@@ -105,19 +112,22 @@ export const calculateScoreAnalysis = (results) => {
     ];
   }
   // Use reduce for efficient calculation
-  const testResults = results.reduce((acc, result) => {
-    const currentRatio = (result.score / result.total) * 100;
-    if (currentRatio >= 90) {
-      acc.excel++;
-    } else if (currentRatio >= 70 && currentRatio < 90) {
-      acc.good++;
-    } else if (currentRatio >= 50 && currentRatio < 70) {
-      acc.average++;
-    } else {
-      acc.failed++;
-    }
-    return acc;
-  }, { excel: 0, good: 0, average: 0, failed: 0 });
+  const testResults = results.reduce(
+    (acc, result) => {
+      const currentRatio = (result.score / result.total) * 100;
+      if (currentRatio >= 90) {
+        acc.excel++;
+      } else if (currentRatio >= 70 && currentRatio < 90) {
+        acc.good++;
+      } else if (currentRatio >= 50 && currentRatio < 70) {
+        acc.average++;
+      } else {
+        acc.failed++;
+      }
+      return acc;
+    },
+    { excel: 0, good: 0, average: 0, failed: 0 }
+  );
   // Update values in the returned array
   return [
     { name: "excel", value: testResults.excel },
@@ -129,10 +139,16 @@ export const calculateScoreAnalysis = (results) => {
 
 // ================================================= FILTER DATA BASED ON YEAR ==============================
 export const filterDataBasedOnYear = (results, year) => {
-  return results.filter((item) => item?.Test?.scheduled_at.split("-")[0] === year);
+  return results.filter(
+    (item) => item?.Test?.scheduled_at.split("-")[0] === year
+  );
 };
 // ========================================== FILTER BASED ON YEAR AND HALF ==============================
-export const filterDataBasedOnYearAndHalf = (results, year, halfYear = "all") => {
+export const filterDataBasedOnYearAndHalf = (
+  results,
+  year,
+  halfYear = "all"
+) => {
   return results.filter((item) => {
     if (!item?.Test?.scheduled_at) {
       return false; // Handle missing data gracefully
@@ -173,7 +189,6 @@ export const filterDataBasedOnCurrentYearAndMonth = (results) => {
   });
 };
 
-
 // ================================================== GET UNIQUE TEST NAME ===============================
 export const getUniqueTestNames = (results) => {
   const testNames = new Set();
@@ -183,21 +198,47 @@ export const getUniqueTestNames = (results) => {
   return Array.from(testNames);
 };
 //  ================================================ REPORT COLUMNS =====================================
-export const reportColumns = (data) => {
+export const reportColumns = (data, isMdUp) => {
   const columns = [
-    { field: "sl", headerName: "Sl. No", flex: 40 },
-    { field: "name", headerName: "Name", flex: 160 },
-    { field: "empId", headerName: "Employee ID", flex: 130 },
-    { field: "ccs", headerName: "Customer Care & Service", flex: 200 },
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      flex: isMdUp ? 40 : undefined,
+      width: isMdUp ? undefined : 40,
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: isMdUp ? 160 : undefined,
+      width: isMdUp ? undefined : 160,
+    },
+    {
+      field: "empId",
+      headerName: "Employee ID",
+      flex: isMdUp ? 130 : undefined,
+      width: isMdUp ? undefined : 130,
+    },
+    {
+      field: "ccs",
+      headerName: "Customer Care & Service",
+      flex: isMdUp ? 200 : undefined,
+      width: isMdUp ? undefined : 200,
+    },
     {
       field: "pksl",
       headerName: "Product Knowledge & Self Learning",
-      flex: 250,
+      flex: isMdUp ? 250 : undefined,
+      width: isMdUp ? undefined : 250,
     },
   ];
   // Loop through data and insert test columns
   for (let i = 0; i < data.length; i++) {
-    columns.splice(i + 3, 0, { field: data[i], headerName: data[i], flex: 100 });
+    columns.splice(i + 3, 0, {
+      field: data[i],
+      headerName: data[i],
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 150,
+    });
   }
 
   return columns;
@@ -209,23 +250,36 @@ export const yearlyReport = (results) => {
   const userMap = {};
   // Assign unique IDs while creating user objects
   for (const result of results) {
-    const { User: user, Test: { name: testName }, score, total } = result;
+    const {
+      User: user,
+      Test: { name: testName },
+      score,
+      total,
+    } = result;
     const { name, empId } = user;
     const userId = result?.User?.id;
 
     if (!userMap[name]) {
-      userMap[name] = { id: userId, name, empId, ...{}, totalScore: 0,
-        totalMark: 0 };
+      userMap[name] = {
+        id: userId,
+        name,
+        empId,
+        ...{},
+        totalScore: 0,
+        totalMark: 0,
+      };
     }
     userMap[name][testName] = parseFloat((score / total) * 100).toFixed(2);
     userMap[name].totalScore += score;
     userMap[name].totalMark += total;
   }
-    // Calculate CCS and PSKL based on total score and mark
+  // Calculate CCS and PSKL based on total score and mark
   for (const userName in userMap) {
     const user = userMap[userName];
     user.ccs = parseFloat((user.totalScore / user.totalMark) * 5).toFixed(2);
-    user.pksl = parseFloat((user.totalScore / user.totalMark) * 2 + 3).toFixed(2);
+    user.pksl = parseFloat((user.totalScore / user.totalMark) * 2 + 3).toFixed(
+      2
+    );
   }
   // Convert userMap values to desired output format
   for (const userName in userMap) {
@@ -237,9 +291,9 @@ export const yearlyReport = (results) => {
 // ================================================================== USER YEAR GRAPH DATA ==============================
 export const userYearGraphData = (results) => {
   return results?.map((item) => ({
-      name: item?.Test?.name,
-      score: parseFloat((item?.score/item?.total)*100).toFixed(2)
-  }))
+    name: item?.Test?.name,
+    score: parseFloat((item?.score / item?.total) * 100).toFixed(2),
+  }));
 };
 
 //  ===========================================================  REARRANGE ARRAY ITEMS ==================================
@@ -250,4 +304,4 @@ export const shuffleArray = (array) => {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   return shuffled;
-}
+};

@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import SubHeader from "../../../../common/SubHeader";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
@@ -151,7 +150,7 @@ const ScheduleTest = ({
             </Button>
           </Grid>
           <Grid item container alignItems="center" xs={12}>
-            <Card variant="outlined" sx={{ width: 1100 }}>
+            <Card variant="outlined" sx={{ width: "100%" }}>
               <Grid item xs={12} px={2} py={1}>
                 <Typography as="h6">Schedule Test</Typography>
               </Grid>
@@ -163,7 +162,7 @@ const ScheduleTest = ({
                 spacing={1}
                 px={2}
               >
-                <Grid item xs={4} sx={{ mt: 1 }}>
+                <Grid item xs={12} md={4}>
                   <TextField
                     id="outlined-basic"
                     label="Test Name"
@@ -174,36 +173,32 @@ const ScheduleTest = ({
                     size="small"
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["startDatePicker"]}>
-                      <DatePicker
-                        label="Start Date"
-                        sx={{ width: "100%" }}
-                        onChange={startDateHandler}
-                        slotProps={{
-                          textField: {
-                            size: "small",
-                          },
-                        }}
-                      />
-                    </DemoContainer>
+                    <DatePicker
+                      label="Start Date"
+                      sx={{ width: "100%" }}
+                      onChange={startDateHandler}
+                      slotProps={{
+                        textField: {
+                          size: "small",
+                        },
+                      }}
+                    />
                   </LocalizationProvider>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["endDatePicker"]}>
-                      <DatePicker
-                        label="End Date"
-                        sx={{ width: "100%" }}
-                        onChange={endDateHandler}
-                        slotProps={{
-                          textField: {
-                            size: "small",
-                          },
-                        }}
-                      />
-                    </DemoContainer>
+                    <DatePicker
+                      label="End Date"
+                      sx={{ width: "100%" }}
+                      onChange={endDateHandler}
+                      slotProps={{
+                        textField: {
+                          size: "small",
+                        },
+                      }}
+                    />
                   </LocalizationProvider>
                 </Grid>
               </Grid>
@@ -214,8 +209,9 @@ const ScheduleTest = ({
                 alignItems="center"
                 spacing={1}
                 sx={{ px: 2 }}
+                my={0.5}
               >
-                <Grid item xs={4} sx={{ mt: 1 }}>
+                <Grid item xs={12} md={4}>
                   <FormControl fullWidth size="small">
                     <InputLabel id="duration-select-label">Duration</InputLabel>
                     <Select
@@ -231,40 +227,35 @@ const ScheduleTest = ({
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["TimePicker"]}>
-                      <TimePicker
-                        label="Start Time"
-                        sx={{ width: "100%" }}
-                        onChange={startTimeHandler}
-                        slotProps={{
-                          textField: {
-                            size: "small",
-                          },
-                        }}
-                      />
-                    </DemoContainer>
+                    <TimePicker
+                      label="Start Time"
+                      sx={{ width: "100%" }}
+                      onChange={startTimeHandler}
+                      slotProps={{
+                        textField: {
+                          size: "small",
+                        },
+                      }}
+                    />
                   </LocalizationProvider>
                 </Grid>
-
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["TimePicker"]}>
-                      <TimePicker
-                        label="End Time"
-                        sx={{ width: "100%" }}
-                        onChange={endTimeHandler}
-                        slotProps={{
-                          textField: {
-                            size: "small",
-                          },
-                        }}
-                      />
-                    </DemoContainer>
+                    <TimePicker
+                      label="End Time"
+                      sx={{ width: "100%" }}
+                      onChange={endTimeHandler}
+                      slotProps={{
+                        textField: {
+                          size: "small",
+                        },
+                      }}
+                    />
                   </LocalizationProvider>
                 </Grid>
-                <Grid item xs={12} sx={{ mt: 1 }}>
+                <Grid item xs={12} my={0.5}>
                   <TextField
                     id="outlined-basic"
                     label="Message"

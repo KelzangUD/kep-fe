@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   InputLabel,
   Card,
   Divider,
+  Grid,
   Typography,
   Button,
   Select,
@@ -61,12 +62,12 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
   const questionTypeHandle = (e) => {
     setData((prev) => ({
       ...prev,
-      questionType: e.target.value
-    }))
+      questionType: e.target.value,
+    }));
     addQuestion(index, "questionType", e.target.value);
     addQuestion(index, "choice", []);
     addQuestion(index, "choice2", []);
-    addQuestion(index, "answer", null);;
+    addQuestion(index, "answer", null);
   };
 
   const pointHandle = (e) => {
@@ -104,7 +105,7 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
     });
   };
   const answerHandle = (option) => {
-    addQuestion(index, "answer", option)
+    addQuestion(index, "answer", option);
   };
   const matchingAnswerHandle = (option, text) => {
     addQuestion(index, "matching", {
@@ -116,13 +117,24 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
       case 1:
         return <Mcq choiceHandle={choiceHandle} answerHandle={answerHandle} />;
       case 2:
-        return <FillInTheBlank choiceHandle={choiceHandle} answerHandle={answerHandle} />;
+        return (
+          <FillInTheBlank
+            choiceHandle={choiceHandle}
+            answerHandle={answerHandle}
+          />
+        );
       case 3:
         return <TrueOrFalse answerHandle={answerHandle} />;
       case 4:
         return <YesOrNo answerHandle={answerHandle} />;
       case 5:
-        return <Matching choiceHandle={choiceHandle} choiceTwoHandle={choiceTwoHandle} answerHandle={matchingAnswerHandle} />;
+        return (
+          <Matching
+            choiceHandle={choiceHandle}
+            choiceTwoHandle={choiceTwoHandle}
+            answerHandle={matchingAnswerHandle}
+          />
+        );
       default:
         return null;
     }
@@ -130,33 +142,54 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
   return (
     <>
       <Card variant="outlined" sx={{ mb: 2 }}>
-        <Box p={2} sx={{ display: "flex", justifyContent: "space-between" }}>
-          <FormControl required sx={{ minWidth: 300 }} size="small">
-            <InputLabel id="question-type-label">Question Type</InputLabel>
-            <Select
-              labelId="question-type-label"
-              id="question-type-select"
-              label="Question Type"
-              onChange={questionTypeHandle}
-            >
-              {questionTypes?.map((item) => (
-                <MenuItem key={item?.id} value={item?.id}>
-                  {item?.title}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ minWidth: 200 }}>
-            <TextField
-              fullWidth
-              label="Point"
-              id="point"
+        <Grid container p={2} sx={{ display: "flex" }} spacing={2}>
+          <Grid item xs={12} md={6}>
+            <FormControl
               required
-              onChange={pointHandle}
               size="small"
-            />
-          </FormControl>
-        </Box>
+              sx={{ minWidth: { xs: "100%", md: 200 } }}
+            >
+              <InputLabel id="question-type-label">Question Type</InputLabel>
+              <Select
+                labelId="question-type-label"
+                id="question-type-select"
+                label="Question Type"
+                onChange={questionTypeHandle}
+              >
+                {questionTypes?.map((item) => (
+                  <MenuItem key={item?.id} value={item?.id}>
+                    {item?.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              display: "flex",
+              justifyContent: { xs: "flex-start", md: "flex-end" },
+            }}
+          >
+            <FormControl
+              size="small"
+              sx={{
+                minWidth: { xs: "100%", md: 200 },
+              }}
+            >
+              <TextField
+                fullWidth
+                label="Point"
+                id="point"
+                required
+                onChange={pointHandle}
+                size="small"
+              />
+            </FormControl>
+          </Grid>
+        </Grid>
         <Box px={2}>
           <TextField
             fullWidth
@@ -169,57 +202,83 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
             size="small"
           />
         </Box>
-        <Box p={2} sx={{ display: "flex", justifyContent: "space-between" }}>
-          <FormControl sx={{ minWidth: 300 }} size="small">
-            <InputLabel id="attachment-label">Attachment</InputLabel>
-            <Select
-              labelId="attachment-label"
-              id="attachment-select"
-              label="Attachment"
-              onChange={attachmentHandle}
+        <Grid
+          container
+          p={2}
+          sx={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <Grid item xs={12} md={6}>
+            <FormControl
+              sx={{ minWidth: { xs: "100%", md: 300 } }}
+              size="small"
             >
-              {attachment?.map((item) => (
-                <MenuItem key={item?.id} value={item?.id}>
-                  {item?.title}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {attachFile === 2 ? (
-            <FormControl sx={{ minWidth: 300 }} size="small">
-              <InputLabel id="video-label">Video</InputLabel>
+              <InputLabel id="attachment-label">Attachment</InputLabel>
               <Select
-                labelId="video-label"
-                id="video-select"
-                label="Video"
-                onChange={videoHandle}
+                labelId="attachment-label"
+                id="attachment-select"
+                label="Attachment"
+                onChange={attachmentHandle}
               >
-                {videos?.map((item) => (
+                {attachment?.map((item) => (
                   <MenuItem key={item?.id} value={item?.id}>
                     {item?.title}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-          ) : null}
-          {attachFile === 3 ? (
-            <FormControl sx={{ minWidth: 300 }} size="small">
-              <InputLabel id="audio-label">Audio</InputLabel>
-              <Select
-                labelId="audio-label"
-                id="audio-select"
-                label="Audio"
-                onChange={audioHandle}
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              mt: { xs: 2, md: 0 },
+              display: "flex",
+              justifyContent: { xs: "flex-start", md: "flex-end" },
+            }}
+          >
+            {attachFile === 2 ? (
+              <FormControl
+                sx={{ minWidth: { xs: "100%", md: 300 } }}
+                size="small"
               >
-                {audios?.map((item) => (
-                  <MenuItem key={item?.id} value={item?.id}>
-                    {item?.title}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          ) : null}
-        </Box>
+                <InputLabel id="video-label">Video</InputLabel>
+                <Select
+                  labelId="video-label"
+                  id="video-select"
+                  label="Video"
+                  onChange={videoHandle}
+                >
+                  {videos?.map((item) => (
+                    <MenuItem key={item?.id} value={item?.id}>
+                      {item?.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            ) : null}
+            {attachFile === 3 ? (
+              <FormControl
+                sx={{ minWidth: { xs: "100%", md: 300 } }}
+                size="small"
+              >
+                <InputLabel id="audio-label">Audio</InputLabel>
+                <Select
+                  labelId="audio-label"
+                  id="audio-select"
+                  label="Audio"
+                  onChange={audioHandle}
+                >
+                  {audios?.map((item) => (
+                    <MenuItem key={item?.id} value={item?.id}>
+                      {item?.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            ) : null}
+          </Grid>
+        </Grid>
         {renderQuestionType()}
         <Box p={2} sx={{ display: "flex", justifyContent: "flex-end" }}>
           <Button

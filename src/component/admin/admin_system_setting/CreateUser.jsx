@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Alert,
   Grid,
   Button,
   Box,
@@ -19,7 +20,13 @@ import {
 import Transition from "../../../common/Transition";
 import Route from "../../../routes/Route";
 
-const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers }) => {
+const CreateUser = ({
+  open,
+  setOpen,
+  setOpenNotification,
+  setMessage,
+  fetchUsers,
+}) => {
   // set states
   const [designations, setDesignations] = useState([]);
   const [regions, setRegions] = useState([]);
@@ -79,7 +86,13 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
   };
 
   const fetchHandle = async () => {
-    const res = await Route("GET", `/users/sso/${searchQuery}`, token, null, null);
+    const res = await Route(
+      "GET",
+      `/users/sso/${searchQuery}`,
+      token,
+      null,
+      null
+    );
     if (res?.status === 200) {
       setUserDetails((prev) => ({
         ...prev,
@@ -150,11 +163,13 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
         <DialogTitle>Create User</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To create new user, please enter Employee ID. Employee's details
-            will be fetched and filled.
+            <Alert severity="info" icon={false}>
+              To create new user, please enter Employee ID and fetch Details.
+              Employee's details will filled.
+            </Alert>
           </DialogContentText>
-          <Box sx={{ display: "grid", gap: 2, mt: 4 }}>
-            <Grid container spacing={2}>
+          <Grid container spacing={2} mt={1}>
+            <Grid item container spacing={2}>
               <Grid item xs={9}>
                 <TextField
                   label="Employee ID"
@@ -177,8 +192,8 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
                 </Button>
               </Grid>
             </Grid>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
+            <Grid item container spacing={2}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   label="Full Name"
                   variant="outlined"
@@ -190,7 +205,7 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
                   value={userDetails?.name || ""}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   label="Email"
                   variant="outlined"
@@ -203,8 +218,8 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
+            <Grid item container spacing={2}>
+              <Grid item xs={12} md={6}>
                 <FormControl fullWidth size="small">
                   <InputLabel id="designation-select-label">
                     Designation
@@ -223,7 +238,7 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <FormControl fullWidth size="small">
                   <InputLabel id="gender-select-label">Gender</InputLabel>
                   <Select
@@ -238,8 +253,8 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
                 </FormControl>
               </Grid>
             </Grid>
-            <Grid container spacing={2}>
-              <Grid item xs={4}>
+            <Grid item container spacing={2}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Contact"
                   variant="outlined"
@@ -251,7 +266,7 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
                   disabled
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4}>
                 <FormControl fullWidth size="small">
                   <InputLabel id="region-select-label">Region</InputLabel>
                   <Select
@@ -268,7 +283,7 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4}>
                 <FormControl fullWidth size="small">
                   <InputLabel id="extension-select-label">Extension</InputLabel>
                   <Select
@@ -286,20 +301,18 @@ const CreateUser = ({ open, setOpen, setOpenNotification, setMessage, fetchUsers
                 </FormControl>
               </Grid>
             </Grid>
-            <Grid container spacing={2}>
-              <Grid item xs={4}>
-                <FormControl component="fieldset">
-                  <FormControlLabel
-                    value="start"
-                    control={<Checkbox />}
-                    label="Assign as Admin"
-                    labelPlacement="start"
-                    onClick={isAdminHandle}
-                  />
-                </FormControl>
-              </Grid>
+            <Grid item container spacing={2}>
+              <FormControl component="fieldset">
+                <FormControlLabel
+                  value="start"
+                  control={<Checkbox />}
+                  label="Assign as Admin"
+                  labelPlacement="start"
+                  onClick={isAdminHandle}
+                />
+              </FormControl>
             </Grid>
-          </Box>
+          </Grid>
         </DialogContent>
         <DialogActions sx={{ mb: 2, mx: 2 }}>
           <Button variant="contained" onClick={handleSubmit}>

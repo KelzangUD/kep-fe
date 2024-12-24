@@ -22,10 +22,10 @@ const Admin = () => {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container>
-          <Grid item xs={2}>
+          <Grid item xs={2} sx={{ display: { xs: "none", md: "flex" } }}>
             <SideNav />
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={12} md={10}>
             <AdminNav />
             <Grid container>
                 <Grid item xs={12}>

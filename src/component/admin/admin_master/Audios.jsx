@@ -9,14 +9,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Paper,
-  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import SearchIcon from "@mui/icons-material/Search";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -25,11 +21,14 @@ import UploadAudio from "./audios/UploadAudio";
 import EditAudio from "./audios/EditAudio";
 import AudioPlay from "./audios/AudioPlay";
 import Notification from "../../../ui/Notification";
+// import RenderStatus from "../../../ui/RenderStatus";
+import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
+import { useCommon } from "../../../contexts/CommonContext";
 
 const Audios = () => {
+  const { isMdUp } = useCommon();
   // init states
-  const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
   const [audios, setAudios] = useState([]);
@@ -50,13 +49,7 @@ const Audios = () => {
   useEffect(() => {
     fetchAudios();
   }, []);
-  const filteredData = audios?.filter((item) =>
-    item?.title?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
   // handlers
-  const searchHandle = (e) => {
-    setSearchQuery(e.target.value);
-  };
   const editHandle = (param) => {
     setDetails(param?.row);
     setEdit(true);
@@ -70,14 +63,35 @@ const Audios = () => {
     setDeleteAudio(true);
   };
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", flex: 40 },
-    { field: "title", headerName: "Title", flex: 150 },
-    { field: "description", headerName: "Description", flex: 500 },
-    { field: "visible", headerName: "Visible", flex: 100 },
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      flex: isMdUp ? 40 : undefined,
+      width: isMdUp ? undefined : 40,
+    },
+    {
+      field: "title",
+      headerName: "Title",
+      flex: isMdUp ? 150 : undefined,
+      width: isMdUp ? undefined : 150,
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      flex: isMdUp ? 500 : undefined,
+      width: isMdUp ? undefined : 500,
+    },
+    {
+      field: "visible",
+      headerName: "Visible",
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 100,
+    },
     {
       field: "action",
       headerName: "Action",
-      flex: 120,
+      flex: isMdUp ? 120 : undefined,
+      width: isMdUp ? undefined : 120,
       renderCell: (params) => (
         <div>
           <IconButton
@@ -131,54 +145,23 @@ const Audios = () => {
           <Grid
             item
             xs={12}
-            sx={{ display: "flex", justifyContent: "space-between" }}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
           >
-            <Grid item>
-              <Paper
-                sx={{
-                  p: "2px 4px",
-                  display: "flex",
-                  alignItems: "center",
-                  width: 400,
-                }}
-              >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder="Search"
-                  inputProps={{ "aria-label": "search" }}
-                  onChange={searchHandle}
-                />
-                <IconButton
-                  type="button"
-                  sx={{ p: "10px" }}
-                  aria-label="search"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                endIcon={<CloudUploadIcon />}
-                sx={{ mr: 2 }}
-                onClick={addHandle}
-              >
-                Upload
-              </Button>
-              <Button
-                variant="contained"
-                color="success"
-                endIcon={<FileDownloadIcon />}
-              >
-                Export
-              </Button>
-            </Grid>
+            <Button
+              variant="contained"
+              endIcon={<CloudUploadIcon />}
+              onClick={addHandle}
+            >
+              Upload
+            </Button>
           </Grid>
           <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={filteredData?.map((row, index) => ({
+                rows={audios?.map((row, index) => ({
                   ...row,
                   sl: index + 1,
                 }))}
@@ -189,6 +172,7 @@ const Audios = () => {
                   },
                 }}
                 pageSizeOptions={[5, 10]}
+                slots={{ toolbar: CustomToolbar }}
               />
             </div>
           </Grid>

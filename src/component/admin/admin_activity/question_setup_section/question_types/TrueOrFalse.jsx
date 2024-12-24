@@ -9,14 +9,14 @@ import {
   RadioGroup,
 } from "@mui/material";
 
-const TrueOrFalse = ({answerHandle}) => {
+const TrueOrFalse = ({ answerHandle }) => {
   return (
     <>
       <Box px={2}>
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
             <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
-              <Grid item xs={5}>
+              <Grid item xs={11} md={5}>
                 <TextField
                   fullWidth
                   label="True"
@@ -27,9 +27,12 @@ const TrueOrFalse = ({answerHandle}) => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={true} control={<Radio onChange={() => answerHandle(true)} />} />
+                <FormControlLabel
+                  value={true}
+                  control={<Radio onChange={() => answerHandle(true)} />}
+                />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={11} md={5}>
                 <TextField
                   fullWidth
                   label="False"
@@ -40,7 +43,10 @@ const TrueOrFalse = ({answerHandle}) => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value={false} control={<Radio onChange={() => answerHandle(false)} />} />
+                <FormControlLabel
+                  value={false}
+                  control={<Radio onChange={() => answerHandle(false)} />}
+                />
               </Grid>
             </Grid>
           </RadioGroup>

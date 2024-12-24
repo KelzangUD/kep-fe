@@ -3,6 +3,7 @@ import {
   Button,
   Box,
   TextField,
+  Grid,
   Dialog,
   DialogActions,
   DialogContent,
@@ -265,43 +266,65 @@ const EditQuestion = ({
   return (
     <>
       <Dialog
-        fullScreen
+        fullWidth
+        maxWidth="lg"
         open={open}
         onClose={() => setOpen(false)}
         TransitionComponent={Transition}
       >
-        <DialogTitle ml={2}>Edit Question</DialogTitle>
+        <DialogTitle>Edit Question</DialogTitle>
         <DialogContent>
-          <Box p={2} sx={{ display: "flex", justifyContent: "space-between" }}>
-            <FormControl required sx={{ minWidth: 300 }} size="small">
-              <InputLabel id="question-type-label">Question Type</InputLabel>
-              <Select
-                labelId="question-type-label"
-                id="question-type-select"
-                label="Question Type"
-                defaultValue={details?.question_type}
-                onChange={questionTypeHandle}
-              >
-                {questionTypes?.map((item) => (
-                  <MenuItem key={item?.id} value={item?.id}>
-                    {item?.title}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl sx={{ minWidth: 200 }}>
-              <TextField
-                fullWidth
-                label="Point"
-                id="point"
+          <Grid
+            container
+            sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}
+          >
+            <Grid item xs={12} md={6}>
+              <FormControl
                 required
-                defaultValue={details?.point}
-                onChange={pointHandle}
+                sx={{ minWidth: { xs: "100%", md: 300 } }}
                 size="small"
-              />
-            </FormControl>
-          </Box>
-          <Box p={2}>
+              >
+                <InputLabel id="question-type-label">Question Type</InputLabel>
+                <Select
+                  labelId="question-type-label"
+                  id="question-type-select"
+                  label="Question Type"
+                  defaultValue={details?.question_type}
+                  onChange={questionTypeHandle}
+                >
+                  {questionTypes?.map((item) => (
+                    <MenuItem key={item?.id} value={item?.id}>
+                      {item?.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "flex-start", md: "flex-end" },
+              }}
+            >
+              <FormControl
+                sx={{ minWidth: { xs: "100%", md: 200 }, mt: { xs: 2, md: 0 } }}
+              >
+                <TextField
+                  fullWidth
+                  label="Point"
+                  id="point"
+                  required
+                  defaultValue={details?.point}
+                  onChange={pointHandle}
+                  size="small"
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Box mt={2}>
             <TextField
               fullWidth
               label="Question"
@@ -314,62 +337,93 @@ const EditQuestion = ({
               size="small"
             />
           </Box>
-          <Box p={2} sx={{ display: "flex", justifyContent: "space-between" }}>
-            <FormControl sx={{ minWidth: 300 }} size="small">
-              <InputLabel id="attachment-label">Attachment</InputLabel>
-              <Select
-                labelId="attachment-label"
-                id="attachment-select"
-                label="Attachment"
-                onChange={attachmentHandle}
+          <Grid
+            mt={2}
+            container
+            sx={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <Grid item xs={12} md={6}>
+              <FormControl
+                sx={{ minWidth: { xs: "100%", md: 300 } }}
+                size="small"
               >
-                {attachment?.map((item) => (
-                  <MenuItem key={item?.id} value={item?.id}>
-                    {item?.title}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            {attachFile === 2 ? (
-              <FormControl sx={{ minWidth: 300 }} size="small">
-                <InputLabel id="video-label">Video</InputLabel>
+                <InputLabel id="attachment-label">Attachment</InputLabel>
                 <Select
-                  labelId="video-label"
-                  id="video-select"
-                  label="Video"
-                  defaultValue={details?.video}
-                  onChange={videoHandle}
+                  labelId="attachment-label"
+                  id="attachment-select"
+                  label="Attachment"
+                  onChange={attachmentHandle}
                 >
-                  {videos?.map((item) => (
+                  {attachment?.map((item) => (
                     <MenuItem key={item?.id} value={item?.id}>
                       {item?.title}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
-            ) : null}
-            {attachFile === 3 ? (
-              <FormControl sx={{ minWidth: 300 }} size="small">
-                <InputLabel id="audio-label">Audio</InputLabel>
-                <Select
-                  labelId="audio-label"
-                  id="audio-select"
-                  label="Audio"
-                  defaultValue={details?.audio}
-                  onChange={audioHandle}
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "flex-start", md: "flex-end" },
+              }}
+            >
+              {attachFile === 2 ? (
+                <FormControl
+                  sx={{
+                    minWidth: { xs: "100%", md: 300 },
+                    mt: { xs: 2, md: 0 },
+                  }}
+                  size="small"
                 >
-                  {audios?.map((item) => (
-                    <MenuItem key={item?.id} value={item?.id}>
-                      {item?.title}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            ) : null}
-          </Box>
+                  <InputLabel id="video-label">Video</InputLabel>
+                  <Select
+                    labelId="video-label"
+                    id="video-select"
+                    label="Video"
+                    defaultValue={details?.video}
+                    onChange={videoHandle}
+                  >
+                    {videos?.map((item) => (
+                      <MenuItem key={item?.id} value={item?.id}>
+                        {item?.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              ) : null}
+              {attachFile === 3 ? (
+                <FormControl
+                  sx={{
+                    minWidth: { xs: "100%", md: 300 },
+                    mt: { xs: 2, md: 0 },
+                  }}
+                  size="small"
+                >
+                  <InputLabel id="audio-label">Audio</InputLabel>
+                  <Select
+                    labelId="audio-label"
+                    id="audio-select"
+                    label="Audio"
+                    defaultValue={details?.audio}
+                    onChange={audioHandle}
+                  >
+                    {audios?.map((item) => (
+                      <MenuItem key={item?.id} value={item?.id}>
+                        {item?.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              ) : null}
+            </Grid>
+          </Grid>
           {renderQuestionType()}
         </DialogContent>
-        <DialogActions sx={{ mb: 2, mx: 4 }}>
+        <DialogActions sx={{ mb: 2, mr: 2 }}>
           <Button variant="contained" onClick={handleSubmit} size="small">
             Update
           </Button>

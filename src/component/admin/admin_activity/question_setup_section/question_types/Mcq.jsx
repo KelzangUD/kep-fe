@@ -9,14 +9,14 @@ import {
   RadioGroup,
 } from "@mui/material";
 
-const Mcq = ({choiceHandle, answerHandle}) => {
+const Mcq = ({ choiceHandle, answerHandle }) => {
   return (
     <>
       <Box px={2}>
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
             <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
-              <Grid item xs={5}>
+              <Grid item xs={11} md={5}>
                 <TextField
                   fullWidth
                   label="Option 1"
@@ -27,9 +27,14 @@ const Mcq = ({choiceHandle, answerHandle}) => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value="first" control={<Radio onChange={(e) => answerHandle(e.target.value)} />} />
+                <FormControlLabel
+                  value="first"
+                  control={
+                    <Radio onChange={(e) => answerHandle(e.target.value)} />
+                  }
+                />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={11} md={5}>
                 <TextField
                   fullWidth
                   label="Option 2"
@@ -40,11 +45,16 @@ const Mcq = ({choiceHandle, answerHandle}) => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value="second" control={<Radio onChange={(e) => answerHandle(e.target.value)} />} />
+                <FormControlLabel
+                  value="second"
+                  control={
+                    <Radio onChange={(e) => answerHandle(e.target.value)} />
+                  }
+                />
               </Grid>
             </Grid>
             <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
-              <Grid item xs={5}>
+              <Grid item xs={11} md={5}>
                 <TextField
                   fullWidth
                   label="Option 3"
@@ -55,9 +65,14 @@ const Mcq = ({choiceHandle, answerHandle}) => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value="third" control={<Radio onChange={(e) => answerHandle(e.target.value)} />} />
+                <FormControlLabel
+                  value="third"
+                  control={
+                    <Radio onChange={(e) => answerHandle(e.target.value)} />
+                  }
+                />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={11} md={5}>
                 <TextField
                   fullWidth
                   label="Option 4"
@@ -68,7 +83,12 @@ const Mcq = ({choiceHandle, answerHandle}) => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <FormControlLabel value="fourth" control={<Radio onChange={(e) => answerHandle(e.target.value)} />} />
+                <FormControlLabel
+                  value="fourth"
+                  control={
+                    <Radio onChange={(e) => answerHandle(e.target.value)} />
+                  }
+                />
               </Grid>
             </Grid>
           </RadioGroup>

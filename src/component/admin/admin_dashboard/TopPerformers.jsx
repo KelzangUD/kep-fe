@@ -4,6 +4,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   Paper,
@@ -31,33 +32,40 @@ const TopPerformers = () => {
   return (
     <Paper sx={{ width: "100%", padding: 1 }}>
       <Typography variant="subtitle2">Top Five Performers</Typography>
-      <Table sx={{ width: "100%" }} aria-label="top-performers">
-        <TableHead>
-          <TableRow>
-            <TableCell>Sl.No</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Employee ID</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell align="right">Average Score</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {topPerformersData?.map((row, index) => (
-            <TableRow
-              key={index}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {index + 1}
-              </TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.employeeID}</TableCell>
-              <TableCell>{row.email}</TableCell>
-              <TableCell align="right">{row.averageScore}</TableCell>
+      <TableContainer
+        sx={{
+          width: "100%",
+          overflowX: "auto", // Enable horizontal scrolling
+        }}
+      >
+        <Table sx={{ width: "100%" }} aria-label="top-performers" responsive>
+          <TableHead>
+            <TableRow>
+              <TableCell>Sl.No</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Employee ID</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell align="right">Average Score</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {topPerformersData?.map((row, index) => (
+              <TableRow
+                key={index}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {index + 1}
+                </TableCell>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.employeeID}</TableCell>
+                <TableCell>{row.email}</TableCell>
+                <TableCell align="right">{row.averageScore}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Paper>
   );
 };

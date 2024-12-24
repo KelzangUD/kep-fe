@@ -18,91 +18,92 @@ const Matching = ({ choiceHandle, choiceTwoHandle, answerHandle }) => {
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
             <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="A"
-                  id="your-text"
-                  variant="outlined"
-                  onChange={(e) => choiceHandle("first", e.target.value)}
-                  size="small"
-                />
+              <Grid item container xs={12} md={6} spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="A"
+                    id="your-text"
+                    variant="outlined"
+                    onChange={(e) => choiceHandle("first", e.target.value)}
+                    size="small"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="B"
+                    id="your-text"
+                    variant="outlined"
+                    onChange={(e) => choiceHandle("second", e.target.value)}
+                    size="small"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="C"
+                    id="your-text"
+                    variant="outlined"
+                    onChange={(e) => choiceHandle("third", e.target.value)}
+                    size="small"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="D"
+                    id="your-text"
+                    variant="outlined"
+                    onChange={(e) => choiceHandle("fourth", e.target.value)}
+                    size="small"
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="I"
-                  id="your-text"
-                  variant="outlined"
-                  onChange={(e) => choiceTwoHandle("first", e.target.value)}
-                  size="small"
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="B"
-                  id="your-text"
-                  variant="outlined"
-                  onChange={(e) => choiceHandle("second", e.target.value)}
-                  size="small"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="II"
-                  id="your-text"
-                  variant="outlined"
-                  onChange={(e) => choiceTwoHandle("second", e.target.value)}
-                  size="small"
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="C"
-                  id="your-text"
-                  variant="outlined"
-                  onChange={(e) => choiceHandle("third", e.target.value)}
-                  size="small"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="III"
-                  id="your-text"
-                  variant="outlined"
-                  onChange={(e) => choiceTwoHandle("third", e.target.value)}
-                  size="small"
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="D"
-                  id="your-text"
-                  variant="outlined"
-                  onChange={(e) => choiceHandle("fourth", e.target.value)}
-                  size="small"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="IV"
-                  id="your-text"
-                  variant="outlined"
-                  onChange={(e) => choiceTwoHandle("fourth", e.target.value)}
-                  size="small"
-                />
+              <Grid item container xs={12} md={6} spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="I"
+                    id="your-text"
+                    variant="outlined"
+                    onChange={(e) => choiceTwoHandle("first", e.target.value)}
+                    size="small"
+                    sx={{
+                      mt: { xs: 1, md: 0 },
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="II"
+                    id="your-text"
+                    variant="outlined"
+                    onChange={(e) => choiceTwoHandle("second", e.target.value)}
+                    size="small"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="III"
+                    id="your-text"
+                    variant="outlined"
+                    onChange={(e) => choiceTwoHandle("third", e.target.value)}
+                    size="small"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="IV"
+                    id="your-text"
+                    variant="outlined"
+                    onChange={(e) => choiceTwoHandle("fourth", e.target.value)}
+                    size="small"
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </RadioGroup>

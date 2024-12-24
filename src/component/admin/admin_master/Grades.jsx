@@ -74,7 +74,7 @@ const Grades = () => {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
           <SubHeader text="Grades" />
-          <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
+          <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
                 rows={rows}
@@ -90,44 +90,6 @@ const Grades = () => {
           </Grid>
         </Grid>
       </Box>
-      {/* {add ? <AddGrade open={add} setOpen={setAdd} /> : null}
-      {edit ? (
-        <EditGrade details={details} open={edit} setOpen={setEdit} />
-      ) : null}
-      {deleteGrade ? (
-        <Dialog
-          open={deleteGrade}
-          onClose={() => setDeleteGrade(false)}
-          TransitionComponent={Transition}
-        >
-          <DialogContent>
-            <Typography variant="h6">Confirmation</Typography>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="subtitle1">
-              Are you sure you want to delete this Grade? After deletion, the
-              impact will be reflected in the dashboard graphs.
-            </Typography>
-          </DialogContent>
-          <DialogActions sx={{ mb: 2, mx: 2 }}>
-            <Button
-              onClick={() => setDeleteGrade(false)}
-              variant="contained"
-              autoFocus
-              size="small"
-            >
-              Confirm
-            </Button>
-            <Button
-              onClick={() => setDeleteGrade(false)}
-              variant="outlined"
-              color="error"
-              size="small"
-            >
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
-      ) : null} */}
     </>
   );
 };

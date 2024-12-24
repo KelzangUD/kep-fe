@@ -9,23 +9,22 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Paper,
-  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import EditQuestion from "./question_setup_section/EditQuestion";
 import Transition from "../../../common/Transition";
 import QuestionsSetup from "./QuestionsSetup";
 import Notification from "../../../ui/Notification";
+import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
+import { useCommon } from "../../../contexts/CommonContext";
 
 const AddQuestions = () => {
+  const { isMdUp } = useCommon();
   const [questionsSetUp, setQuestionsSetUp] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -34,15 +33,11 @@ const AddQuestions = () => {
   const [optionsTwo, setOptionsTwo] = useState([]);
   const [deleteQuestion, setDeleteQuestion] = useState(false);
   const [id, setId] = React.useState("");
-  const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
   const [severity, setSeverity] = useState("info");
 
   // handlers
-  const searchHandle = (e) => {
-    setSearchQuery(e.target.value);
-  };
   const fetchQuestion = async (id) => {
     const res = await Route("GET", "/questions", token, null, id);
     if (res?.status === 200) {
@@ -61,19 +56,36 @@ const AddQuestions = () => {
     setDeleteQuestion(true);
   };
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", flex: 40 },
-    { field: "question", headerName: "Question", flex: 500 },
-    { field: "point", headerName: "Point", flex: 60 },
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      flex: isMdUp ? 40 : undefined,
+      width: isMdUp ? undefined : 40,
+    },
+    {
+      field: "question",
+      headerName: "Question",
+      flex: isMdUp ? 500 : undefined,
+      width: isMdUp ? undefined : 500,
+    },
+    {
+      field: "point",
+      headerName: "Point",
+      flex: isMdUp ? 60 : undefined,
+      width: isMdUp ? undefined : 60,
+    },
     {
       field: "type",
       headerName: "Question Type",
-      flex: 200,
+      flex: isMdUp ? 200 : undefined,
+      width: isMdUp ? undefined : 200,
       valueGetter: (params) => params.row.QuestionType?.title || "N/A",
     },
     {
       field: "action",
       headerName: "Action",
-      flex: 120,
+      flex: isMdUp ? 120 : undefined,
+      width: isMdUp ? undefined : 120,
       renderCell: (params) => (
         <div>
           <IconButton
@@ -109,9 +121,6 @@ const AddQuestions = () => {
   useEffect(() => {
     fetchQuestions();
   }, []);
-  const filteredData = questions.filter((item) =>
-    item?.question.toLowerCase().includes(searchQuery.toLowerCase())
-  );
   const confirmDeleteHandler = async () => {
     const res = await Route("DELETE", `/questions`, token, null, id);
     if (res?.status === 201) {
@@ -143,54 +152,23 @@ const AddQuestions = () => {
             <Grid
               item
               xs={12}
-              sx={{ display: "flex", justifyContent: "space-between" }}
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
             >
-              <Grid item>
-                <Paper
-                  sx={{
-                    p: "2px 4px",
-                    display: "flex",
-                    alignItems: "center",
-                    width: 400,
-                  }}
-                >
-                  <InputBase
-                    sx={{ ml: 1, flex: 1 }}
-                    placeholder="Search"
-                    inputProps={{ "aria-label": "search" }}
-                    onChange={searchHandle}
-                  />
-                  <IconButton
-                    type="button"
-                    sx={{ p: "10px" }}
-                    aria-label="search"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </Paper>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  endIcon={<PersonAddIcon />}
-                  sx={{ mr: 2 }}
-                  onClick={questionSetUpHandle}
-                >
-                  Add Questions
-                </Button>
-                <Button
-                  variant="contained"
-                  color="success"
-                  endIcon={<FileDownloadIcon />}
-                >
-                  Export
-                </Button>
-              </Grid>
+              <Button
+                variant="contained"
+                endIcon={<PersonAddIcon />}
+                onClick={questionSetUpHandle}
+              >
+                Add Questions
+              </Button>
             </Grid>
             <Grid item container alignItems="center" xs={12}>
               <div style={{ height: "auto", width: "100%" }}>
                 <DataGrid
-                  rows={filteredData?.map((row, index) => ({
+                  rows={questions?.map((row, index) => ({
                     ...row,
                     sl: index + 1,
                   }))}
@@ -201,6 +179,7 @@ const AddQuestions = () => {
                     },
                   }}
                   pageSizeOptions={[5, 10]}
+                  slots={{ toolbar: CustomToolbar }}
                 />
               </div>
             </Grid>

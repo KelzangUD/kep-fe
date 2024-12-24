@@ -12,7 +12,7 @@ import {
 const EditYesOrNo = ({ options, answerHandle }) => {
   return (
     <>
-      <Box p={2}>
+      <Box mt={2}>
         <FormControl fullWidth>
           <RadioGroup
             aria-labelledby="group-label"
@@ -20,7 +20,7 @@ const EditYesOrNo = ({ options, answerHandle }) => {
             defaultValue={options[0].isTrue ? 1 : 2}
           >
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={5}>
+              <Grid item xs={10} md={5}>
                 <TextField
                   fullWidth
                   label="Yes"
@@ -30,13 +30,13 @@ const EditYesOrNo = ({ options, answerHandle }) => {
                   size="small"
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2} md={1}>
                 <FormControlLabel
                   value={1}
                   control={<Radio onChange={() => answerHandle("Yes")} />}
                 />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={10} md={5}>
                 <TextField
                   fullWidth
                   label="No"
@@ -46,7 +46,7 @@ const EditYesOrNo = ({ options, answerHandle }) => {
                   size="small"
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2} md={1}>
                 <FormControlLabel
                   value={2}
                   control={<Radio onChange={() => answerHandle("No")} />}

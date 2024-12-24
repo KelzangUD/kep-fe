@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import SubHeader from "../../../../common/SubHeader";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
@@ -23,7 +22,14 @@ import SaveIcon from "@mui/icons-material/Save";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import Route from "../../../../routes/Route";
 
-const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetchTest, absents, id }) => {
+const ReScheduleTest = ({
+  setScheduleTest,
+  setMessage,
+  setOpenNotification,
+  fetchTest,
+  absents,
+  id,
+}) => {
   const [questions, setQuestions] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [selectAllUsers, setSelectAllUsers] = useState(false);
@@ -76,13 +82,13 @@ const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetc
   const startTimeHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
-      startTime: e?.$d
+      startTime: e?.$d,
     }));
   };
   const endTimeHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
-      endTime: e?.$d
+      endTime: e?.$d,
     }));
   };
   const messageHandler = (e) => {
@@ -116,7 +122,7 @@ const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetc
         : prev.questions.filter((questionId) => questionId !== id), // Remove the question id if unchecked
     }));
   };
-  const scheduleHandle = async() => {
+  const scheduleHandle = async () => {
     const res = await Route("POST", `/retests`, token, details, null);
     if (res?.status === 201) {
       fetchTest();
@@ -154,8 +160,8 @@ const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetc
               Cancel
             </Button>
           </Grid>
-          <Grid item container alignItems="center" sx={{ px: 2 }} xs={12}>
-            <Card variant="outlined" sx={{ width: 1100 }}>
+          <Grid item container alignItems="center" xs={12}>
+            <Card variant="outlined" sx={{ width: "100%" }}>
               <Grid item xs={12} sx={{ p: 2 }}>
                 <Typography as="h6">Re-Schedule Test</Typography>
               </Grid>
@@ -182,7 +188,9 @@ const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetc
                       <FormControlLabel
                         control={
                           <Checkbox
-                            checked={details?.absents.includes(absent?.id)||false}
+                            checked={
+                              details?.absents.includes(absent?.id) || false
+                            }
                             // onChange={(e) => itemHandler(e, question?.id)}
                           />
                         }
@@ -191,7 +199,7 @@ const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetc
                     </FormGroup>
                   </Grid>
                 ))}
-                <Grid item xs={4} sx={{ mt: 1 }}>
+                <Grid item xs={12} md={4}>
                   <TextField
                     id="outlined-basic"
                     label="Test Name"
@@ -199,28 +207,35 @@ const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetc
                     fullWidth
                     onChange={testNameHandler}
                     required
+                    size="small"
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["startDatePicker"]}>
-                      <DatePicker
-                        label="Start Date"
-                        sx={{ width: "100%" }}
-                        onChange={startDateHandler}
-                      />
-                    </DemoContainer>
+                    <DatePicker
+                      label="Start Date"
+                      sx={{ width: "100%" }}
+                      onChange={startDateHandler}
+                      slotProps={{
+                        textField: {
+                          size: "small",
+                        },
+                      }}
+                    />
                   </LocalizationProvider>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["endDatePicker"]}>
-                      <DatePicker
-                        label="End Date"
-                        sx={{ width: "100%" }}
-                        onChange={endDateHandler}
-                      />
-                    </DemoContainer>
+                    <DatePicker
+                      label="End Date"
+                      sx={{ width: "100%" }}
+                      onChange={endDateHandler}
+                      slotProps={{
+                        textField: {
+                          size: "small",
+                        },
+                      }}
+                    />
                   </LocalizationProvider>
                 </Grid>
               </Grid>
@@ -232,8 +247,8 @@ const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetc
                 spacing={2}
                 sx={{ p: 2 }}
               >
-                <Grid item xs={4} sx={{ mt: 1 }}>
-                  <FormControl fullWidth>
+                <Grid item xs={12} md={4}>
+                  <FormControl fullWidth size="small">
                     <InputLabel id="duration-select-label">Duration</InputLabel>
                     <Select
                       labelId="duration-select-label"
@@ -248,30 +263,35 @@ const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetc
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["TimePicker"]}>
-                      <TimePicker
-                        label="Start Time"
-                        sx={{ width: "100%" }}
-                        onChange={startTimeHandler}
-                      />
-                    </DemoContainer>
+                    <TimePicker
+                      label="Start Time"
+                      sx={{ width: "100%" }}
+                      onChange={startTimeHandler}
+                      slotProps={{
+                        textField: {
+                          size: "small",
+                        },
+                      }}
+                    />
                   </LocalizationProvider>
                 </Grid>
-
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["TimePicker"]}>
-                      <TimePicker
-                        label="End Time"
-                        sx={{ width: "100%" }}
-                        onChange={endTimeHandler}
-                      />
-                    </DemoContainer>
+                    <TimePicker
+                      label="End Time"
+                      sx={{ width: "100%" }}
+                      onChange={endTimeHandler}
+                      slotProps={{
+                        textField: {
+                          size: "small",
+                        },
+                      }}
+                    />
                   </LocalizationProvider>
                 </Grid>
-                <Grid item xs={12} sx={{ mt: 1 }}>
+                <Grid item xs={12}>
                   <TextField
                     id="outlined-basic"
                     label="Message"
@@ -281,6 +301,7 @@ const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetc
                     fullWidth
                     onChange={messageHandler}
                     required
+                    size="small"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -298,7 +319,9 @@ const ReScheduleTest = ({ setScheduleTest, setMessage, setOpenNotification, fetc
                       <FormControlLabel
                         control={
                           <Checkbox
-                            checked={details?.questions.includes(question?.id)||false}
+                            checked={
+                              details?.questions.includes(question?.id) || false
+                            }
                             onChange={(e) => itemHandler(e, question?.id)}
                           />
                         }

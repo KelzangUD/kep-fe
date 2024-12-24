@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  Paper,
   Grid,
-  Button,
-  InputBase,
-  IconButton,
   InputLabel,
   MenuItem,
   FormControl,
@@ -13,8 +9,7 @@ import {
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import SearchIcon from "@mui/icons-material/Search";
+import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
 import {
   filterDataBasedOnYearAndHalf,
@@ -22,8 +17,10 @@ import {
   reportColumns,
   yearlyReport,
 } from "../../../util/CommonUtil";
+import { useCommon } from "../../../contexts/CommonContext";
 
 const SixMonths = () => {
+  const { isMdUp } = useCommon();
   const [results, setResults] = useState([]);
   const [columns, setColumns] = useState([]);
   const [halfYearData, setHalfYearData] = useState([]);
@@ -40,7 +37,9 @@ const SixMonths = () => {
     fetchResults();
   }, []);
   const filterBasedOnHalf = () => {
-    setHalfYearData(filterDataBasedOnYearAndHalf(results, new Date().getFullYear(), half));
+    setHalfYearData(
+      filterDataBasedOnYearAndHalf(results, new Date().getFullYear(), half)
+    );
   };
   const halfHandle = (e) => {
     setHalf(e.target.value);
@@ -49,7 +48,7 @@ const SixMonths = () => {
     filterBasedOnHalf();
   }, [results, half]);
   useEffect(() => {
-    setColumns(reportColumns(getUniqueTestNames(halfYearData)));
+    setColumns(reportColumns(getUniqueTestNames(halfYearData), isMdUp));
     setReportData(yearlyReport(halfYearData));
   }, [halfYearData]);
   return (
@@ -59,64 +58,26 @@ const SixMonths = () => {
           <SubHeader text="Six Months Report" />
           <Grid
             item
+            container
             xs={12}
-            sx={{ display: "flex", justifyContent: "space-between" }}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
           >
-            <Grid item>
-              <Paper
-                sx={{
-                  p: "2px 4px",
-                  display: "flex",
-                  alignItems: "center",
-                  width: 400,
-                }}
+            <FormControl size="small" sx={{ width: { xs: "100%", md: 120 } }}>
+              <InputLabel id="select-label">Select</InputLabel>
+              <Select
+                labelId="select-label"
+                id="simple-select"
+                defaultValue={"first"}
+                label="Select"
+                onChange={halfHandle}
               >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder="Search"
-                  inputProps={{ "aria-label": "search" }}
-                />
-                <IconButton
-                  type="button"
-                  sx={{ p: "10px" }}
-                  aria-label="search"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
-            </Grid>
-            <Grid
-              item
-              con
-              sx={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <Grid item sx={{ mr: 2 }}>
-                <Box sx={{ minWidth: 120 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel id="select-label">Select</InputLabel>
-                    <Select
-                      labelId="select-label"
-                      id="simple-select"
-                      defaultValue={"first"}
-                      label="Select"
-                      onChange={halfHandle}
-                    >
-                      <MenuItem value={"first"}>1st Half</MenuItem>
-                      <MenuItem value={"second"}>2nd Half</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="success"
-                  endIcon={<FileDownloadIcon />}
-                >
-                  Export
-                </Button>
-              </Grid>
-            </Grid>
+                <MenuItem value={"first"}>1st Half</MenuItem>
+                <MenuItem value={"second"}>2nd Half</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
@@ -132,6 +93,7 @@ const SixMonths = () => {
                   },
                 }}
                 pageSizeOptions={[5, 10]}
+                slots={{ toolbar: CustomToolbar }}
               />
             </div>
           </Grid>

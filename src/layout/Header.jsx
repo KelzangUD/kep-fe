@@ -1,9 +1,13 @@
 import React from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../assets/images/logo.ico";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Grid } from "@mui/material";
 
 const Header = () => {
+  const theme = useTheme();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const navigation = useNavigate();
   const location = useLocation();
   const [currentLoction, setCurrentLocation] = React.useState();
@@ -13,13 +17,22 @@ const Header = () => {
   const signInHandle = () => {
     navigation("/sign-in");
   };
-  React.useEffect(()=> {
+  React.useEffect(() => {
     setCurrentLocation(location?.pathname);
-  },[location]);
+  }, [location]);
   return (
     <>
-      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ backgroundColor: "#F5F7F8", p: 1 }}>
-        <Box display="flex" alignItems="center">
+      <Grid
+        container
+        sx={{
+          backgroundColor: "#F5F7F8",
+          p: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Grid item display="flex" alignItems="center">
           <Button variant="text" onClick={homeHandle}>
             <img
               src={Logo}
@@ -28,7 +41,7 @@ const Header = () => {
             />
           </Button>
           <Typography
-            variant="h6"
+            variant={isMdUp ? "h6" : "caption"}
             noWrap
             component="a"
             href="#app-bar-with-responsive-menu"
@@ -39,16 +52,15 @@ const Header = () => {
           >
             Knowledge Enhancement Platform
           </Typography>
-        </Box>
-        {
-          currentLoction === "/sign-in" ? null : <Box>
-          <Button variant="contained" onClick={signInHandle} size="small">
-            SIGN IN
-          </Button>
-        </Box>
-        }
-        
-      </Box>
+        </Grid>
+        {currentLoction === "/sign-in" ? null : (
+          <Grid item>
+            <Button variant="contained" onClick={signInHandle} size="small">
+              SIGN IN
+            </Button>
+          </Grid>
+        )}
+      </Grid>
     </>
   );
 };

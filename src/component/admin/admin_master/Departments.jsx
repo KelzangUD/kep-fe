@@ -9,38 +9,33 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Paper,
-  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Transition from "../../../common/Transition";
 import AddDepartment from "./departments/AddDepartment";
 import EditDepartment from "./departments/EditDepartment";
 import Notification from "../../../ui/Notification";
+import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
+import { useCommon } from "../../../contexts/CommonContext";
 
 const Departments = () => {
+  const { isMdUp } = useCommon();
   // init states
   const [add, setAdd] = useState(false);
   const [edit, setEdit] = useState(false);
   const [details, setDetails] = useState({});
   const [deleteDepartment, setDeleteDepartment] = useState(false);
   const [id, setId] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
   const [departments, setDepartments] = useState([]);
   const [message, setMessage] = React.useState("");
   const [openNotification, setOpenNotification] = useState(false);
   const [severity, setSeverity] = useState("info");
   // handlers
-  const searchHandle = (e) => {
-    setSearchQuery(e.target.value);
-  };
   const editHandle = (param) => {
     setDetails(param?.row);
     setEdit(true);
@@ -59,21 +54,25 @@ const Departments = () => {
   useEffect(() => {
     fetchDepartments();
   }, []);
-  const filteredData = departments.filter((item) =>
-    item?.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
   const userColumns = [
     {
       field: "sl",
       headerName: "Sl. No",
-      flex: 40,
+      flex: isMdUp ? 40 : undefined,
+      width: isMdUp ? undefined : 40,
       valueGetter: (params) => params.row.sl,
     },
-    { field: "title", headerName: "Title", flex: 200 },
+    {
+      field: "title",
+      headerName: "Title",
+      flex: isMdUp ? 200 : undefined,
+      width: isMdUp ? undefined : 200,
+    },
     {
       field: "action",
       headerName: "Action",
-      flex: 120,
+      flex: isMdUp ? 120 : undefined,
+      width: isMdUp ? undefined : 120,
       renderCell: (params) => (
         <div>
           <IconButton
@@ -116,54 +115,23 @@ const Departments = () => {
           <Grid
             item
             xs={12}
-            sx={{ display: "flex", justifyContent: "space-between" }}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
           >
-            <Grid item>
-              <Paper
-                sx={{
-                  p: "2px 4px",
-                  display: "flex",
-                  alignItems: "center",
-                  width: 400,
-                }}
-              >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder="Search"
-                  inputProps={{ "aria-label": "search" }}
-                  onChange={searchHandle}
-                />
-                <IconButton
-                  type="button"
-                  sx={{ p: "10px" }}
-                  aria-label="search"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                endIcon={<AddIcon />}
-                sx={{ mr: 2 }}
-                onClick={() => setAdd(true)}
-              >
-                Add Department
-              </Button>
-              <Button
-                variant="contained"
-                color="success"
-                endIcon={<FileDownloadIcon />}
-              >
-                Export
-              </Button>
-            </Grid>
+            <Button
+              variant="contained"
+              endIcon={<AddIcon />}
+              onClick={() => setAdd(true)}
+            >
+              Add Department
+            </Button>
           </Grid>
           <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={filteredData?.map((row, index) => ({
+                rows={departments?.map((row, index) => ({
                   ...row,
                   sl: index + 1,
                 }))}
@@ -174,6 +142,7 @@ const Departments = () => {
                   },
                 }}
                 pageSizeOptions={[5, 10]}
+                slots={{ toolbar: CustomToolbar }}
               />
             </div>
           </Grid>

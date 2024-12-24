@@ -9,25 +9,23 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Paper,
-  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Transition from "../../../common/Transition";
 import AddRegion from "./regions/AddRegion";
 import EditRegion from "./regions/EditRegion";
 import Notification from "../../../ui/Notification";
+import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
+import { useCommon } from "../../../contexts/CommonContext";
 
 const Regions = () => {
+  const { isMdUp } = useCommon();
   // init states
-  const [searchQuery, setSearchQuery] = useState("");
   const [regions, setRegions] = useState([]);
   const [add, setAdd] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -47,14 +45,7 @@ const Regions = () => {
   useEffect(() => {
     fetchRegions();
   }, []);
-  const filteredData = regions?.filter((item) =>
-    item?.region?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   // handlers
-  const searchHandle = (e) => {
-    setSearchQuery(e.target.value);
-  };
   const editHandle = (param) => {
     setDetails(param?.row);
     setEdit(true);
@@ -80,15 +71,27 @@ const Regions = () => {
     {
       field: "sl",
       headerName: "Sl. No",
-      flex: 40,
+      flex: isMdUp ? 40 : undefined,
+      width: isMdUp ? undefined : 40,
       valueGetter: (params) => params.row.sl,
     },
-    { field: "region", headerName: "Region", flex: 200 },
-    { field: "description", headerName: "Description", flex: 600 },
+    {
+      field: "region",
+      headerName: "Region",
+      flex: isMdUp ? 200 : undefined,
+      width: isMdUp ? undefined : 200,
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      flex: isMdUp ? 600 : undefined,
+      width: isMdUp ? undefined : 250,
+    },
     {
       field: "action",
       headerName: "Action",
-      flex: 120,
+      flex: isMdUp ? 120 : undefined,
+      width: isMdUp ? undefined : 120,
       renderCell: (params) => (
         <div>
           <IconButton
@@ -119,54 +122,23 @@ const Regions = () => {
           <Grid
             item
             xs={12}
-            sx={{ display: "flex", justifyContent: "space-between" }}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
           >
-            <Grid item>
-              <Paper
-                sx={{
-                  p: "2px 4px",
-                  display: "flex",
-                  alignItems: "center",
-                  width: 400,
-                }}
-              >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder="Search"
-                  inputProps={{ "aria-label": "search" }}
-                  onChange={searchHandle}
-                />
-                <IconButton
-                  type="button"
-                  sx={{ p: "10px" }}
-                  aria-label="search"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                endIcon={<AddIcon />}
-                sx={{ mr: 2 }}
-                onClick={() => setAdd(true)}
-              >
-                Add Region
-              </Button>
-              <Button
-                variant="contained"
-                color="success"
-                endIcon={<FileDownloadIcon />}
-              >
-                Export
-              </Button>
-            </Grid>
+            <Button
+              variant="contained"
+              endIcon={<AddIcon />}
+              onClick={() => setAdd(true)}
+            >
+              Add Region
+            </Button>
           </Grid>
           <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={filteredData?.map((row, index) => ({
+                rows={regions?.map((row, index) => ({
                   ...row,
                   sl: index + 1,
                 }))}
@@ -177,6 +149,7 @@ const Regions = () => {
                   },
                 }}
                 pageSizeOptions={[5, 10]}
+                slots={{ toolbar: CustomToolbar }}
               />
             </div>
           </Grid>

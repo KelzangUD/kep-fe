@@ -7,7 +7,7 @@ const Hero = () => {
     <Container maxWidth="xl" sx={{ paddingY: 8 }}>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={4} alignItems="center">
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
               Knowledge Enhancement Platform
             </Typography>
@@ -15,7 +15,7 @@ const Hero = () => {
               Empower Your Mind: Elevate Your Potential with our Knowledge Enhancement Platform.
             </Typography>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <img src={OnlineTest} alt="online_test" style={{ width: "100%", height: "auto" }} />
           </Grid>
         </Grid>

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  Paper,
   Grid,
   Divider,
   Typography,
   Button,
-  InputBase,
   IconButton,
   Dialog,
   DialogActions,
@@ -15,21 +13,21 @@ import {
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import SearchIcon from "@mui/icons-material/Search";
 import CreateUser from "./CreateUser";
 import EditUser from "./EditUser";
 import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
 import RenderStatus from "../../../ui/RenderStatus";
+import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
+import { useCommon } from "../../../contexts/CommonContext";
 
 const User = () => {
+  const { isMdUp } = useCommon();
   // init states
   const [users, setUsers] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
   const [createUser, setCreateUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [userDetails, setUserDetails] = useState({});
@@ -39,9 +37,6 @@ const User = () => {
   const [openNotification, setOpenNotification] = useState(false);
   const [severity, setSeverity] = useState("info");
   // handlers
-  const searchHandle = (e) => {
-    setSearchQuery(e.target.value?.toLowerCase() || "");
-  };
   const editHandle = (param) => {
     setUserDetails(param?.row);
     setEditUser(true);
@@ -54,27 +49,46 @@ const User = () => {
     {
       field: "sl",
       headerName: "Sl. No",
-      flex: 40,
+      flex: isMdUp ? 40 : undefined,
+      width: isMdUp ? undefined : 40,
       valueGetter: (params) => params.row.sl,
     },
-    { field: "name", headerName: "Name", width: 180 },
-    { field: "empId", headerName: "Employee ID", width: 90 },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: isMdUp ? 180 : undefined,
+      width: isMdUp ? undefined : 180,
+    },
+    {
+      field: "empId",
+      headerName: "Employee ID",
+      flex: isMdUp ? 90 : undefined,
+      width: isMdUp ? undefined : 150,
+    },
     {
       field: "email",
       headerName: "Email",
-      flex: 240,
+      flex: isMdUp ? 240 : undefined,
+      width: isMdUp ? undefined : 240,
     },
     {
       field: "designation ",
       headerName: "Designation",
-      flex: 140,
+      flex: isMdUp ? 140 : undefined,
+      width: isMdUp ? undefined : 140,
       valueGetter: (params) => params.row.Designation?.title || "N/A",
     },
-    { field: "contact", headerName: "Contact No.", flex: 100 },
+    {
+      field: "contact",
+      headerName: "Contact No.",
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
+    },
     {
       field: "isAdmin",
       headerName: "Admin",
-      flex: 80,
+      flex: isMdUp ? 80 : undefined,
+      width: isMdUp ? undefined : 110,
       renderCell: (params) => (
         <RenderStatus status={params?.row?.isAdmin === true ? "Yes" : "No"} />
       ),
@@ -82,7 +96,8 @@ const User = () => {
     {
       field: "action",
       headerName: "Action",
-      flex: 90,
+      flex: isMdUp ? 90 : undefined,
+      width: isMdUp ? undefined : 110,
       renderCell: (params) => (
         <div>
           <IconButton
@@ -118,12 +133,6 @@ const User = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
-  const filteredData = users.filter(
-    (item) =>
-      (item?.name?.toLowerCase() || "").includes(searchQuery) ||
-      (item?.empId?.toLowerCase() || "").includes(searchQuery) ||
-      (item?.Designation?.title?.toLowerCase() || "").includes(searchQuery)
-  );
   const confirmDeleteHandler = async () => {
     const res = await Route("PUT", `/users/delete-users`, token, null, userId);
     if (res?.status === 200) {
@@ -144,54 +153,23 @@ const User = () => {
           <Grid
             item
             xs={12}
-            sx={{ display: "flex", justifyContent: "space-between" }}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
           >
-            <Grid item>
-              <Paper
-                sx={{
-                  p: "2px 2px",
-                  display: "flex",
-                  alignItems: "center",
-                  width: 400,
-                }}
-              >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder="Search"
-                  inputProps={{ "aria-label": "search" }}
-                  onChange={searchHandle}
-                />
-                <IconButton
-                  type="button"
-                  sx={{ p: "10px" }}
-                  aria-label="search"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                endIcon={<PersonAddIcon />}
-                sx={{ mr: 2 }}
-                onClick={createUserHandle}
-              >
-                Create User
-              </Button>
-              <Button
-                variant="contained"
-                color="success"
-                endIcon={<FileDownloadIcon />}
-              >
-                Export
-              </Button>
-            </Grid>
+            <Button
+              variant="contained"
+              endIcon={<PersonAddIcon />}
+              onClick={createUserHandle}
+            >
+              Create User
+            </Button>
           </Grid>
           <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={filteredData?.map((row, index) => ({
+                rows={users?.map((row, index) => ({
                   ...row,
                   sl: index + 1,
                 }))}
@@ -202,6 +180,7 @@ const User = () => {
                   },
                 }}
                 pageSizeOptions={[5, 10]}
+                slots={{ toolbar: CustomToolbar }}
               />
             </div>
           </Grid>

@@ -12,7 +12,7 @@ import {
 const EditMcq = ({ options, choiceHandle, answerHandle }) => {
   return (
     <>
-      <Box p={2}>
+      <Box mt={2}>
         <FormControl fullWidth>
           <RadioGroup
             aria-labelledby="group-label"
@@ -28,7 +28,7 @@ const EditMcq = ({ options, choiceHandle, answerHandle }) => {
             }
           >
             <Grid container spacing={1} alignItems="center">
-              <Grid item xs={5}>
+              <Grid item xs={10} md={5}>
                 <TextField
                   fullWidth
                   label="Option 1"
@@ -39,7 +39,7 @@ const EditMcq = ({ options, choiceHandle, answerHandle }) => {
                   size="small"
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2} md={1}>
                 <FormControlLabel
                   value="first"
                   control={
@@ -47,7 +47,7 @@ const EditMcq = ({ options, choiceHandle, answerHandle }) => {
                   }
                 />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={10} md={5}>
                 <TextField
                   fullWidth
                   label="Option 2"
@@ -58,7 +58,7 @@ const EditMcq = ({ options, choiceHandle, answerHandle }) => {
                   size="small"
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2} md={1}>
                 <FormControlLabel
                   value="second"
                   control={
@@ -68,7 +68,7 @@ const EditMcq = ({ options, choiceHandle, answerHandle }) => {
               </Grid>
             </Grid>
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={5}>
+              <Grid item xs={10} md={5}>
                 <TextField
                   fullWidth
                   label="Option 3"
@@ -79,7 +79,7 @@ const EditMcq = ({ options, choiceHandle, answerHandle }) => {
                   size="small"
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2} md={1}>
                 <FormControlLabel
                   value="third"
                   control={
@@ -87,7 +87,7 @@ const EditMcq = ({ options, choiceHandle, answerHandle }) => {
                   }
                 />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={10} md={5}>
                 <TextField
                   fullWidth
                   label="Option 4"
@@ -98,7 +98,7 @@ const EditMcq = ({ options, choiceHandle, answerHandle }) => {
                   size="small"
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2} md={1}>
                 <FormControlLabel
                   value="fourth"
                   control={

@@ -9,14 +9,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Paper,
-  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
-import SearchIcon from "@mui/icons-material/Search";
 import QuizIcon from "@mui/icons-material/Quiz";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ScheduleTest from "./schedule_test/ScheduleTest";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -26,11 +22,13 @@ import ReScheduleTest from "./schedule_test/ReScheduleTest";
 import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
 import RenderStatus from "../../../ui/RenderStatus";
+import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
+import { useCommon } from "../../../contexts/CommonContext";
 
 const ScheduleTests = () => {
+  const { isMdUp } = useCommon();
   const [tests, setTests] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
   const [scheduleTest, setScheduleTest] = useState(false);
   const [edit, setEdit] = useState(false);
   const [details, setDetails] = useState({});
@@ -41,9 +39,6 @@ const ScheduleTests = () => {
   const [absents, setAbsents] = useState([]);
   const [rescheduleTest, setRescheduleTest] = useState(false);
   // handlers
-  const searchHandle = (e) => {
-    setSearchQuery(e.target.value);
-  };
   const editHandle = (param) => {
     setDetails(param?.row);
     setEdit(true);
@@ -82,38 +77,66 @@ const ScheduleTests = () => {
     fetchTestDetails(params?.row?.id);
   };
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", flex: 40 },
-    { field: "name", headerName: "Test Name", flex: 150 },
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      flex: isMdUp ? 40 : undefined,
+      width: isMdUp ? undefined : 40,
+    },
+    {
+      field: "name",
+      headerName: "Test Name",
+      flex: isMdUp ? 150 : undefined,
+      width: isMdUp ? undefined : 150,
+    },
     {
       field: "start_date",
       headerName: "Start Date",
-      flex: 100,
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
       valueGetter: (params) => params.row.start_date.split("T")[0],
     },
-    { field: "start_time", headerName: "Start Time", flex: 100 },
+    {
+      field: "start_time",
+      headerName: "Start Time",
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
+    },
     {
       field: "end_date",
       headerName: "End Date",
-      flex: 100,
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 130,
       valueGetter: (params) => params.row.end_date.split("T")[0],
     },
-    { field: "end_time", headerName: "End Time", flex: 100 },
-    { field: "duration", headerName: "Duration", flex: 100 },
+    {
+      field: "end_time",
+      headerName: "End Time",
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 130,
+    },
+    {
+      field: "duration",
+      headerName: "Duration",
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 130,
+    },
     {
       field: "status",
       headerName: "Status",
-      flex: 100,
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 130,
       renderCell: (params) => (
         <RenderStatus
           status={params.row.status === true ? "Active" : "Inactive"}
         />
       ),
-      // valueGetter: (params) => params.row.status === true ? "Active" : "Inactive",
     },
     {
       field: "action",
       headerName: "Action",
-      flex: 140,
+      flex: isMdUp ? 140 : undefined,
+      width: isMdUp ? undefined : 140,
       renderCell: (params) => (
         <div>
           <IconButton
@@ -144,9 +167,6 @@ const ScheduleTests = () => {
       ),
     },
   ];
-  const filteredData = tests?.filter((item) =>
-    item?.name?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
   const deleteTestHandler = async () => {
     const res = await Route("DELETE", `/tests`, token, null, id);
     if (res?.status === 201) {
@@ -192,54 +212,23 @@ const ScheduleTests = () => {
             <Grid
               item
               xs={12}
-              sx={{ display: "flex", justifyContent: "space-between" }}
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
             >
-              <Grid item>
-                <Paper
-                  sx={{
-                    p: "2px 4px",
-                    display: "flex",
-                    alignItems: "center",
-                    width: 400,
-                  }}
-                >
-                  <InputBase
-                    sx={{ ml: 1, flex: 1 }}
-                    placeholder="Search"
-                    inputProps={{ "aria-label": "search" }}
-                    onChange={searchHandle}
-                  />
-                  <IconButton
-                    type="button"
-                    sx={{ p: "10px" }}
-                    aria-label="search"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </Paper>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  endIcon={<QuizIcon />}
-                  sx={{ mr: 2 }}
-                  onClick={() => setScheduleTest(true)}
-                >
-                  Schedule Test
-                </Button>
-                <Button
-                  variant="contained"
-                  color="success"
-                  endIcon={<FileDownloadIcon />}
-                >
-                  Export
-                </Button>
-              </Grid>
+              <Button
+                variant="contained"
+                endIcon={<QuizIcon />}
+                onClick={() => setScheduleTest(true)}
+              >
+                Schedule Test
+              </Button>
             </Grid>
             <Grid item container alignItems="center" xs={12}>
               <div style={{ height: "auto", width: "100%" }}>
                 <DataGrid
-                  rows={filteredData?.map((row, index) => ({
+                  rows={tests?.map((row, index) => ({
                     ...row,
                     sl: index + 1,
                   }))}
@@ -250,6 +239,7 @@ const ScheduleTests = () => {
                     },
                   }}
                   pageSizeOptions={[5, 10]}
+                  slots={{ toolbar: CustomToolbar }}
                 />
               </div>
             </Grid>

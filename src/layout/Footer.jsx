@@ -1,15 +1,19 @@
 import React from "react";
 import { Box, Container, Typography, Grid, IconButton } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import LanguageIcon from "@mui/icons-material/Language";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 
 const Footer = () => {
+  const theme = useTheme();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   return (
     <Box sx={{ backgroundColor: "#f4f4f4", py: 4 }}>
       <Container maxWidth="xl">
         <Grid container spacing={4} alignItems="center">
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Typography variant="body1" sx={{ mb: 1 }}>
               Knowlegement Enhancement Plateform
             </Typography>
@@ -19,14 +23,14 @@ const Footer = () => {
           </Grid>
           <Grid
             item
-            xs={6}
+            xs={12}
+            md={6}
             sx={{
               display: "flex",
-              justifyContent: "flex-end",
+              justifyContent: isMdUp ? "flex-end" : "flex-start",
               alignItems: "center",
             }}
           >
-            <Grid>
             <IconButton aria-label="facebook">
               <LanguageIcon />
             </IconButton>
@@ -36,10 +40,6 @@ const Footer = () => {
             <IconButton aria-label="insta">
               <InstagramIcon />
             </IconButton>
-            </Grid>
-            <Grid>
-              
-            </Grid>
           </Grid>
         </Grid>
       </Container>

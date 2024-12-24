@@ -9,24 +9,22 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Paper,
-  InputBase,
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
-import SearchIcon from "@mui/icons-material/Search";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import EditScheduleTest from "./schedule_test/EditScheduleTest";
 import Transition from "../../../common/Transition";
 import Notification from "../../../ui/Notification";
 import RenderStatus from "../../../ui/RenderStatus";
+import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
+import { useCommon } from "../../../contexts/CommonContext";
 
 const ReScheduledTests = () => {
+  const { isMdUp } = useCommon();
   const [tests, setTests] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
   const [edit, setEdit] = useState(false);
   const [details, setDetails] = useState({});
   const [deleteTest, setDeleteTest] = useState(false);
@@ -34,9 +32,6 @@ const ReScheduledTests = () => {
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
   // handlers
-  const searchHandle = (e) => {
-    setSearchQuery(e.target.value);
-  };
   const editHandle = (param) => {
     setDetails(param?.row);
     setEdit(true);
@@ -56,33 +51,66 @@ const ReScheduledTests = () => {
     fetchTest();
   }, []);
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", fl: 40 },
-    { field: "name", headerName: "Test Name", flex: 200 },
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      flex: isMdUp ? 40 : undefined,
+      width: isMdUp ? undefined : 40,
+    },
+    {
+      field: "name",
+      headerName: "Test Name",
+      flex: isMdUp ? 200 : undefined,
+      width: isMdUp ? undefined : 200,
+    },
     {
       field: "start_date",
       headerName: "Start Date",
-      flex: 100,
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
       valueGetter: (params) => params.row.start_date.split("T")[0],
     },
-    { field: "start_time", headerName: "Start Time", flex: 100 },
+    {
+      field: "start_time",
+      headerName: "Start Time",
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 140,
+    },
     {
       field: "end_date",
       headerName: "End Date",
-      flex: 100,
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 130,
       valueGetter: (params) => params.row.end_date.split("T")[0],
     },
-    { field: "end_time", headerName: "End Time", flex: 90 },
-    { field: "duration", headerName: "Duration", flex: 90 },
+    {
+      field: "end_time",
+      headerName: "End Time",
+      flex: isMdUp ? 90 : undefined,
+      width: isMdUp ? undefined : 130,
+    },
+    {
+      field: "duration",
+      headerName: "Duration",
+      flex: isMdUp ? 90 : undefined,
+      width: isMdUp ? undefined : 140,
+    },
     {
       field: "status",
       headerName: "Status",
-      flex: 100,
-      renderCell: (params) => (<RenderStatus status={params?.row?.status === true ? "Active" : "Inactive"} />)
+      flex: isMdUp ? 100 : undefined,
+      width: isMdUp ? undefined : 150,
+      renderCell: (params) => (
+        <RenderStatus
+          status={params?.row?.status === true ? "Active" : "Inactive"}
+        />
+      ),
     },
     {
       field: "action",
       headerName: "Action",
-      flex: 140,
+      flex: isMdUp ? 140 : undefined,
+      width: isMdUp ? undefined : 110,
       renderCell: (params) => (
         <div>
           <IconButton
@@ -105,10 +133,8 @@ const ReScheduledTests = () => {
       ),
     },
   ];
-  const filteredData = tests?.filter((item) =>
-    item?.name?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-  const deleteTestHandler = async() => {
+
+  const deleteTestHandler = async () => {
     const res = await Route("DELETE", `/retests`, token, null, id);
     if (res?.status === 201) {
       setDeleteTest(false);
@@ -119,7 +145,7 @@ const ReScheduledTests = () => {
       setMessage(res?.data?.message);
       setOpenNotification(true);
     }
-  }
+  };
   return (
     <>
       {edit ? (
@@ -135,49 +161,10 @@ const ReScheduledTests = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
             <SubHeader text="Re-Scheduled Tests" />
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <Grid item>
-                <Paper
-                  sx={{
-                    p: "2px 4px",
-                    display: "flex",
-                    alignItems: "center",
-                    width: 400,
-                  }}
-                >
-                  <InputBase
-                    sx={{ ml: 1, flex: 1 }}
-                    placeholder="Search"
-                    inputProps={{ "aria-label": "search" }}
-                    onChange={searchHandle}
-                  />
-                  <IconButton
-                    type="button"
-                    sx={{ p: "10px" }}
-                    aria-label="search"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </Paper>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="success"
-                  endIcon={<FileDownloadIcon />}
-                >
-                  Export
-                </Button>
-              </Grid>
-            </Grid>
             <Grid item container alignItems="center" xs={12}>
               <div style={{ height: "auto", width: "100%" }}>
                 <DataGrid
-                  rows={filteredData?.map((row, index) => ({
+                  rows={tests?.map((row, index) => ({
                     ...row,
                     sl: index + 1,
                   }))}
@@ -188,6 +175,7 @@ const ReScheduledTests = () => {
                     },
                   }}
                   pageSizeOptions={[5, 10]}
+                  slots={{ toolbar: CustomToolbar }}
                 />
               </div>
             </Grid>

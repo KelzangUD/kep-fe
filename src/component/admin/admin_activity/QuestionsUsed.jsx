@@ -1,27 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Button, IconButton, Paper, InputBase } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import SearchIcon from "@mui/icons-material/Search";
+import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
+import { useCommon } from "../../../contexts/CommonContext";
 
 const QuestionsUsed = () => {
+  const { isMdUp } = useCommon();
   const [questions, setQuestions] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
 
-  // handlers
-  const searchHandle = (e) => {
-    setSearchQuery(e.target.value);
-  };
   const userColumns = [
-    { field: "sl", headerName: "Sl. No", flex: 40 },
-    { field: "question", headerName: "Question", flex: 650 },
-    { field: "point", headerName: "Point", flex: 60 },
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      flex: isMdUp ? 40 : undefined,
+      width: isMdUp ? undefined : 40,
+    },
+    {
+      field: "question",
+      headerName: "Question",
+      flex: isMdUp ? 650 : undefined,
+      width: isMdUp ? undefined : 650,
+    },
+    {
+      field: "point",
+      headerName: "Point",
+      flex: isMdUp ? 60 : undefined,
+      width: isMdUp ? undefined : 102,
+    },
     {
       field: "type",
       headerName: "Question Type",
-      flex: 200,
+      flex: isMdUp ? 200 : undefined,
+      width: isMdUp ? undefined : 200,
       valueGetter: (params) => params.row.QuestionType?.title || "N/A",
     },
   ];
@@ -36,57 +48,15 @@ const QuestionsUsed = () => {
   useEffect(() => {
     fetchQuestions();
   }, []);
-  const filteredData = questions.filter((item) =>
-    item?.question.toLowerCase().includes(searchQuery.toLowerCase())
-  );
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
           <SubHeader text="Questions Used" />
-          <Grid
-            item
-            xs={12}
-            sx={{ display: "flex", justifyContent: "space-between" }}
-          >
-            <Grid item>
-              <Paper
-                sx={{
-                  p: "2px 4px",
-                  display: "flex",
-                  alignItems: "center",
-                  width: 400,
-                }}
-              >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder="Search"
-                  inputProps={{ "aria-label": "search" }}
-                  onChange={searchHandle}
-                />
-                <IconButton
-                  type="button"
-                  sx={{ p: "10px" }}
-                  aria-label="search"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                color="success"
-                endIcon={<FileDownloadIcon />}
-              >
-                Export
-              </Button>
-            </Grid>
-          </Grid>
           <Grid item container alignItems="center" xs={12}>
             <div style={{ height: "auto", width: "100%" }}>
               <DataGrid
-                rows={filteredData?.map((row, index) => ({
+                rows={questions?.map((row, index) => ({
                   ...row,
                   sl: index + 1,
                 }))}
@@ -97,6 +67,7 @@ const QuestionsUsed = () => {
                   },
                 }}
                 pageSizeOptions={[5, 10]}
+                slots={{ toolbar: CustomToolbar }}
               />
             </div>
           </Grid>

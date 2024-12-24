@@ -12,10 +12,10 @@ const AdminDashboard = () => {
       <Grid container spacing={4} alignItems="center" sx={{ px: 2 }}>
         <SubHeader text="Dashboard" />
         <Grid item container xs={12} spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <LastTestGraph />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <ScoreAnalysis />
           </Grid>
         </Grid>

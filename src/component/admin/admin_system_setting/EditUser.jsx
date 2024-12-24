@@ -150,9 +150,9 @@ const EditUser = ({
         <DialogContent>
           <Box sx={{ display: "grid", gap: 3, mt: 2 }}>
             <Grid container spacing={2}>
-              <Grid item xs={3}>
+              <Grid item xs={12} md={3}>
                 <TextField
-                  label="Employee ID"
+                  label="Emp ID"
                   variant="outlined"
                   fullWidth
                   defaultValue={details?.empId}
@@ -162,7 +162,7 @@ const EditUser = ({
                   disabled
                 />
               </Grid>
-              <Grid item xs={9}>
+              <Grid item xs={12} md={9}>
                 <TextField
                   label="Full Name"
                   variant="outlined"
@@ -190,7 +190,7 @@ const EditUser = ({
               </Grid>
             </Grid>
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <FormControl fullWidth size="small">
                   <InputLabel id="designation-select-label">
                     Designation
@@ -210,7 +210,7 @@ const EditUser = ({
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <FormControl fullWidth size="small">
                   <InputLabel id="gender-select-label">Gender</InputLabel>
                   <Select
@@ -227,7 +227,7 @@ const EditUser = ({
               </Grid>
             </Grid>
             <Grid container spacing={2}>
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Contact"
                   variant="outlined"
@@ -238,7 +238,7 @@ const EditUser = ({
                   size="small"
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4}>
                 <FormControl fullWidth size="small">
                   <InputLabel id="region-select-label">Region</InputLabel>
                   <Select
@@ -256,7 +256,7 @@ const EditUser = ({
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4}>
                 <FormControl fullWidth size="small">
                   <InputLabel id="extension-select-label">Extension</InputLabel>
                   <Select
@@ -276,20 +276,18 @@ const EditUser = ({
               </Grid>
             </Grid>
             <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <FormControl component="fieldset">
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked={details?.isAdmin} />}
-                    label="Assign as Admin"
-                    labelPlacement="start"
-                    onClick={isAdminHandle}
-                  />
-                </FormControl>
-              </Grid>
+              <FormControl component="fieldset">
+                <FormControlLabel
+                  control={<Checkbox defaultChecked={details?.isAdmin} />}
+                  label="Assign as Admin"
+                  labelPlacement="start"
+                  onClick={isAdminHandle}
+                />
+              </FormControl>
             </Grid>
           </Box>
         </DialogContent>
-        <DialogActions sx={{ mb: 2, mx: 2 }}>
+        <DialogActions sx={{ mb: 2, mr: 2 }}>
           <Button variant="contained" onClick={handleSubmit}>
             Update
           </Button>

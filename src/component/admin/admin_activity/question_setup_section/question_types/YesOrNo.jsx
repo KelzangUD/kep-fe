@@ -16,7 +16,7 @@ const YesOrNo = ({answerHandle}) => {
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
             <Grid container spacing={1} alignItems="center" sx={{ py: 0.5 }}>
-              <Grid item xs={5}>
+              <Grid item xs={11} md={1}>
                 <TextField
                   fullWidth
                   label="Yes"
@@ -29,7 +29,7 @@ const YesOrNo = ({answerHandle}) => {
               <Grid item xs={1}>
                 <FormControlLabel value={1} control={<Radio onChange={() => answerHandle("Yes")} />} />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={11} md={5}>
                 <TextField
                   fullWidth
                   label="No"
