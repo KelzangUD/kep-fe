@@ -15,6 +15,7 @@ import { useCommon } from "../../../contexts/CommonContext";
 const CurrentMonth = () => {
   const { isMdUp } = useCommon();
   const [results, setResults] = useState([]);
+  const [users, setUsers] = useState([]);
   const [columns, setColumns] = useState([]);
   const [currentMonthData, setCurrentMonthData] = useState([]);
   const [reportData, setReportData] = useState([]);
@@ -25,8 +26,15 @@ const CurrentMonth = () => {
       setResults(res?.data?.results);
     }
   };
+  const fetchUsers = async () => {
+    const res = await Route("GET", "/users", token, null, null);
+    if (res?.status === 200) {
+      setUsers(res?.data?.users);
+    }
+  };
   useEffect(() => {
     fetchResults();
+    fetchUsers();
   }, []);
   const filterBasedOnHalf = () => {
     setCurrentMonthData(filterDataBasedOnCurrentYearAndMonth(results));
@@ -36,7 +44,7 @@ const CurrentMonth = () => {
   }, [results]);
   useEffect(() => {
     setColumns(reportColumns(getUniqueTestNames(currentMonthData), isMdUp));
-    setReportData(yearlyReport(currentMonthData));
+    setReportData(yearlyReport(currentMonthData, users));
   }, [currentMonthData]);
   return (
     <>

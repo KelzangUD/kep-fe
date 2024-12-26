@@ -25,6 +25,7 @@ const SixMonths = () => {
   const [columns, setColumns] = useState([]);
   const [halfYearData, setHalfYearData] = useState([]);
   const [reportData, setReportData] = useState([]);
+  const [users, setUsers] = useState([]);
   const [half, setHalf] = useState("first");
   const token = localStorage.getItem("token");
   const fetchResults = async () => {
@@ -33,8 +34,15 @@ const SixMonths = () => {
       setResults(res?.data?.results);
     }
   };
+  const fetchUsers = async () => {
+    const res = await Route("GET", "/users", token, null, null);
+    if (res?.status === 200) {
+      setUsers(res?.data?.users);
+    }
+  };
   useEffect(() => {
     fetchResults();
+    fetchUsers();
   }, []);
   const filterBasedOnHalf = () => {
     setHalfYearData(
@@ -49,7 +57,7 @@ const SixMonths = () => {
   }, [results, half]);
   useEffect(() => {
     setColumns(reportColumns(getUniqueTestNames(halfYearData), isMdUp));
-    setReportData(yearlyReport(halfYearData));
+    setReportData(yearlyReport(halfYearData, users));
   }, [halfYearData]);
   return (
     <>

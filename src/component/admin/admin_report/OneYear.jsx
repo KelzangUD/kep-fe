@@ -22,6 +22,7 @@ import { useCommon } from "../../../contexts/CommonContext";
 const OneYear = () => {
   const { isMdUp } = useCommon();
   const [results, setResults] = useState([]);
+  const [users, setUsers] = useState([]);
   const [columns, setColumns] = useState([]);
   const [yearlyData, setYearlyData] = useState([]);
   const [reportData, setReportData] = useState([]);
@@ -33,8 +34,15 @@ const OneYear = () => {
       setResults(res?.data?.results);
     }
   };
+  const fetchUsers = async () => {
+    const res = await Route("GET", "/users", token, null, null);
+    if (res?.status === 200) {
+      setUsers(res?.data?.users);
+    }
+  };
   useEffect(() => {
     fetchResults();
+    fetchUsers();
   }, []);
   const filterBasedOnYear = () => {
     setYearlyData(filterDataBasedOnYear(results, year.toString()));
@@ -47,7 +55,7 @@ const OneYear = () => {
   }, [results, year]);
   useEffect(() => {
     setColumns(reportColumns(getUniqueTestNames(yearlyData), isMdUp));
-    setReportData(yearlyReport(yearlyData));
+    setReportData(yearlyReport(yearlyData, users));
   }, [yearlyData]);
   return (
     <>

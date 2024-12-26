@@ -213,6 +213,12 @@ export const reportColumns = (data, isMdUp) => {
       width: isMdUp ? undefined : 160,
     },
     {
+      field: "region",
+      headerName: "Region",
+      flex: isMdUp ? 160 : undefined,
+      width: isMdUp ? undefined : 160,
+    },
+    {
       field: "empId",
       headerName: "Employee ID",
       flex: isMdUp ? 130 : undefined,
@@ -233,7 +239,7 @@ export const reportColumns = (data, isMdUp) => {
   ];
   // Loop through data and insert test columns
   for (let i = 0; i < data.length; i++) {
-    columns.splice(i + 3, 0, {
+    columns.splice(i + 4, 0, {
       field: data[i],
       headerName: data[i],
       flex: isMdUp ? 100 : undefined,
@@ -245,26 +251,28 @@ export const reportColumns = (data, isMdUp) => {
 };
 
 // ================================================= YEARLY REPORT ==========================================
-export const yearlyReport = (results) => {
+export const yearlyReport = (results, users) => {
   const output = [];
   const userMap = {};
+
   // Assign unique IDs while creating user objects
   for (const result of results) {
     const {
-      User: user,
+      User: { name, empId, id: userId, Region: region, isAdmin },
       Test: { name: testName },
       score,
       total,
     } = result;
-    const { name, empId } = user;
-    const userId = result?.User?.id;
+
+    // Skip users with role.admin === true
+    if (isAdmin) continue;
 
     if (!userMap[name]) {
       userMap[name] = {
         id: userId,
         name,
         empId,
-        ...{},
+        region: region?.region || "Unknown",
         totalScore: 0,
         totalMark: 0,
       };
@@ -273,20 +281,40 @@ export const yearlyReport = (results) => {
     userMap[name].totalScore += score;
     userMap[name].totalMark += total;
   }
+
+  // Add users who did not appear for any test and have role.admin === false
+  const filteredUsers = users.filter((user) => !user.isAdmin);
+
+  for (const user of filteredUsers) {
+    const { name, empId, id: userId, Region: region } = user;
+
+    if (!userMap[name]) {
+      userMap[name] = {
+        id: userId,
+        name,
+        empId,
+        region: region?.region || "Unknown",
+        totalScore: 0,
+        totalMark: 0,
+      };
+    }
+  }
+
   // Calculate CCS and PSKL based on total score and mark
   for (const userName in userMap) {
     const user = userMap[userName];
-    user.ccs = parseFloat((user.totalScore / user.totalMark) * 5).toFixed(2);
-    user.pksl = parseFloat((user.totalScore / user.totalMark) * 2 + 3).toFixed(
-      2
-    );
+    user.ccs = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 5).toFixed(2);
+    user.pksl = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 2 + 3).toFixed(2);
   }
+
   // Convert userMap values to desired output format
   for (const userName in userMap) {
     output.push(userMap[userName]);
   }
+
   return output;
 };
+
 
 // ================================================================== USER YEAR GRAPH DATA ==============================
 export const userYearGraphData = (results) => {
