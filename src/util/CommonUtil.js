@@ -316,6 +316,52 @@ export const yearlyReport = (results, users) => {
 };
 
 
+// ================================================= YEARLY REPORT ==========================================
+export const yearlyReportForAUser = (results, region) => {
+  const output = [];
+  const userMap = {};
+
+  // Assign unique IDs while creating user objects
+  for (const result of results) {
+    const {
+      User: user,
+      Test: { name: testName },
+      score,
+      total,
+    } = result;
+    const { name, empId } = user;
+    const userId = result?.User?.id;
+
+    if (!userMap[name]) {
+      userMap[name] = {
+        id: userId,
+        name,
+        empId,
+        region: region || "",
+        totalScore: 0,
+        totalMark: 0,
+      };
+    }
+    userMap[name][testName] = parseFloat((score / total) * 100).toFixed(2);
+    userMap[name].totalScore += score;
+    userMap[name].totalMark += total;
+  }
+
+
+  // Calculate CCS and PSKL based on total score and mark
+  for (const userName in userMap) {
+    const user = userMap[userName];
+    user.ccs = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 5).toFixed(2);
+    user.pksl = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 2 + 3).toFixed(2);
+  }
+
+  // Convert userMap values to desired output format
+  for (const userName in userMap) {
+    output.push(userMap[userName]);
+  }
+
+  return output;
+};
 // ================================================================== USER YEAR GRAPH DATA ==============================
 export const userYearGraphData = (results) => {
   return results?.map((item) => ({

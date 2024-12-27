@@ -1,13 +1,19 @@
 import React from "react";
-import { Grid, Typography, Divider } from "@mui/material";
+import { Grid, Breadcrumbs, Typography } from "@mui/material";
 
 const SubHeader = ({ text }) => {
   return (
     <Grid item xs={12}>
-      <Typography variant="h6" sx={{ mb: 1 }}>
-        {text}
-      </Typography>
-      <Divider />
+      <Breadcrumbs separator="›" aria-label="breadcrumb">
+        <Typography key="1" color="inherit">
+          HOME
+        </Typography>{" "}
+        ,
+        <Typography key="2" variant="button" sx={{ color: "text.primary" }}>
+          {text}
+        </Typography>
+        ,
+      </Breadcrumbs>
     </Grid>
   );
 };

@@ -72,7 +72,7 @@ const AddQuestions = () => {
       field: "point",
       headerName: "Point",
       flex: isMdUp ? 60 : undefined,
-      width: isMdUp ? undefined : 60,
+      width: isMdUp ? undefined : 120,
     },
     {
       field: "type",

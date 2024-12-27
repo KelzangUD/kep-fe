@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  Paper,
   Grid,
-  Button,
-  InputBase,
-  IconButton,
   InputLabel,
   MenuItem,
   FormControl,
@@ -13,8 +9,6 @@ import {
 } from "@mui/material";
 import SubHeader from "../../../common/SubHeader";
 import { DataGrid } from "@mui/x-data-grid";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import SearchIcon from "@mui/icons-material/Search";
 import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
 import { useCommon } from "../../../contexts/CommonContext";
@@ -22,7 +16,7 @@ import {
   filterDataBasedOnYear,
   getUniqueTestNames,
   reportColumns,
-  yearlyReport,
+  yearlyReportForAUser,
 } from "../../../util/CommonUtil";
 
 const UserYearReport = () => {
@@ -54,7 +48,7 @@ const UserYearReport = () => {
   }, [results, year]);
   useEffect(() => {
     setColumns(reportColumns(getUniqueTestNames(yearlyData), isMdUp));
-    setReportData(yearlyReport(yearlyData));
+    setReportData(yearlyReportForAUser(yearlyData, user?.Region?.region));
   }, [yearlyData]);
   return (
     <>
