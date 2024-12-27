@@ -264,36 +264,36 @@ export const yearlyReport = (results, users) => {
       total,
     } = result;
 
-    // Skip users with role.admin === true
+    // Skip users with isAdmin === true
     if (isAdmin) continue;
 
-    if (!userMap[name]) {
-      userMap[name] = {
+    if (!userMap[userId]) {
+      userMap[userId] = {
         id: userId,
         name,
         empId,
-        region: region?.region || "Unknown",
+        region: region?.region || "",
         totalScore: 0,
         totalMark: 0,
       };
     }
-    userMap[name][testName] = parseFloat((score / total) * 100).toFixed(2);
-    userMap[name].totalScore += score;
-    userMap[name].totalMark += total;
+    userMap[userId][testName] = parseFloat((score / total) * 100).toFixed(2);
+    userMap[userId].totalScore += score;
+    userMap[userId].totalMark += total;
   }
 
-  // Add users who did not appear for any test and have role.admin === false
+  // Add users who did not appear for any test and have isAdmin === false
   const filteredUsers = users.filter((user) => !user.isAdmin);
 
   for (const user of filteredUsers) {
-    const { name, empId, id: userId, Region: region } = user;
+    const { id: userId, name, empId, Region: region } = user;
 
-    if (!userMap[name]) {
-      userMap[name] = {
+    if (!userMap[userId]) {
+      userMap[userId] = {
         id: userId,
         name,
         empId,
-        region: region?.region || "Unknown",
+        region: region?.region || "",
         totalScore: 0,
         totalMark: 0,
       };
@@ -301,19 +301,83 @@ export const yearlyReport = (results, users) => {
   }
 
   // Calculate CCS and PSKL based on total score and mark
-  for (const userName in userMap) {
-    const user = userMap[userName];
+  for (const userId in userMap) {
+    const user = userMap[userId];
     user.ccs = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 5).toFixed(2);
     user.pksl = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 2 + 3).toFixed(2);
   }
 
   // Convert userMap values to desired output format
-  for (const userName in userMap) {
-    output.push(userMap[userName]);
+  for (const userId in userMap) {
+    output.push(userMap[userId]);
   }
 
   return output;
 };
+
+// export const yearlyReport = (results, users) => {
+//   const output = [];
+//   const userMap = {};
+
+//   // Assign unique IDs while creating user objects
+//   for (const result of results) {
+//     const {
+//       User: { name, empId, id: userId, Region: region, isAdmin },
+//       Test: { name: testName },
+//       score,
+//       total,
+//     } = result;
+
+//     // Skip users with role.admin === true
+//     if (isAdmin) continue;
+
+//     if (!userMap[name]) {
+//       userMap[name] = {
+//         id: userId,
+//         name,
+//         empId,
+//         region: region?.region || "Unknown",
+//         totalScore: 0,
+//         totalMark: 0,
+//       };
+//     }
+//     userMap[name][testName] = parseFloat((score / total) * 100).toFixed(2);
+//     userMap[name].totalScore += score;
+//     userMap[name].totalMark += total;
+//   }
+
+//   // Add users who did not appear for any test and have role.admin === false
+//   const filteredUsers = users.filter((user) => !user.isAdmin);
+
+//   for (const user of filteredUsers) {
+//     const { name, empId, id: userId, Region: region } = user;
+
+//     if (!userMap[name]) {
+//       userMap[name] = {
+//         id: userId,
+//         name,
+//         empId,
+//         region: region?.region || "Unknown",
+//         totalScore: 0,
+//         totalMark: 0,
+//       };
+//     }
+//   }
+
+//   // Calculate CCS and PSKL based on total score and mark
+//   for (const userName in userMap) {
+//     const user = userMap[userName];
+//     user.ccs = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 5).toFixed(2);
+//     user.pksl = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 2 + 3).toFixed(2);
+//   }
+
+//   // Convert userMap values to desired output format
+//   for (const userName in userMap) {
+//     output.push(userMap[userName]);
+//   }
+
+//   return output;
+// };
 
 
 // ================================================= YEARLY REPORT ==========================================
