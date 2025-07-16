@@ -303,8 +303,12 @@ export const yearlyReport = (results, users) => {
   // Calculate CCS and PSKL based on total score and mark
   for (const userId in userMap) {
     const user = userMap[userId];
-    user.ccs = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 5).toFixed(2);
-    user.pksl = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 2 + 3).toFixed(2);
+    user.ccs = parseFloat(
+      (user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 5
+    ).toFixed(2);
+    user.pksl = parseFloat(
+      (user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 2 + 3
+    ).toFixed(2);
   }
 
   // Convert userMap values to desired output format
@@ -379,7 +383,6 @@ export const yearlyReport = (results, users) => {
 //   return output;
 // };
 
-
 // ================================================= YEARLY REPORT ==========================================
 export const yearlyReportForAUser = (results, region) => {
   const output = [];
@@ -411,12 +414,15 @@ export const yearlyReportForAUser = (results, region) => {
     userMap[name].totalMark += total;
   }
 
-
   // Calculate CCS and PSKL based on total score and mark
   for (const userName in userMap) {
     const user = userMap[userName];
-    user.ccs = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 5).toFixed(2);
-    user.pksl = parseFloat((user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 2 + 3).toFixed(2);
+    user.ccs = parseFloat(
+      (user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 5
+    ).toFixed(2);
+    user.pksl = parseFloat(
+      (user.totalMark > 0 ? user.totalScore / user.totalMark : 0) * 2 + 3
+    ).toFixed(2);
   }
 
   // Convert userMap values to desired output format
@@ -442,4 +448,17 @@ export const shuffleArray = (array) => {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   return shuffled;
+};
+
+// =================================================== CUSTOM ISO STRING FORMAT ==========================
+export const customISOString = (date) => {
+  const pad = (n, z = 2) => String(n).padStart(z, "0");
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1); // Months are 0-indexed
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  const seconds = pad(date.getSeconds());
+  const milliseconds = pad(date.getMilliseconds(), 3);
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
 };

@@ -20,6 +20,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import SaveIcon from "@mui/icons-material/Save";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { customISOString } from "../../../../util/CommonUtil";
 import Route from "../../../../routes/Route";
 
 const ScheduleTest = ({
@@ -59,13 +60,13 @@ const ScheduleTest = ({
   const startDateHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
-      startDate: e?.$d.toISOString(),
+      startDate: customISOString(new Date(e?.$d)),
     }));
   };
   const endDateHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
-      endDate: e?.$d.toISOString(),
+      endDate: customISOString(new Date(e?.$d)),
     }));
   };
   const durationHandler = (e) => {
@@ -77,13 +78,14 @@ const ScheduleTest = ({
   const startTimeHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
-      startTime: e?.$d,
+      startTime: customISOString(new Date(e?.$d)),
     }));
+
   };
   const endTimeHandler = (e) => {
     setDetails((prev) => ({
       ...prev,
-      endTime: e?.$d,
+      endTime: customISOString(new Date(e?.$d)),
     }));
   };
   const messageHandler = (e) => {

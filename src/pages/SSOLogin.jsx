@@ -7,11 +7,7 @@ import Notification from "../ui/Notification";
 import Route from "../routes/Route";
 
 const SSOLogin = () => {
-  const navigagte = useNavigate();
-  // const [formData, setFormData] = useState({
-  //   empId: "",
-  //   password: "",
-  // });
+  const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [open, setOpen] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -45,8 +41,7 @@ const SSOLogin = () => {
   const queryParameters = new URLSearchParams(window.location.search);
   const token = queryParameters.get("token");
 
-  const ssoAuth = async (e) => {
-    e.preventDefault();
+  const ssoAuth = async () => {
     const response = await Route("GET", `/sso/${token}`, null, null, null);
     if (response?.data?.message === "SSO Verified Successfully") {
       const formData = {
@@ -58,8 +53,8 @@ const SSOLogin = () => {
         localStorage.setItem("user", JSON.stringify(res?.data?.user));
         localStorage.setItem("token", res?.data?.token);
         res?.data?.user?.isAdmin
-          ? navigagte("/admin/dashboard")
-          : navigagte("/user/dashboard");
+          ? navigate("/admin/dashboard")
+          : navigate("/user/dashboard");
       } else {
         setMessage(res?.data?.message);
         setOpen(true);
