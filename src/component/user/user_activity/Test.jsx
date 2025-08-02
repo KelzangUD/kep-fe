@@ -52,12 +52,14 @@ const Test = () => {
         "You can't take the test at this time because test is not opened."
       );
       setShowNotification(true);
-    }else if (param?.row?.end_date <= new Date().toJSON()) {
-      setMessage(
-        "You're unable to take the test as it is closed."
-      );
-      setShowNotification(true);
-    } else {
+    }
+    // else if (param?.row?.end_date < new Date().toJSON()) {
+    //   setMessage(
+    //     "You're unable to take the test as it is closed."
+    //   );
+    //   setShowNotification(true);
+    // } 
+    else {
       fetchQuestions(param?.row?.id, param?.row);
     }
   };
