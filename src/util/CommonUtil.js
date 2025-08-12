@@ -462,3 +462,66 @@ export const customISOString = (date) => {
   const milliseconds = pad(date.getMilliseconds(), 3);
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
 };
+
+// ==================================================== CALCULATE TIME TAKEN TO TAKE TEST =======================================
+export const calculateDurationTaken = (elapsedMs) => {
+  const hours = Math.floor(elapsedMs / 3600000);
+  const minutes = Math.floor((elapsedMs % 3600000) / 60000);
+  const seconds = Math.floor((elapsedMs % 60000) / 1000);
+  const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  return formattedTime;
+};
+
+//  ================================================ ANSWERS REPORT COLUMNS =====================================
+export const answersReportColumns = () => {
+  const columns = [
+    {
+      field: "sl",
+      headerName: "Sl. No",
+      width: 40,
+    },
+    {
+      field: "testName",
+      headerName: "Test Name",
+      width: 200,
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      width: 200,
+    },
+    {
+      field: "empId",
+      headerName: "Employee ID",
+      width: 100,
+    },
+    {
+      field: "question",
+      headerName: "Question",
+      width: 1000,
+    },
+    {
+      field: "questionType",
+      headerName: "Question Type",
+      width: 250,
+    },
+    {
+      field: "optionOne",
+      headerName: "Option One",
+      width: 350,
+    },
+    {
+      field: "optionTwo",
+      headerName: "Option Two",
+      width: 350,
+    },
+    {
+      field: "answer",
+      headerName: "Answers",
+      width: 250,
+    },
+  ];
+  return columns;
+};

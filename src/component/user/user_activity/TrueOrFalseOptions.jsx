@@ -12,34 +12,50 @@ import {
 const TrueOrFalseOptions = ({
   options,
   point,
-  setResult,
   setSolvedQuestions,
   questionId,
+  testId,
+  userId,
+  solvedQuestions,
 }) => {
-  const answerHandle = (value) => {
-    setSolvedQuestions((prevQuestions) => [...prevQuestions, questionId]);
-    if (value) {
-      setResult((prev) => ({
-        ...prev,
-        score: prev.score + point,
-      }));
-    } else {
-      setResult((prev) => ({
-        ...prev,
-        score: prev.score === 0 ? 0 : prev.score - point,
-      }));
-    }
+  const answerHandle = (value, optionId) => {
+    setSolvedQuestions((prevQuestions) => {
+      const index = prevQuestions.findIndex((q) => q.questionId === questionId);
+      const updatedEntry = {
+        questionType: "T/F",
+        questionId,
+        optionOne: optionId,
+        optionTwo: null,
+        userId,
+        testId,
+        answer: "",
+        match: [],
+      };
+      if (index !== -1) {
+        const updatedQuestions = [...prevQuestions];
+        updatedQuestions[index] = updatedEntry;
+        return updatedQuestions;
+      } else {
+        return [...prevQuestions, updatedEntry];
+      }
+    });
   };
   return (
     <>
       <Box mb={4}>
         <FormControl fullWidth>
-          <RadioGroup aria-labelledby="group-label" name="radio-group">
+          <RadioGroup
+            aria-labelledby="group-label"
+            name="radio-group"
+            defaultValue={
+              solvedQuestions?.find((item) => item?.questionId === questionId)
+                ?.optionOne || ""
+            }
+          >
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
               <Grid item xs={5}>
                 <TextField
                   fullWidth
-                  // label="True"
                   defaultValue={options[0]?.description}
                   id="true"
                   variant="outlined"
@@ -49,9 +65,13 @@ const TrueOrFalseOptions = ({
               </Grid>
               <Grid item xs={1}>
                 <FormControlLabel
-                  value={true}
+                  value={options[0]?.id}
                   control={
-                    <Radio onChange={() => answerHandle(options[0]?.isTrue)} />
+                    <Radio
+                      onChange={() =>
+                        answerHandle(options[0]?.isTrue, options[0]?.id)
+                      }
+                    />
                   }
                 />
               </Grid>
@@ -68,9 +88,13 @@ const TrueOrFalseOptions = ({
               </Grid>
               <Grid item xs={1}>
                 <FormControlLabel
-                  value={false}
+                  value={options[1]?.id}
                   control={
-                    <Radio onChange={() => answerHandle(options[1]?.isTrue)} />
+                    <Radio
+                      onChange={() =>
+                        answerHandle(options[1]?.isTrue, options[1]?.id)
+                      }
+                    />
                   }
                 />
               </Grid>

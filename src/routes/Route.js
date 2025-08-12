@@ -40,7 +40,12 @@ const Route = async (
       return response;
     }
   } catch (error) {
-    return error;
+    if (error?.response?.status === 403 || error?.response?.status === 401) {
+      window?.location?.replace("/");
+      return;
+    } else {
+      return error;
+    }
   }
 };
 

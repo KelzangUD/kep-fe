@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Grid,
@@ -12,29 +11,46 @@ import {
 const McqOptions = ({
   options,
   point,
-  setResult,
   setSolvedQuestions,
   questionId,
+  testId,
+  userId,
+  solvedQuestions,
 }) => {
-  const answerHandle = (value) => {
-    setSolvedQuestions((prevQuestions) => [...prevQuestions, questionId]);
-    if (value) {
-      setResult((prev) => ({
-        ...prev,
-        score: prev.score + point,
-      }));
-    } else {
-      setResult((prev) => ({
-        ...prev,
-        score: prev.score === 0 ? 0 : prev.score - point,
-      }));
-    }
+  const answerHandle = (value, optionId) => {
+    setSolvedQuestions((prevQuestions) => {
+      const index = prevQuestions.findIndex((q) => q.questionId === questionId);
+      const updatedEntry = {
+        questionType: "MCQ",
+        questionId,
+        optionOne: optionId,
+        optionTwo: null,
+        userId,
+        testId,
+        answer: "",
+        match: [],
+      };
+      if (index !== -1) {
+        const updatedQuestions = [...prevQuestions];
+        updatedQuestions[index] = updatedEntry;
+        return updatedQuestions;
+      } else {
+        return [...prevQuestions, updatedEntry];
+      }
+    });
   };
   return (
     <>
       <Box mb={4}>
         <FormControl fullWidth>
-          <RadioGroup aria-labelledby="group-label" name="radio-group">
+          <RadioGroup
+            aria-labelledby="group-label"
+            name="radio-group"
+            defaultValue={
+              solvedQuestions?.find((item) => item?.questionId === questionId)
+                ?.optionOne || ""
+            }
+          >
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
               <Grid item xs={10} md={5}>
                 <TextField
@@ -49,9 +65,13 @@ const McqOptions = ({
               </Grid>
               <Grid item xs={2} md={1}>
                 <FormControlLabel
-                  value="first"
+                  value={options[0]?.id}
                   control={
-                    <Radio onChange={() => answerHandle(options[0]?.isTrue)} />
+                    <Radio
+                      onChange={() =>
+                        answerHandle(options[0]?.isTrue, options[0]?.id)
+                      }
+                    />
                   }
                 />
               </Grid>
@@ -68,9 +88,13 @@ const McqOptions = ({
               </Grid>
               <Grid item xs={2} md={1}>
                 <FormControlLabel
-                  value="second"
+                  value={options[1]?.id}
                   control={
-                    <Radio onChange={() => answerHandle(options[1]?.isTrue)} />
+                    <Radio
+                      onChange={() =>
+                        answerHandle(options[1]?.isTrue, options[1]?.id)
+                      }
+                    />
                   }
                 />
               </Grid>
@@ -89,9 +113,13 @@ const McqOptions = ({
               </Grid>
               <Grid item xs={2} md={1}>
                 <FormControlLabel
-                  value="third"
+                  value={options[2]?.id}
                   control={
-                    <Radio onChange={() => answerHandle(options[2]?.isTrue)} />
+                    <Radio
+                      onChange={() =>
+                        answerHandle(options[2]?.isTrue, options[2]?.id)
+                      }
+                    />
                   }
                 />
               </Grid>
@@ -108,9 +136,13 @@ const McqOptions = ({
               </Grid>
               <Grid item xs={2} md={1}>
                 <FormControlLabel
-                  value="fourth"
+                  value={options[3]?.id}
                   control={
-                    <Radio onChange={() => answerHandle(options[3]?.isTrue)} />
+                    <Radio
+                      onChange={() =>
+                        answerHandle(options[3]?.isTrue, options[3]?.id)
+                      }
+                    />
                   }
                 />
               </Grid>
