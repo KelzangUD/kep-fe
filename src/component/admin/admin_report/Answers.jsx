@@ -12,12 +12,9 @@ import { DataGrid } from "@mui/x-data-grid";
 import CustomToolbar from "../../../ui/CustomToolBar";
 import Route from "../../../routes/Route";
 import { answersReportColumns } from "../../../util/CommonUtil";
-import { useCommon } from "../../../contexts/CommonContext";
 
 const Answers = () => {
-  const { isMdUp } = useCommon();
   const [answers, setAnswers] = useState([]);
-  const [reportData, setReportData] = useState([]);
   const token = localStorage.getItem("token");
   const fetchAnswers = async () => {
     const res = await Route("GET", "/results/answers", token, null, null);

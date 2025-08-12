@@ -157,7 +157,7 @@ export default function SideNav() {
           onClick: () => routeHandle("report/one-year"),
         },
         {
-          label: "Asnwers",
+          label: "Answers",
           icon: <KeyboardArrowRightIcon fontSize="small" />,
           onClick: () => routeHandle("report/answers"),
         },
