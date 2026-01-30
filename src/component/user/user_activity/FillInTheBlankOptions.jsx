@@ -10,21 +10,21 @@ import {
 } from "@mui/material";
 
 const FillInTheBlankOptions = ({
-  // options,
-  // point,
-  // setResult,
+  options,
+  point,
+  setResult,
   setSolvedQuestions,
   questionId,
   testId,
   userId,
   solvedQuestions,
 }) => {
-  // const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useState("");
   const fillInTheBlankHandle = (e) => {
-    // setSolvedQuestions((prevQuestions) =>
-    //   prevQuestions?.filter((item) => item?.questionId !== questionId)
-    // );
-    // setAnswer(e?.target?.value);
+    setSolvedQuestions((prevQuestions) =>
+      prevQuestions?.filter((item) => item?.questionId !== questionId)
+    );
+    setAnswer(e?.target?.value);
     setSolvedQuestions((prevQuestions) => {
       const index = prevQuestions.findIndex((q) => q.questionId === questionId);
       const updatedEntry = {
@@ -45,7 +45,6 @@ const FillInTheBlankOptions = ({
         return [...prevQuestions, updatedEntry];
       }
     });
-<<<<<<< HEAD
     if (
       answer?.toLowerCase().trim() ===
       options[0]?.description.toLowerCase().trim()
@@ -61,8 +60,6 @@ const FillInTheBlankOptions = ({
         score: 0,
       }));
     }
-=======
->>>>>>> wip
   };
   // const answerHandle = (value, optionId) => {
   //   setSolvedQuestions((prevQuestions) => {
