@@ -39,7 +39,8 @@ const FillInTheBlankOptions = ({
     } else {
       setResult((prev) => ({
         ...prev,
-        score: prev.score - point,
+        // score: prev.score - point,
+        score: 0,
       }));
     }
   };

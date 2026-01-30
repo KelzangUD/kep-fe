@@ -128,7 +128,7 @@ const EditUser = ({
       details?.id
     );
     if (response?.status === 200) {
-      setMessage(response?.data?.message);
+      setMessage(response?.data?.message || "Success!");
       setOpenNotification(true);
       setSeverity("success");
       fetchUsers();
