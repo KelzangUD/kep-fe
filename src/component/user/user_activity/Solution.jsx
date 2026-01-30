@@ -9,7 +9,14 @@ import Route from "../../../routes/Route";
 import Notification from "../../../ui/Notification";
 import ReactPlayer from "react-player";
 
-const Solution = ({ index, question, setResult, setSolvedQuestions }) => {
+const Solution = ({
+  index,
+  question,
+  setSolvedQuestions,
+  testId,
+  userId,
+  solvedQuestions,
+}) => {
   const [options, setOptions] = useState([]);
   const [optionsTwo, setOptionsTwo] = useState([]);
   const [message, setMessage] = useState("");
@@ -37,9 +44,11 @@ const Solution = ({ index, question, setResult, setSolvedQuestions }) => {
           <McqOptions
             options={options}
             point={question?.point}
-            setResult={setResult}
             setSolvedQuestions={setSolvedQuestions}
             questionId={question?.id}
+            testId={testId}
+            userId={userId}
+            solvedQuestions={solvedQuestions}
           />
         );
       case 2:
@@ -47,9 +56,11 @@ const Solution = ({ index, question, setResult, setSolvedQuestions }) => {
           <FillInTheBlankOptions
             options={options}
             point={question?.point}
-            setResult={setResult}
             setSolvedQuestions={setSolvedQuestions}
             questionId={question?.id}
+            testId={testId}
+            userId={userId}
+            solvedQuestions={solvedQuestions}
           />
         );
       case 3:
@@ -57,9 +68,11 @@ const Solution = ({ index, question, setResult, setSolvedQuestions }) => {
           <TrueOrFalseOptions
             options={options}
             point={question?.point}
-            setResult={setResult}
             setSolvedQuestions={setSolvedQuestions}
             questionId={question?.id}
+            testId={testId}
+            userId={userId}
+            solvedQuestions={solvedQuestions}
           />
         );
       case 4:
@@ -67,9 +80,11 @@ const Solution = ({ index, question, setResult, setSolvedQuestions }) => {
           <YesOrNoOptions
             options={options}
             point={question?.point}
-            setResult={setResult}
             setSolvedQuestions={setSolvedQuestions}
             questionId={question?.id}
+            testId={testId}
+            userId={userId}
+            solvedQuestions={solvedQuestions}
           />
         );
       case 5:
@@ -78,9 +93,11 @@ const Solution = ({ index, question, setResult, setSolvedQuestions }) => {
             options={options}
             optionsTwo={optionsTwo}
             point={question?.point}
-            setResult={setResult}
             setSolvedQuestions={setSolvedQuestions}
             questionId={question?.id}
+            testId={testId}
+            userId={userId}
+            solvedQuestions={solvedQuestions}
           />
         );
       default:
@@ -95,26 +112,28 @@ const Solution = ({ index, question, setResult, setSolvedQuestions }) => {
       <Paper>
         <Box sx={{ flexGrow: 1, marginBottom: 2, padding: 2 }}>
           <Grid item xs={12}>
-            <Typography variant="h5">
+            <Typography variant="subtitle2" sx={{
+              fontSize: 16
+            }}>
               {index}. {question?.question}
             </Typography>
           </Grid>
-          {
-            question?.video !== null || question?.audio !== null ? <Grid item xs={12} sx={{ paddingY: 2 }}>
-            <ReactPlayer
-              className="react-player"
-              url={question?.Video?.path || question?.Audio?.path}
-              width="100%"
-              height="400px"
-              controls
-              config={{
-                youtube: {
-                  playerVars: { rel: 0 },
-                },
-              }}
-            />
-          </Grid> : null
-          }
+          {question?.video !== null || question?.audio !== null ? (
+            <Grid item xs={12} sx={{ paddingY: 2 }}>
+              <ReactPlayer
+                className="react-player"
+                url={question?.Video?.path || question?.Audio?.path}
+                width="100%"
+                height="400px"
+                controls
+                config={{
+                  youtube: {
+                    playerVars: { rel: 0 },
+                  },
+                }}
+              />
+            </Grid>
+          ) : null}
           <Grid item xs={12}>
             {options?.length > 0 && renderOptions()}
           </Grid>

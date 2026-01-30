@@ -47,19 +47,34 @@ const Test = () => {
     }
   };
   const testHandle = (param) => {
-    if (param?.row?.start_date > new Date().toJSON()) {
-      setMessage(
-        "You can't take the test at this time because test is not opened."
-      );
+    const now = new Date();
+    const startDateStr = param?.row?.start_date?.split("T")[0];
+    const endDateStr = param?.row?.end_date?.split("T")[0];
+    const startTimeStr = param?.row?.start_time?.trim();
+    const endTimeStr = param?.row?.end_time?.trim();
+
+    if (!startDateStr || !startTimeStr || !endDateStr || !endTimeStr) {
+      setMessage("Missing or invalid test date/time information.");
       setShowNotification(true);
+      return;
     }
-    // else if (param?.row?.end_date < new Date().toJSON()) {
-    //   setMessage(
-    //     "You're unable to take the test as it is closed."
-    //   );
-    //   setShowNotification(true);
-    // } 
-    else {
+    // Combine into ISO strings
+    const startDateTime = new Date(`${startDateStr}T${startTimeStr}`);
+    const endDateTime = new Date(`${endDateStr}T${endTimeStr}`);
+    // Confirm parsing worked
+    if (isNaN(startDateTime.getTime()) || isNaN(endDateTime.getTime())) {
+      setMessage("Invalid test schedule (date/time parsing failed).");
+      setShowNotification(true);
+      return;
+    }
+    // Validate against current time
+    if (now < startDateTime) {
+      setMessage("You can't take the test yet. It hasn't started.");
+      setShowNotification(true);
+    } else if (now > endDateTime) {
+      setMessage("You can't take the test anymore. It is already closed.");
+      setShowNotification(true);
+    } else {
       fetchQuestions(param?.row?.id, param?.row);
     }
   };
@@ -154,17 +169,19 @@ const Test = () => {
             <Grid item container alignItems="center" xs={12}>
               <div style={{ height: "auto", width: "100%" }}>
                 <DataGrid
-                  rows={tests?.map((row, index) => ({
-                    ...row,
-                    sl: index + 1,
-                  }))}
+                  rows={tests
+                    ?.sort((a, b) => b.id - a.id)
+                    ?.map((row, index) => ({
+                      ...row,
+                      sl: index + 1,
+                    }))}
                   columns={userColumns}
                   initialState={{
                     pagination: {
-                      paginationModel: { page: 0, pageSize: 5 },
+                      paginationModel: { page: 0, pageSize: 10 },
                     },
                   }}
-                  pageSizeOptions={[5, 10]}
+                  pageSizeOptions={[10, 20]}
                   slots={{ toolbar: CustomToolbar }}
                 />
               </div>
