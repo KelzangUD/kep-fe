@@ -12,7 +12,7 @@ import {
 const FillInTheBlankOptions = ({
   options,
   point,
-  setResult,
+  // setResult,
   setSolvedQuestions,
   questionId,
   testId,
@@ -45,21 +45,21 @@ const FillInTheBlankOptions = ({
         return [...prevQuestions, updatedEntry];
       }
     });
-    if (
-      answer?.toLowerCase().trim() ===
-      options[0]?.description.toLowerCase().trim()
-    ) {
-      setResult((prev) => ({
-        ...prev,
-        score: prev.score + point,
-      }));
-    } else {
-      setResult((prev) => ({
-        ...prev,
-        // score: prev.score - point,
-        score: 0,
-      }));
-    }
+    // if (
+    //   answer?.toLowerCase().trim() ===
+    //   options[0]?.description.toLowerCase().trim()
+    // ) {
+    //   setResult((prev) => ({
+    //     ...prev,
+    //     score: prev.score + point,
+    //   }));
+    // } else {
+    //   setResult((prev) => ({
+    //     ...prev,
+    //     // score: prev.score - point,
+    //     score: 0,
+    //   }));
+    // }
   };
   // const answerHandle = (value, optionId) => {
   //   setSolvedQuestions((prevQuestions) => {
