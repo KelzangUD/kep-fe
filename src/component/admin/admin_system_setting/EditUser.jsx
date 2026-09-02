@@ -31,19 +31,19 @@ const EditUser = ({
   const [designations, setDesignations] = useState([]);
   const [regions, setRegions] = useState([]);
   const [extensions, setExtensions] = useState([]);
-  const [userDetails, setUserDetails] = useState({
-    name: details?.name,
-    empId: details?.empId,
-    email: details?.email,
-    password: details?.password,
-    contact: details?.contact,
-    status: details?.true,
-    gender: details?.gender,
-    isAdmin: details?.isAdmin,
-    region: details?.region,
-    extension: details?.extension,
-    designation: details?.designation,
-  });
+ const [userDetails, setUserDetails] = useState({
+  name: details?.name,
+  empId: details?.empId,
+  email: details?.email,
+  password: details?.password,
+  contact: details?.contact,
+  status: details?.status,          // also note: you had details?.true (bug, always undefined)
+  gender: details?.gender,
+  isAdmin: details?.isAdmin,
+  region: details?.region?.id ?? details?.region,
+  extension: details?.extension?.id ?? details?.extension,
+  designation: details?.designation?.id ?? details?.designation,
+});
 
   const token = localStorage.getItem("token");
   // fetch Designations
@@ -133,20 +133,28 @@ const EditUser = ({
       setSeverity("success");
       fetchUsers();
       setOpen(false);
-    } else {
-      setMessage(response?.response?.data?.message);
+       } else {
+      const errMsg = response?.response?.data?.message;
+      let message;
+      if (typeof errMsg === "string") {
+        message = errMsg;
+      } else if (errMsg) {
+        message = JSON.stringify(errMsg);
+      } else {
+        message = "Update failed";
+      }
+      setMessage(message);
       setOpenNotification(true);
       setSeverity("error");
     }
   };
   return (
-    <>
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        TransitionComponent={Transition}
-      >
-        <DialogTitle>Edit User</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={() => setOpen(false)}
+      TransitionComponent={Transition}
+    >
+      <DialogTitle>Edit User</DialogTitle>
         <DialogContent>
           <Box sx={{ display: "grid", gap: 3, mt: 2 }}>
             <Grid container spacing={2}>
@@ -198,7 +206,7 @@ const EditUser = ({
                   <Select
                     labelId="designation-select-label"
                     id="designation-simple-select"
-                    defaultValue={details?.designation}
+                    defaultValue={details?.designation?.id}
                     label="Designation"
                     onChange={designationHandle}
                   >
@@ -242,7 +250,7 @@ const EditUser = ({
                 <FormControl fullWidth size="small">
                   <InputLabel id="region-select-label">Region</InputLabel>
                   <Select
-                    defaultValue={details?.region}
+                    defaultValue={details?.region?.id}
                     labelId="region-select-label"
                     id="region-simple-select"
                     label="Region"
@@ -260,7 +268,7 @@ const EditUser = ({
                 <FormControl fullWidth size="small">
                   <InputLabel id="extension-select-label">Extension</InputLabel>
                   <Select
-                    defaultValue={details?.extension}
+                    defaultValue={details?.extension?.id}
                     labelId="extension-select-label"
                     id="extension-simple-select"
                     label="Extension"
@@ -300,8 +308,7 @@ const EditUser = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </>
-  );
-};
+    );
+  };
 
 export default EditUser;

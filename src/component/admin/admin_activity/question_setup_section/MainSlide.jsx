@@ -37,6 +37,7 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
     choiceTwo: [],
     answer: null,
   });
+  const [matchingAnswers, setMatchingAnswers] = useState({});
   const [attachFile, setAttachFile] = useState(1);
   const [videos, setVideos] = useState([]);
   const [audios, setAudios] = useState([]);
@@ -108,6 +109,16 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
     addQuestion(index, "answer", option);
   };
   const matchingAnswerHandle = (option, text) => {
+    setMatchingAnswers((prev) => {
+      const updated = { ...prev };
+      Object.keys(updated).forEach((key) => {
+        if (key !== option && updated[key] === text) {
+          updated[key] = "";
+        }
+      });
+      updated[option] = text;
+      return updated;
+    });
     addQuestion(index, "matching", {
       [option]: text,
     });
@@ -133,6 +144,7 @@ const MainSlide = ({ index, questionTypes, deleteRowHandle, addQuestion }) => {
             choiceHandle={choiceHandle}
             choiceTwoHandle={choiceTwoHandle}
             answerHandle={matchingAnswerHandle}
+            answers={matchingAnswers}
           />
         );
       default:

@@ -6,7 +6,32 @@ import MuiAlert from "@mui/material/Alert";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+const Notification = ({ open, setOpen, message, severity = "info" }) => {
+  const safeMessage =
+    typeof message === "string"
+      ? message
+      : message?.message || JSON.stringify(message) || "Something went wrong";
 
+  return (
+    <Stack spacing={2} sx={{ width: "100%" }}>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setOpen(false)}
+          severity={severity}
+          sx={{ width: "100%" }}
+        >
+          {safeMessage}
+        </Alert>
+      </Snackbar>
+    </Stack>
+  );
+};
+/*
 const Notification = ({ open, setOpen, message, severity="info" }) => {
   return (
     <Stack spacing={2} sx={{ width: "100%" }}>
@@ -26,6 +51,6 @@ const Notification = ({ open, setOpen, message, severity="info" }) => {
       </Snackbar>
     </Stack>
   );
-};
+};*/
 
 export default Notification;

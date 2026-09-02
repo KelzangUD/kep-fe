@@ -17,6 +17,7 @@ const EditMatching = ({
   choiceHandle,
   choiceTwoHandle,
   answerHandle,
+  answers,
 }) => {
   return (
     <>
@@ -29,7 +30,7 @@ const EditMatching = ({
                   <TextField
                     fullWidth
                     label="A"
-                    id="your-text"
+                    id="choice-first"
                     variant="outlined"
                     defaultValue={options[0]?.description}
                     onChange={(e) => choiceHandle("first", e.target.value)}
@@ -40,7 +41,7 @@ const EditMatching = ({
                   <TextField
                     fullWidth
                     label="B"
-                    id="your-text"
+                    id="choice-second"
                     variant="outlined"
                     defaultValue={options[1]?.description}
                     onChange={(e) => choiceHandle("second", e.target.value)}
@@ -51,7 +52,7 @@ const EditMatching = ({
                   <TextField
                     fullWidth
                     label="C"
-                    id="your-text"
+                    id="choice-third"
                     variant="outlined"
                     defaultValue={options[2]?.description}
                     onChange={(e) => choiceHandle("third", e.target.value)}
@@ -62,7 +63,7 @@ const EditMatching = ({
                   <TextField
                     fullWidth
                     label="D"
-                    id="your-text"
+                    id="choice-fourth"
                     variant="outlined"
                     defaultValue={options[3]?.description}
                     onChange={(e) => choiceHandle("fourth", e.target.value)}
@@ -75,7 +76,7 @@ const EditMatching = ({
                   <TextField
                     fullWidth
                     label="I"
-                    id="your-text"
+                    id="choiceTwo-first"
                     variant="outlined"
                     defaultValue={optionsTwo[0]?.description}
                     onChange={(e) => choiceTwoHandle("first", e.target.value)}
@@ -86,7 +87,7 @@ const EditMatching = ({
                   <TextField
                     fullWidth
                     label="II"
-                    id="your-text"
+                    id="choiceTwo-second"
                     variant="outlined"
                     defaultValue={optionsTwo[1]?.description}
                     onChange={(e) => choiceTwoHandle("second", e.target.value)}
@@ -97,7 +98,7 @@ const EditMatching = ({
                   <TextField
                     fullWidth
                     label="III"
-                    id="your-text"
+                    id="choiceTwo-third"
                     variant="outlined"
                     defaultValue={optionsTwo[2]?.description}
                     onChange={(e) => choiceTwoHandle("third", e.target.value)}
@@ -108,7 +109,7 @@ const EditMatching = ({
                   <TextField
                     fullWidth
                     label="IV"
-                    id="your-text"
+                    id="choiceTwo-fourth"
                     variant="outlined"
                     defaultValue={optionsTwo[3]?.description}
                     onChange={(e) => choiceTwoHandle("fourth", e.target.value)}
@@ -124,13 +125,14 @@ const EditMatching = ({
         <FormControl fullWidth>
           <RadioGroup aria-labelledby="group-label" name="radio-group">
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
-              <Grid item xs={6} >
+              <Grid item xs={6}>
                 <FormControl fullWidth size="small">
-                  <InputLabel id="question-type-label">Option A</InputLabel>
+                  <InputLabel id="option-a-label">Option A</InputLabel>
                   <Select
-                    labelId="question-type-label"
-                    id="question-type-select"
-                    label="Question Type"
+                    labelId="option-a-label"
+                    id="option-a-select"
+                    label="Option A"
+                    value={answers?.first || ""}
                     onChange={(e) => answerHandle("first", e.target.value)}
                   >
                     {option?.map((item) => (
@@ -143,11 +145,12 @@ const EditMatching = ({
               </Grid>
               <Grid item xs={6}>
                 <FormControl fullWidth size="small">
-                  <InputLabel id="question-type-label">Option B</InputLabel>
+                  <InputLabel id="option-b-label">Option B</InputLabel>
                   <Select
-                    labelId="question-type-label"
-                    id="question-type-select"
-                    label="Question Type"
+                    labelId="option-b-label"
+                    id="option-b-select"
+                    label="Option B"
+                    value={answers?.second || ""}
                     onChange={(e) => answerHandle("second", e.target.value)}
                   >
                     {option?.map((item) => (
@@ -162,11 +165,12 @@ const EditMatching = ({
             <Grid container spacing={1} alignItems="center" sx={{ py: 1 }}>
               <Grid item xs={6}>
                 <FormControl fullWidth size="small">
-                  <InputLabel id="question-type-label">Option C</InputLabel>
+                  <InputLabel id="option-c-label">Option C</InputLabel>
                   <Select
-                    labelId="question-type-label"
-                    id="question-type-select"
-                    label="Question Type"
+                    labelId="option-c-label"
+                    id="option-c-select"
+                    label="Option C"
+                    value={answers?.third || ""}
                     onChange={(e) => answerHandle("third", e.target.value)}
                   >
                     {option?.map((item) => (
@@ -179,11 +183,12 @@ const EditMatching = ({
               </Grid>
               <Grid item xs={6}>
                 <FormControl fullWidth size="small">
-                  <InputLabel id="question-type-label">Option D</InputLabel>
+                  <InputLabel id="option-d-label">Option D</InputLabel>
                   <Select
-                    labelId="question-type-label"
-                    id="question-type-select"
-                    label="Question Type"
+                    labelId="option-d-label"
+                    id="option-d-select"
+                    label="Option D"
+                    value={answers?.fourth || ""}
                     onChange={(e) => answerHandle("fourth", e.target.value)}
                   >
                     {option?.map((item) => (
@@ -201,5 +206,4 @@ const EditMatching = ({
     </>
   );
 };
-
 export default EditMatching;

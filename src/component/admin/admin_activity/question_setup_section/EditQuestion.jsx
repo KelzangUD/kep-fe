@@ -34,15 +34,30 @@ const EditQuestion = ({
   setMessage,
 }) => {
   const keyArray = ["first", "second", "third", "fourth"];
+
+  // Options (A/B/C/D) — position based on creation order
   const optionsOnes = options.map((option, index) => ({
     id: option.id,
     position: keyArray[index],
   }));
-  const optionsTwos = optionsTwo.map((option, index) => ({
+
+  // OptionsTwo (I/II/III/IV) — position based on THEIR OWN creation order
+  // (sort by id to guarantee correct order regardless of what the backend returns)
+  const sortedOptionsTwo = [...optionsTwo].sort((a, b) => a.id - b.id);
+  const optionsTwos = sortedOptionsTwo.map((option, index) => ({
     id: option.id,
+    description: option.description,
     optionOne: option.optionOne,
     position: keyArray[index],
   }));
+
+  // Text values for the I/II/III/IV fields
+  const choice2ByPosition = {};
+  optionsTwos.forEach((o) => {
+    choice2ByPosition[o.position] = o.description;
+  });
+
+  // Matching object: which Option (A/B/C/D) maps to which I/II/III/IV slot
   const matchingOutput = {};
   optionsOnes.forEach((optionOne) => {
     const matchedOption = optionsTwos.find(
@@ -52,6 +67,7 @@ const EditQuestion = ({
       matchingOutput[optionOne.position] = matchedOption.position;
     }
   });
+
   // init states
   const [questionDetails, setQuestionDetails] = useState({
     questionType: details?.question_type,
@@ -69,10 +85,10 @@ const EditQuestion = ({
       optionsTwo?.length > 0
         ? [
             {
-              first: optionsTwo[0]?.description,
-              second: optionsTwo[1]?.description,
-              third: optionsTwo[2]?.description,
-              fourth: optionsTwo[3]?.description,
+              first: choice2ByPosition.first,
+              second: choice2ByPosition.second,
+              third: choice2ByPosition.third,
+              fourth: choice2ByPosition.fourth,
             },
           ]
         : [],
@@ -95,7 +111,7 @@ const EditQuestion = ({
   const [videos, setVideos] = useState([]);
   const [audios, setAudios] = useState([]);
   const token = localStorage.getItem("token");
-  // fetch Question Types
+
   const fetchQuestionTypes = async () => {
     const res = await Route("GET", `/question-types`, token, null, null);
     if (res?.status === 200) {
@@ -114,11 +130,11 @@ const EditQuestion = ({
       setAudios(res?.data?.audios);
     }
   };
-  // call functions
+
   useEffect(() => {
     fetchQuestionTypes();
   }, []);
-  // handlers
+
   const questionTypeHandle = (e) => {
     setQuestionDetails((prev) => ({
       ...prev,
@@ -155,37 +171,31 @@ const EditQuestion = ({
   const videoHandle = (e) => {
     setQuestionDetails((prev) => ({
       ...prev,
-      question: e.target.value,
+      video: e.target.value,
     }));
   };
   const audioHandle = (e) => {
     setQuestionDetails((prev) => ({
       ...prev,
-      question: e.target.value,
+      audio: e.target.value,
     }));
   };
   const choiceHandle = (option, text) => {
     setQuestionDetails((prev) => ({
       ...prev,
-      choice: prev.choice.map((existingOptions) => {
-        if (existingOptions.hasOwnProperty(option)) {
-          return { ...existingOptions, [option]: text };
-        } else {
-          return existingOptions;
-        }
-      }),
+      choice: prev.choice.map((existingOptions) => ({
+        ...existingOptions,
+        [option]: text,
+      })),
     }));
   };
   const choiceTwoHandle = (option, text) => {
     setQuestionDetails((prev) => ({
       ...prev,
-      choice2: prev.choice2.map((existingOptions) => {
-        if (existingOptions.hasOwnProperty(option)) {
-          return { ...existingOptions, [option]: text };
-        } else {
-          return existingOptions;
-        }
-      }),
+      choice2: prev.choice2.map((existingOptions) => ({
+        ...existingOptions,
+        [option]: text,
+      })),
     }));
   };
   const answerHandle = (option) => {
@@ -198,11 +208,14 @@ const EditQuestion = ({
     setQuestionDetails((prev) => ({
       ...prev,
       matching: prev.matching.map((existingOptions) => {
-        if (existingOptions.hasOwnProperty(option)) {
-          return { ...existingOptions, [option]: text };
-        } else {
-          return existingOptions;
-        }
+        const updated = { ...existingOptions };
+        Object.keys(updated).forEach((key) => {
+          if (key !== option && updated[key] === text) {
+            updated[key] = "";
+          }
+        });
+        updated[option] = text;
+        return updated;
       }),
     }));
   };
@@ -238,14 +251,18 @@ const EditQuestion = ({
             choiceHandle={choiceHandle}
             choiceTwoHandle={choiceTwoHandle}
             answerHandle={matchingAnswerHandle}
+            answers={questionDetails.matching[0]}
+            choiceValues={questionDetails.choice[0]}
+            choiceTwoValues={questionDetails.choice2[0]}
           />
         );
       default:
         return null;
     }
   };
-  // update function
+
   const handleSubmit = async () => {
+
     const response = await Route(
       "PUT",
       `/questions`,

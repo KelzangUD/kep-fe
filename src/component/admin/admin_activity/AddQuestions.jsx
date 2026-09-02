@@ -39,15 +39,19 @@ const AddQuestions = () => {
 
   // handlers
   const fetchQuestion = async (id) => {
-    const res = await Route("GET", "/questions", token, null, id);
-    if (res?.status === 200) {
-      setId(id);
-      setDetails(res?.data?.question);
-      setOptions(res?.data?.options);
-      setOptionsTwo(res?.data?.optionsTwo);
-      setEdit(true);
-    }
-  };
+  const res = await Route("GET", "/questions", token, null, id);
+  if (res?.status === 200) {
+    
+    setId(id);
+    setDetails(res?.data?.question);
+    setOptions(res?.data?.options);
+    setOptionsTwo(res?.data?.optionsTwo);
+    setEdit(true);
+  } else {
+    console.log("Fetch question failed:", res);
+  }
+};
+
   const editHandle = (param) => {
     fetchQuestion(param?.row?.id);
   };
