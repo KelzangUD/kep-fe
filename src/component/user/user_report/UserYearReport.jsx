@@ -17,6 +17,7 @@ import {
   getUniqueTestNames,
   reportColumns,
   yearlyReportForAUser,
+  getStoredUser,
 } from "../../../util/CommonUtil";
 
 const UserYearReport = () => {
@@ -26,9 +27,10 @@ const UserYearReport = () => {
   const [yearlyData, setYearlyData] = useState([]);
   const [reportData, setReportData] = useState([]);
   const [year, setYear] = useState(new Date().getFullYear());
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = getStoredUser();
   const token = localStorage.getItem("token");
   const fetchResults = async () => {
+    if (!user?.id || !token) return;
     const res = await Route("GET", `/results/${user?.id}`, token, null, null);
     if (res?.status === 200) {
       setResults(res?.data?.results);

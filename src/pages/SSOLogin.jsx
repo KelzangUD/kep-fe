@@ -5,6 +5,7 @@ import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Notification from "../ui/Notification";
 import Route from "../routes/Route";
+import { setStoredUser } from "../util/CommonUtil";
 
 const SSOLogin = () => {
   const navigate = useNavigate();
@@ -42,25 +43,28 @@ const SSOLogin = () => {
   const token = queryParameters.get("token");
 
   const ssoAuth = async () => {
-    const response = await Route("GET", `/sso/${token}`, null, null, null);
-    if (response?.data?.message === "SSO Verified Successfully") {
-      const formData = {
-        empId: response?.data?.empId,
-        password: response?.data?.password,
-      };
-      const res = await Route("POST", "/login", null, formData, null);
-      if (res?.status === 200) {
-        localStorage.setItem("user", JSON.stringify(res?.data?.user));
-        localStorage.setItem("token", res?.data?.token);
-        res?.data?.user?.isAdmin
-          ? navigate("/admin/dashboard")
-          : navigate("/user/dashboard");
-      } else {
-        setMessage(res?.data?.message);
-        setOpen(true);
+  const response = await Route("GET", `/sso/${token}`, null, null, null);
+  if (response?.data?.message === "SSO Verified Successfully") {
+    const formData = {
+      empId: response?.data?.empId,
+      password: response?.data?.password,
+    };
+    const res = await Route("POST", "/login", null, formData, null);
+
+    if (res?.status === 200 && res?.data?.user) {
+      setStoredUser(res.data.user);
+      if (res?.data?.token) {
+        localStorage.setItem("token", res.data.token);
       }
+      res.data.user.isAdmin
+        ? navigate("/admin/dashboard")
+        : navigate("/user/dashboard");
+    } else {
+      setMessage(res?.data?.message || "Login failed");
+      setOpen(true);
     }
-  };
+  }
+};
   useEffect(() => {
     if (token !== "") {
       ssoAuth(encodeURIComponent(token));

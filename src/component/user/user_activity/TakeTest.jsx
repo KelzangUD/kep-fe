@@ -14,11 +14,12 @@ import Route from "../../../routes/Route";
 import {
   calculateDuration,
   calculateDurationTaken,
+  getStoredUser,
 } from "../../../util/CommonUtil";
 
 const TakeTest = ({ details, setTakeTest, questions, route = "results" }) => {
   const token = localStorage.getItem("token");
-  const userId = JSON.parse(localStorage.getItem("user"))?.id;
+  const userId = getStoredUser()?.id;
   const questionStartTime = useRef(Date.now());
   const [message, setMessage] = useState("");
   const [openNotification, setOpenNotification] = useState(false);

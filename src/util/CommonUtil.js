@@ -525,3 +525,32 @@ export const answersReportColumns = () => {
   ];
   return columns;
 };
+
+// ========================================== SAFE USER STORAGE ==================================
+export const getStoredUser = () => {
+  try {
+    const userStr = localStorage.getItem("user");
+    if (!userStr || userStr === "undefined" || userStr === "null") {
+      return null;
+    }
+    return JSON.parse(userStr);
+  } catch (error) {
+    console.error("Error parsing user from localStorage:", error);
+    try {
+      localStorage.removeItem("user");
+    } catch (_) {}
+    return null;
+  }
+};
+
+export const setStoredUser = (user) => {
+  try {
+    if (user && typeof user === "object") {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  } catch (error) {
+    console.error("Error setting user in localStorage:", error);
+  }
+};

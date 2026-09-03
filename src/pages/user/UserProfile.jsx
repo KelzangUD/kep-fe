@@ -11,6 +11,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import SubHeader from "../../common/SubHeader";
+import { getStoredUser } from "../../util/CommonUtil";
 
 const UserProfile = () => {
   const [userDetails, setUserDetails] = useState({
@@ -23,7 +24,7 @@ const UserProfile = () => {
     region: "",
     extension: "",
   });
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = getStoredUser();
   useEffect(() => {
     setUserDetails((prev) => ({
       ...prev,

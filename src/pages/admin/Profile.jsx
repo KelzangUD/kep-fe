@@ -14,6 +14,7 @@ import {
 import SubHeader from "../../common/SubHeader";
 import Notification from "../../ui/Notification";
 import Route from "../../routes/Route";
+import { getStoredUser, setStoredUser } from "../../util/CommonUtil";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const Profile = () => {
   const [regions, setRegions] = useState([]);
   const [extensions, setExtensions] = useState([]);
   const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = getStoredUser();
   useEffect(() => {
     setUserDetails((prev) => ({
       ...prev,
@@ -125,8 +126,7 @@ const Profile = () => {
       user?.id,
     );
     if (response?.status === 200) {
-      localStorage.removeItem('user');
-      localStorage.setItem('user', JSON.stringify(response?.data?.user));
+      setStoredUser(response?.data?.user);
       setUserDetails((prev) => ({
         ...prev,
         empId: response?.data?.user?.empId,

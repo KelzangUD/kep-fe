@@ -16,6 +16,7 @@ import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Notification from "../ui/Notification";
 import Route from "../routes/Route";
+import { setStoredUser } from "../util/CommonUtil";
 
 const SignIn = () => {
   const theme = useTheme();
@@ -36,12 +37,18 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await Route("POST", "/login", null, formData, null);
-    if (res?.status === 200) {
-      localStorage.setItem("user", JSON.stringify(res?.data?.user));
-      localStorage.setItem("token", res?.data?.token);
-      res?.data?.user?.isAdmin
+    if (res?.status === 200 && res?.data?.user) {
+      setStoredUser(res.data.user);
+      if (res?.data?.token) {
+        localStorage.setItem("token", res.data.token);
+      }
+      res.data.user.isAdmin
         ? navigagte("/admin/dashboard")
         : navigagte("/user/dashboard");
+    } else if (res?.status === 200 && !res?.data?.user) {
+      setMessage("Login failed: invalid user data received");
+      setOpen(true);
+      setSeverity("error");
     } else if (res?.status === 206) {
       setMessage(res?.data?.message);
       setOpen(true);

@@ -18,11 +18,12 @@ import UserSideNav from "../user/UserSideNav";
 import Route from "../../routes/Route";
 import { useNavigate } from "react-router-dom";
 import { useCommon } from "../../contexts/CommonContext";
+import { getStoredUser } from "../../util/CommonUtil";
 
 const AdminNav = () => {
   const { sideMenuOpen, setSideMenuOpen } = useCommon();
   const navigation = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = getStoredUser();
   const [message, setMessage] = useState("");
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -35,12 +36,12 @@ const AdminNav = () => {
     setAnchorEl(null);
   };
   const profileHandle = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = getStoredUser();
     user?.isAdmin ? navigation("/admin/profile") : navigation("/user/profile");
   };
   const token = localStorage.getItem("token");
   const logoutHandle = async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = getStoredUser();
     const data = {
       empId: user?.empId,
     };

@@ -20,6 +20,17 @@ const MatchingOptions = ({
   solvedQuestions,
 }) => {
   const answerHandle = (option, value) => {
+    let parsedOptionTwo = null;
+    try {
+      if (value && typeof value === "string") {
+        parsedOptionTwo = JSON.parse(value)?.id;
+      } else if (value && typeof value === "object") {
+        parsedOptionTwo = value?.id;
+      }
+    } catch (e) {
+      console.error("Error parsing value in MatchingOptions", e);
+    }
+
     setSolvedQuestions((prevQuestions) => {
       const index = prevQuestions.findIndex((q) => q.questionId === questionId);
       if (index !== -1) {
@@ -38,13 +49,13 @@ const MatchingOptions = ({
           // Update existing match entry
           updatedMatch[matchIndex] = {
             optionOne: option,
-            optionTwo: JSON.parse(value)?.id,
+            optionTwo: parsedOptionTwo,
           };
         } else {
           // Add new match entry
           updatedMatch.push({
             optionOne: option,
-            optionTwo: JSON.parse(value)?.id,
+            optionTwo: parsedOptionTwo,
           });
         }
 
@@ -70,7 +81,7 @@ const MatchingOptions = ({
             match: [
               {
                 optionOne: option,
-                optionTwo: JSON.parse(value)?.id,
+                optionTwo: parsedOptionTwo,
               },
             ],
           },

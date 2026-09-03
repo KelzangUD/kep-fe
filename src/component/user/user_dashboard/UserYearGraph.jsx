@@ -23,15 +23,17 @@ import Route from "../../../routes/Route";
 import {
   filterDataBasedOnYear,
   userYearGraphData,
+  getStoredUser,
 } from "../../../util/CommonUtil";
 
 const UserYearGraph = () => {
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [data, setData] = useState([]);
   const [yearData, setYearData] = useState([]);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = getStoredUser();
   const token = localStorage.getItem("token");
   const fetchYearlyData = async () => {
+    if (!user?.id || !token) return;
     const res = await Route("GET", `/results/${user?.id}`, token, null, null);
     if (res?.status === 200) {
       setData(res?.data?.results);
